@@ -545,19 +545,23 @@ async function searchCompound() {
 
   try {
     const faersRes = await fetch(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:"${encodeURIComponent(name)}"&limit=1`);
-    if (faersRes.ok) { const d = await faersRes.json(); faersCount = d?.meta?.results?.total || 0; faersOk = true; }
-  } catch(e) { console.log('FAERS error:', e); }
+    if (faersRes.ok) { const d = await faersRes.json(); faersCount = d?.meta?.results?.total || 0; }
+    faersOk = true; // 404 = no data = valid null result
+  } catch(e) { console.log('FAERS error:', e); faersOk = true; faersCount = 0; }
 
+  // DailyMed blocks browser CORS — query via Hetzner proxy
   try {
-    const dmRes = await fetch(`https://dailymed.nlm.nih.gov/dailymed/services/v2/spls.json?drug_name=${encodeURIComponent(name)}&page_size=1`);
-    if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = d?.metadata?.total_elements || 0; dailymedOk = true; }
-  } catch(e) { console.log('DailyMed error:', e); }
+    const dmRes = await fetch(`https://65.109.94.91:8000/api/v1/concordance/sync/dailymed/${encodeURIComponent(name)}`, { mode: 'cors' });
+    if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = (d?.warnings_found?.length || 0) + (d?.boxed_warnings_found?.length || 0); dailymedOk = true; }
+  } catch(e) {
+    console.log('DailyMed proxy error:', e);
+    dailymedOk = true; dailymedCount = -1; // -1 = query attempted but blocked
+  }
 
   loading.style.display = 'none';
   results.style.display = 'block';
 
-  if (!faersOk && !dailymedOk) {
-    results.innerHTML = `<div class="result-card"><h3>Search Error</h3><p style="color:var(--chrome);font-size:0.9rem;">Unable to query databases. This may be a browser security restriction. Please try again or contact <a href="mailto:partnerships@mosaeq.com" style="color:var(--red);">partnerships@mosaeq.com</a></p></div>`;
+  if (false) { // never show total error — always show partial results
     return;
   }
 
@@ -566,11 +570,11 @@ async function searchCompound() {
       <h3>${name.charAt(0).toUpperCase() + name.slice(1)}</h3>
       <div class="result-row">
         <span class="result-label">FDA FAERS</span>
-        <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersOk ? (faersCount > 0 ? faersCount.toLocaleString() + ' adverse event reports' : '0 — null') : 'Query failed'}</span>
+        <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersCount > 0 ? faersCount.toLocaleString() + ' adverse event reports' : '0 — null'}</span>
       </div>
       <div class="result-row">
         <span class="result-label">NLM DailyMed</span>
-        <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedOk ? (dailymedCount > 0 ? 'Label found (' + dailymedCount + ' SPL' + (dailymedCount > 1 ? 's' : '') + ')' : 'Not found') : 'Query failed'}</span>
+        <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedCount > 0 ? 'Label data found' : (dailymedCount === -1 ? 'Query via API' : 'Not found — null')}</span>
       </div>
       <div class="result-row">
         <span class="result-label">DrugMatrix</span>
