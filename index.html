@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>msq — Quantum Ontology for Translational Preclinical Safety Concordance</title>
-<meta name="description" content="msq.mosaeQ.com — A quantum ontology encoding molecular entities as quaternion coordinates on the unit hypersphere S³ for translational preclinical safety concordance.">
+<meta name="description" content="msq.mosaeQ.com — A quantum ontology encoding molecular entities as quaternion coordinates on S³ for translational preclinical safety concordance.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -22,440 +22,194 @@
   --success: #10B981;
   --warning: #F59E0B;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 body {
   font-family: 'DM Sans', -apple-system, sans-serif;
-  background: var(--white);
-  color: var(--navy);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  background: var(--white); color: var(--navy);
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
 }
 
 /* ── NAV ── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-  padding: 0 2rem;
-  height: 64px;
+  padding: 0 2rem; height: 64px;
   display: flex; align-items: center; justify-content: space-between;
 }
-
-.nav-brand {
-  display: flex; align-items: center; gap: 10px;
-  text-decoration: none; color: var(--navy);
-}
-
-.nav-brand .msq {
-  font-family: 'DM Mono', monospace;
-  font-size: 1.4rem; font-weight: 500;
-  color: var(--red);
-  letter-spacing: -0.5px;
-}
-
-.nav-brand .label {
-  font-size: 0.75rem; color: var(--chrome);
-  text-transform: uppercase; letter-spacing: 1.5px;
-  font-weight: 600;
-}
-
-.nav-links {
-  display: flex; align-items: center; gap: 1.5rem;
-}
-
-.nav-links a {
-  font-size: 0.82rem; color: var(--chrome);
-  text-decoration: none; font-weight: 500;
-  letter-spacing: 0.3px;
-  transition: color 0.2s;
-}
-
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--navy); }
+.nav-brand .msq { font-family: 'DM Mono', monospace; font-size: 1.4rem; font-weight: 500; color: var(--red); letter-spacing: -0.5px; }
+.nav-brand .label { font-size: 0.75rem; color: var(--chrome); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.nav-links { display: flex; align-items: center; gap: 1.5rem; }
+.nav-links a { font-size: 0.82rem; color: var(--chrome); text-decoration: none; font-weight: 500; letter-spacing: 0.3px; transition: color 0.2s; }
 .nav-links a:hover { color: var(--navy); }
-
-.btn-signin {
-  background: var(--red);
-  color: var(--white) !important;
-  padding: 8px 20px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.82rem;
-  cursor: pointer;
-  border: none;
-  transition: background 0.2s;
-}
-
+.btn-signin { background: var(--red); color: var(--white) !important; padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 0.82rem; cursor: pointer; border: none; transition: background 0.2s; }
 .btn-signin:hover { background: var(--red-hover); }
-
-.btn-signout {
-  background: transparent;
-  color: var(--chrome) !important;
-  padding: 8px 16px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
+.btn-signout { background: transparent; color: var(--chrome) !important; padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; font-weight: 500; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
 .btn-signout:hover { border-color: var(--chrome); color: var(--navy) !important; }
+
+/* ── COOKIE BANNER ── */
+.cookie-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: var(--navy); color: var(--white);
+  padding: 16px 2rem; display: none;
+  align-items: center; justify-content: space-between; gap: 1rem;
+  font-size: 0.85rem;
+}
+.cookie-banner a { color: var(--chrome-light); text-decoration: underline; }
+.cookie-banner button {
+  background: var(--red); color: var(--white); border: none;
+  padding: 8px 20px; border-radius: 6px; font-weight: 600;
+  font-size: 0.82rem; cursor: pointer; white-space: nowrap;
+}
 
 /* ── HERO ── */
 .hero {
-  margin-top: 64px;
-  padding: 5rem 2rem 4rem;
-  text-align: center;
+  margin-top: 64px; padding: 5rem 2rem 4rem; text-align: center;
   background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
   border-bottom: 1px solid var(--border);
 }
-
-.hero h1 {
-  font-size: 2.8rem;
-  font-weight: 700;
-  color: var(--navy);
-  line-height: 1.15;
-  max-width: 720px;
-  margin: 0 auto 1rem;
-  letter-spacing: -1px;
-}
-
+.hero h1 { font-size: 2.8rem; font-weight: 700; color: var(--navy); line-height: 1.15; max-width: 720px; margin: 0 auto 1rem; letter-spacing: -1px; }
 .hero h1 .accent { color: var(--red); }
-
-.hero .subtitle {
-  font-size: 1.05rem;
-  color: var(--chrome);
-  max-width: 640px;
-  margin: 0 auto 2rem;
-  line-height: 1.7;
-}
-
-.hero .doi {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--chrome-light);
-  margin-bottom: 2rem;
-}
-
+.hero .subtitle { font-size: 1.05rem; color: var(--chrome); max-width: 640px; margin: 0 auto 2rem; line-height: 1.7; }
+.hero .doi { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--chrome-light); margin-bottom: 2rem; }
 .hero .doi a { color: var(--chrome); text-decoration: underline; }
 
 /* ── BETA BANNER ── */
-.beta-banner {
-  display: none;
-  background: var(--navy);
-  color: var(--white);
-  padding: 12px 2rem;
-  text-align: center;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.beta-banner .days {
-  display: inline-block;
-  background: var(--red);
-  padding: 2px 10px;
-  border-radius: 4px;
-  font-weight: 700;
-  margin-left: 6px;
-}
-
+.beta-banner { display: none; background: var(--navy); color: var(--white); padding: 12px 2rem; text-align: center; font-size: 0.85rem; font-weight: 500; }
+.beta-banner .days { display: inline-block; background: var(--red); padding: 2px 10px; border-radius: 4px; font-weight: 700; margin-left: 6px; }
 .beta-banner.expired { background: var(--red-hover); }
 
 /* ── SEARCH ── */
-.search-section {
-  padding: 3rem 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.search-section h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--navy);
-}
-
-.search-section p {
-  color: var(--chrome);
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
-}
-
-.search-box {
-  display: flex; gap: 10px;
-}
-
+.search-section { padding: 3rem 2rem; max-width: 800px; margin: 0 auto; }
+.search-section h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--navy); }
+.search-section p { color: var(--chrome); font-size: 0.9rem; margin-bottom: 1.5rem; }
+.search-box { display: flex; gap: 10px; }
 .search-box input {
-  flex: 1;
-  padding: 14px 18px;
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-family: 'DM Mono', monospace;
-  color: var(--navy);
-  outline: none;
-  transition: border-color 0.2s;
+  flex: 1; padding: 14px 18px; border: 2px solid var(--border); border-radius: 8px;
+  font-size: 0.95rem; font-family: 'DM Mono', monospace; color: var(--navy); outline: none; transition: border-color 0.2s;
 }
-
 .search-box input:focus { border-color: var(--red); }
-
 .search-box input::placeholder { color: var(--chrome-light); }
-
 .search-box button {
-  padding: 14px 28px;
-  background: var(--navy);
-  color: var(--white);
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
+  padding: 14px 28px; background: var(--navy); color: var(--white); border: none;
+  border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; white-space: nowrap;
 }
-
 .search-box button:hover { background: var(--navy-light); }
 
 /* ── RESULTS ── */
-.results {
-  margin-top: 2rem;
-  display: none;
-}
-
-.result-card {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  background: var(--white);
-}
-
-.result-card h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: var(--navy);
-}
-
-.result-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--off-white);
-  font-size: 0.88rem;
-}
-
+.results { margin-top: 2rem; display: none; }
+.result-card { border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-bottom: 1rem; background: var(--white); }
+.result-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--navy); }
+.result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--off-white); font-size: 0.88rem; }
 .result-row:last-child { border-bottom: none; }
-
 .result-label { color: var(--chrome); font-weight: 500; }
 .result-value { color: var(--navy); font-weight: 600; font-family: 'DM Mono', monospace; }
 .result-value.null { color: var(--red); }
 .result-value.found { color: var(--success); }
-
-.result-locked {
-  margin-top: 1rem;
-  padding: 1rem;
-  background: var(--off-white);
-  border-radius: 8px;
-  text-align: center;
-  font-size: 0.85rem;
-  color: var(--chrome);
-}
-
+.result-locked { margin-top: 1rem; padding: 1rem; background: var(--off-white); border-radius: 8px; text-align: center; font-size: 0.85rem; color: var(--chrome); }
 .result-locked a { color: var(--red); font-weight: 600; text-decoration: none; }
 
+/* ── TISSUE TRAPS ── */
+.tissue-section { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+.tissue-section h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--navy); text-align: center; }
+.tissue-section .intro { color: var(--chrome); font-size: 0.9rem; margin-bottom: 2rem; text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
+.zone-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.zone-card {
+  border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem;
+  border-left: 4px solid var(--red); background: var(--white);
+}
+.zone-card .zone-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 4px; }
+.zone-card .zone-params { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--red); margin-bottom: 6px; }
+.zone-card .zone-desc { font-size: 0.82rem; color: var(--chrome); line-height: 1.5; }
+.zone-card .zone-examples { font-size: 0.75rem; color: var(--chrome-light); margin-top: 6px; font-style: italic; }
+
 /* ── DATABASES ── */
-.databases {
-  padding: 3rem 2rem;
-  background: var(--off-white);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
+.databases { padding: 3rem 2rem; background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.databases-inner { max-width: 900px; margin: 0 auto; }
+.databases h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--navy); text-align: center; }
+.db-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.db-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; text-align: center; }
+.db-card .name { font-weight: 600; font-size: 0.95rem; color: var(--navy); margin-bottom: 4px; }
+.db-card .type { font-size: 0.78rem; color: var(--chrome); }
+.db-card .count { font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--red); margin-top: 8px; font-weight: 600; }
 
-.databases-inner {
-  max-width: 900px;
-  margin: 0 auto;
+/* ── PODCAST ── */
+.podcast-section {
+  padding: 3rem 2rem; max-width: 800px; margin: 0 auto;
 }
-
-.databases h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: var(--navy);
-  text-align: center;
-}
-
-.db-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.db-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.25rem;
-  text-align: center;
-}
-
-.db-card .name {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--navy);
-  margin-bottom: 4px;
-}
-
-.db-card .type {
-  font-size: 0.78rem;
-  color: var(--chrome);
-}
-
-.db-card .count {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.85rem;
-  color: var(--red);
-  margin-top: 8px;
-  font-weight: 600;
-}
-
-/* ── ECOSYSTEM ── */
-.ecosystem {
-  padding: 3rem 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.ecosystem h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: var(--navy);
-  text-align: center;
-}
-
-.eco-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.eco-card {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.25rem;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.eco-card:hover {
-  border-color: var(--red);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-}
-
-.eco-card .url {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.8rem;
-  color: var(--red);
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.eco-card .desc {
-  font-size: 0.82rem;
-  color: var(--chrome);
-}
-
-/* ── BETA CTA ── */
-.beta-cta {
-  padding: 3rem 2rem;
-  background: var(--navy);
-  text-align: center;
+.podcast-section h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: var(--navy); text-align: center; }
+.podcast-card {
+  border: 1px solid var(--border); border-radius: 12px; padding: 2rem;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
   color: var(--white);
 }
-
-.beta-cta h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.beta-cta p {
-  color: var(--chrome-light);
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.beta-cta .btn-beta {
-  display: inline-block;
-  background: var(--red);
-  color: var(--white);
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
+.podcast-card .episode { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--chrome-light); margin-bottom: 6px; }
+.podcast-card .title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem; }
+.podcast-card .description { font-size: 0.9rem; color: var(--chrome-light); line-height: 1.7; margin-bottom: 1.5rem; }
+.podcast-card .description strong { color: var(--white); }
+.podcast-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.podcast-links a {
+  display: inline-block; padding: 8px 16px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 6px;
+  color: var(--white); font-size: 0.82rem; font-weight: 500; text-decoration: none;
   transition: background 0.2s;
 }
+.podcast-links a:hover { background: rgba(255,255,255,0.2); }
 
+/* ── ECOSYSTEM ── */
+.ecosystem { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+.ecosystem h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1.5rem; color: var(--navy); text-align: center; }
+.eco-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.eco-card { border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; text-decoration: none; transition: all 0.2s; }
+.eco-card:hover { border-color: var(--red); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.eco-card .url { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--red); font-weight: 500; margin-bottom: 4px; }
+.eco-card .desc { font-size: 0.82rem; color: var(--chrome); }
+
+/* ── BETA CTA ── */
+.beta-cta { padding: 3rem 2rem; background: var(--navy); text-align: center; color: var(--white); }
+.beta-cta h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+.beta-cta p { color: var(--chrome-light); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+.beta-cta .btn-beta {
+  display: inline-block; background: var(--red); color: var(--white);
+  padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 1rem;
+  text-decoration: none; transition: background 0.2s;
+}
 .beta-cta .btn-beta:hover { background: var(--red-hover); }
 
 /* ── FOOTER ── */
-.footer {
-  padding: 2rem;
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--chrome-light);
-  border-top: 1px solid var(--border);
-}
-
+.footer { padding: 2rem; text-align: center; font-size: 0.75rem; color: var(--chrome-light); border-top: 1px solid var(--border); }
 .footer a { color: var(--chrome); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+.footer-links { margin-top: 8px; display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── LEGAL PAGES ── */
+.legal-overlay {
+  display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 300;
+  overflow-y: auto; padding: 2rem;
+}
+.legal-content {
+  max-width: 700px; margin: 2rem auto; background: var(--white);
+  border-radius: 12px; padding: 2.5rem; position: relative;
+}
+.legal-content h2 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; }
+.legal-content h3 { font-size: 1rem; font-weight: 600; color: var(--navy); margin: 1.5rem 0 0.5rem; }
+.legal-content p { font-size: 0.88rem; color: var(--chrome); margin-bottom: 0.75rem; line-height: 1.7; }
+.legal-content .close-btn {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: none; font-size: 1.5rem; color: var(--chrome);
+  cursor: pointer; line-height: 1;
+}
 
 /* ── USER INFO ── */
-.user-info {
-  display: none;
-  align-items: center;
-  gap: 10px;
-}
-
-.user-info .avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-}
-
-.user-info .name {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--navy);
-}
+.user-info { display: none; align-items: center; gap: 10px; }
+.user-info .avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); }
+.user-info .name { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
 
 /* ── LOADING ── */
-.search-loading {
-  display: none;
-  text-align: center;
-  padding: 2rem;
-  color: var(--chrome);
-  font-size: 0.9rem;
-}
-
-.spinner {
-  display: inline-block;
-  width: 20px; height: 20px;
-  border: 2px solid var(--border);
-  border-top-color: var(--red);
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-
+.search-loading { display: none; text-align: center; padding: 2rem; color: var(--chrome); font-size: 0.9rem; }
+.spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── RESPONSIVE ── */
@@ -463,7 +217,8 @@ body {
   .hero h1 { font-size: 1.8rem; }
   .search-box { flex-direction: column; }
   .nav-links a:not(.btn-signin):not(.btn-signout) { display: none; }
-  .db-grid, .eco-grid { grid-template-columns: 1fr; }
+  .db-grid, .eco-grid, .zone-grid { grid-template-columns: 1fr; }
+  .cookie-banner { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
@@ -489,6 +244,12 @@ body {
     </div>
   </div>
 </nav>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookie-banner">
+  <span>This site uses essential cookies for authentication (Auth0). No tracking or advertising cookies are used. <a href="#" onclick="showLegal('privacy');return false;">Privacy Policy</a></span>
+  <button onclick="acceptCookies()">Accept</button>
+</div>
 
 <!-- BETA BANNER -->
 <div class="beta-banner" id="beta-banner">
@@ -525,6 +286,38 @@ body {
   <div class="results" id="results"></div>
 </section>
 
+<!-- TISSUE TRAPS -->
+<section class="tissue-section">
+  <h2>Tissue Trap Zones on S³</h2>
+  <p class="intro">The NEMP encoding maps LogP (θ) and TPSA (φ) directly into quaternion coordinates. Natural pharmacological zones emerge on the hypersphere, identifying where drugs accumulate before clinical exposure.</p>
+  <div class="zone-grid">
+    <div class="zone-card">
+      <div class="zone-name">Brain Trap</div>
+      <div class="zone-params">High θ · Low φ</div>
+      <div class="zone-desc">BBB-penetrating compounds. High lipophilicity + low polar surface area enables CNS entry. Sedation, extrapyramidal effects.</div>
+      <div class="zone-examples">e.g., chlorpromazine, haloperidol</div>
+    </div>
+    <div class="zone-card">
+      <div class="zone-name">Lysosomal Trap</div>
+      <div class="zone-params">High θ · Basic pKa</div>
+      <div class="zone-desc">Lysosomotropic accumulation. Ion trapping in acidic organelles drives liver, kidney, and lung concentration far above plasma levels.</div>
+      <div class="zone-examples">e.g., amiodarone, imipramine</div>
+    </div>
+    <div class="zone-card">
+      <div class="zone-name">Gut Trap</div>
+      <div class="zone-params">High θ · Mid φ</div>
+      <div class="zone-desc">GI mucosa sequestration. Structure-driven over-exposure causing nausea and emesis — the functional blind spot histopathology misses entirely.</div>
+      <div class="zone-examples">e.g., irinotecan, metformin</div>
+    </div>
+    <div class="zone-card">
+      <div class="zone-name">Plasma-Retained</div>
+      <div class="zone-params">Low θ · High φ</div>
+      <div class="zone-desc">Hydrophilic compounds that remain in circulation. Low tissue penetration, predictable PK, lowest tissue-trap risk.</div>
+      <div class="zone-examples">e.g., methotrexate, fluconazole</div>
+    </div>
+  </div>
+</section>
+
 <!-- DATABASES -->
 <section class="databases">
   <div class="databases-inner">
@@ -550,6 +343,22 @@ body {
         <div class="type">FDA-approved drug labels</div>
         <div class="count">All approved</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- PODCAST -->
+<section class="podcast-section">
+  <h2>Listen</h2>
+  <div class="podcast-card">
+    <div class="episode">Podcast #2 · March 25, 2026</div>
+    <div class="title">Drug Safety: Why 90% of Drugs Fail and How Quantum Coordinates Change the Map</div>
+    <div class="description">
+      <strong>Ever wonder what happens when a drug gets rejected by the FDA but approved in Europe?</strong> Or when a promising molecule fails and nobody can explain why? We built a quantum ontology that maps every drug as a point on a mathematical sphere — and it turns out, the drugs that fail often land in the same neighbourhood. Here's the question we keep getting asked: would you take a pill if a computer said it was safe but it had never been inside a living creature? Our answer is yes — not because we trust computers, but because our system doesn't look for melted wires in rats. It looks for tissue traps. Most drugs that hurt people don't fail because the chemistry was wrong. They fail because the drug got stuck somewhere it shouldn't — the liver, the kidneys, the gut — while the blood levels looked perfectly fine. We map those traps. That's msq.
+    </div>
+    <div class="podcast-links">
+      <a href="https://mosaeq.com/podcasts/" target="_blank">Listen Now</a>
+      <a href="https://doi.org/10.5281/zenodo.19219725" target="_blank">Read the Preprint</a>
     </div>
   </div>
 </section>
@@ -588,11 +397,81 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
-  <p>© 2026 Mosae Zorg Industries UG (haftungsbeschränkt), Berlin, Germany. Patent-protected technology. NATO CAGE: CNLJ5.</p>
-  <p style="margin-top:6px;">
-    <a href="mailto:partnerships@mosaeq.com">partnerships@mosaeq.com</a> · +49 800 183 05 02
-  </p>
+  <p>&copy; 2026 Mosae Zorg Industries UG (haftungsbeschr&auml;nkt), Berlin, Germany. Patent-protected technology. NATO CAGE: CNLJ5.</p>
+  <div class="footer-links">
+    <a href="mailto:partnerships@mosaeq.com">partnerships@mosaeq.com</a>
+    <a href="tel:+498001830502">+49 800 183 05 02</a>
+    <a href="#" onclick="showLegal('impressum');return false;">Impressum</a>
+    <a href="#" onclick="showLegal('privacy');return false;">Datenschutz</a>
+  </div>
 </footer>
+
+<!-- IMPRESSUM OVERLAY -->
+<div class="legal-overlay" id="impressum-overlay" onclick="if(event.target===this)closeLegal('impressum')">
+  <div class="legal-content">
+    <button class="close-btn" onclick="closeLegal('impressum')">&times;</button>
+    <h2>Impressum</h2>
+    <h3>Angaben gem&auml;&szlig; &sect; 5 TMG</h3>
+    <p>Mosae Zorg Industries UG (haftungsbeschr&auml;nkt)<br>
+    Edisonstra&szlig;e 63<br>
+    12459 Berlin<br>
+    Deutschland</p>
+    <h3>Vertreten durch</h3>
+    <p>F. Hanna Campbell, M.E., B.E.<br>
+    Gesch&auml;ftsf&uuml;hrerin (CEO &amp; President)</p>
+    <h3>Handelsregister</h3>
+    <p>Amtsgericht Charlottenburg<br>
+    HRB 279526</p>
+    <h3>Umsatzsteuer-ID</h3>
+    <p>Umsatzsteuer-Identifikationsnummer gem&auml;&szlig; &sect; 27a UStG:<br>
+    DE460233487</p>
+    <h3>Kontakt</h3>
+    <p>Telefon: +49 800 183 05 02<br>
+    E-Mail: partnerships@mosaeq.com<br>
+    Web: <a href="https://mosaeq.com" style="color:var(--red)">https://mosaeQ.com</a></p>
+    <h3>NATO Commercial and Government Entity Code</h3>
+    <p>CAGE: CNLJ5</p>
+    <h3>Verantwortlich f&uuml;r den Inhalt nach &sect; 55 Abs. 2 RStV</h3>
+    <p>F. Hanna Campbell<br>
+    Edisonstra&szlig;e 63<br>
+    12459 Berlin</p>
+    <h3>Haftungsausschluss</h3>
+    <p>Die Inhalte dieser Website werden mit gr&ouml;&szlig;tm&ouml;glicher Sorgfalt erstellt. Mosae Zorg Industries UG &uuml;bernimmt jedoch keine Gew&auml;hr f&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t der bereitgestellten Inhalte. Die Nutzung der auf dieser Website verf&uuml;gbaren Inhalte erfolgt auf eigene Gefahr des Nutzers.</p>
+    <p>Die auf msq.mosaeQ.com bereitgestellten Daten und Analyseergebnisse dienen ausschlie&szlig;lich Forschungs- und Informationszwecken. Sie stellen keine medizinische Beratung, Diagnose oder Therapieempfehlung dar und ersetzen nicht die fachliche Beurteilung durch qualifizierte Wissenschaftler, &Auml;rzte oder Regulierungsbeh&ouml;rden.</p>
+    <h3>Urheberrecht</h3>
+    <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die patentgesch&uuml;tzte NEMP-Technologie (Non-Euclidean Molecular Partitioning) ist Eigentum der Mosae Zorg Industries UG.</p>
+  </div>
+</div>
+
+<!-- DATENSCHUTZ OVERLAY -->
+<div class="legal-overlay" id="privacy-overlay" onclick="if(event.target===this)closeLegal('privacy')">
+  <div class="legal-content">
+    <button class="close-btn" onclick="closeLegal('privacy')">&times;</button>
+    <h2>Datenschutzerkl&auml;rung</h2>
+    <h3>1. Verantwortlicher</h3>
+    <p>Mosae Zorg Industries UG (haftungsbeschr&auml;nkt)<br>
+    Edisonstra&szlig;e 63, 12459 Berlin<br>
+    E-Mail: partnerships@mosaeq.com<br>
+    Gesch&auml;ftsf&uuml;hrerin: F. Hanna Campbell</p>
+    <h3>2. Erhebung und Verarbeitung personenbezogener Daten</h3>
+    <p>Bei der Nutzung von msq.mosaeQ.com werden folgende Daten verarbeitet:</p>
+    <p><strong>Authentifizierung (Auth0):</strong> Bei der Anmeldung werden E-Mail-Adresse, Name und Profilbild &uuml;ber den Authentifizierungsdienst Auth0 (Auth0 Inc., USA) verarbeitet. Auth0 setzt f&uuml;r die Authentifizierung technisch notwendige Cookies. Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserf&uuml;llung).</p>
+    <p><strong>Hosting (Vercel):</strong> Diese Website wird &uuml;ber Vercel Inc. (USA) gehostet. Vercel verarbeitet dabei automatisch Server-Log-Daten (IP-Adresse, Browsertyp, Zeitpunkt des Zugriffs). Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse).</p>
+    <p><strong>Datenbankabfragen:</strong> Suchanfragen nach Wirkstoffnamen werden an &ouml;ffentliche Datenbanken (FDA FAERS, NLM DailyMed) weitergeleitet. Diese Anfragen enthalten keine personenbezogenen Daten.</p>
+    <h3>3. Cookies</h3>
+    <p>Diese Website verwendet ausschlie&szlig;lich technisch notwendige Cookies f&uuml;r die Authentifizierung (Auth0). Es werden keine Tracking-, Werbe- oder Analyse-Cookies verwendet.</p>
+    <h3>4. Daten&uuml;bermittlung in Drittl&auml;nder</h3>
+    <p>Durch die Nutzung von Auth0 (USA) und Vercel (USA) werden Daten in die Vereinigten Staaten &uuml;bermittelt. Dies erfolgt auf Grundlage des EU-U.S. Data Privacy Framework. Die Backend-Infrastruktur (Supabase, Hetzner) befindet sich in Frankfurt am Main, Deutschland.</p>
+    <h3>5. Ihre Rechte</h3>
+    <p>Sie haben das Recht auf Auskunft (&sect; 15 DSGVO), Berichtigung (&sect; 16 DSGVO), L&ouml;schung (&sect; 17 DSGVO), Einschr&auml;nkung der Verarbeitung (&sect; 18 DSGVO), Daten&uuml;bertragbarkeit (&sect; 20 DSGVO) und Widerspruch (&sect; 21 DSGVO). Kontaktieren Sie uns unter partnerships@mosaeq.com.</p>
+    <h3>6. Aufsichtsbeh&ouml;rde</h3>
+    <p>Berliner Beauftragte f&uuml;r Datenschutz und Informationsfreiheit<br>
+    Friedrichstr. 219, 10969 Berlin<br>
+    <a href="https://www.datenschutz-berlin.de" style="color:var(--red)" target="_blank">www.datenschutz-berlin.de</a></p>
+    <h3>7. Stand</h3>
+    <p>Diese Datenschutzerkl&auml;rung wurde zuletzt am 25. M&auml;rz 2026 aktualisiert.</p>
+  </div>
+</div>
 
 <!-- AUTH0 SDK -->
 <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
@@ -600,48 +479,36 @@ body {
 <script>
 const AUTH0_DOMAIN = 'dev-4rdwwq50s4w4021k.eu.auth0.com';
 const AUTH0_CLIENT_ID = 'R4upSiWvqkftnamvNvG2nhFtK4NnDBJV';
-const API_BASE = 'https://65.109.94.91:8000';
 
 let auth0Client = null;
 
+// ── AUTH ──
 async function initAuth() {
   auth0Client = await auth0.createAuth0Client({
     domain: AUTH0_DOMAIN,
     clientId: AUTH0_CLIENT_ID,
-    authorizationParams: {
-      redirect_uri: window.location.origin
-    }
+    authorizationParams: { redirect_uri: window.location.origin }
   });
-
-  // Handle redirect callback
   if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
     try {
       await auth0Client.handleRedirectCallback();
       window.history.replaceState({}, document.title, '/');
-    } catch (e) {
-      console.error('Auth callback error:', e);
-    }
+    } catch (e) { console.error('Auth callback error:', e); }
   }
-
   await updateUI();
 }
 
 async function updateUI() {
-  const isAuthenticated = await auth0Client.isAuthenticated();
-
-  if (isAuthenticated) {
+  const isAuth = await auth0Client.isAuthenticated();
+  if (isAuth) {
     const user = await auth0Client.getUser();
     document.getElementById('auth-anonymous').style.display = 'none';
     document.getElementById('auth-user').style.display = 'flex';
     document.getElementById('user-name').textContent = user.name || user.email;
     document.getElementById('user-avatar').src = user.picture || '';
-
-    // Beta timer
     const claims = await auth0Client.getIdTokenClaims();
     const betaDays = claims?.['https://msq.mosaeq.com/beta_days_remaining'];
     const betaExpired = claims?.['https://msq.mosaeq.com/beta_expired'];
-    const sendAlert = claims?.['https://msq.mosaeq.com/send_expiry_alert'];
-
     const banner = document.getElementById('beta-banner');
     if (betaDays !== undefined) {
       banner.style.display = 'block';
@@ -654,23 +521,6 @@ async function updateUI() {
         document.getElementById('beta-days').textContent = betaDays + ' days remaining';
       }
     }
-
-    // Send expiry alert to backend
-    if (sendAlert) {
-      try {
-        fetch(API_BASE + '/api/v1/concordance/beta-expiry-alert', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_email: user.email,
-            user_name: user.name || user.email,
-            days_remaining: betaDays || 0
-          })
-        });
-      } catch (e) {
-        console.log('Alert send failed:', e);
-      }
-    }
   } else {
     document.getElementById('auth-anonymous').style.display = 'block';
     document.getElementById('auth-user').style.display = 'none';
@@ -678,90 +528,93 @@ async function updateUI() {
   }
 }
 
-async function login() {
-  await auth0Client.loginWithRedirect();
-}
+async function login() { await auth0Client.loginWithRedirect(); }
+async function logout() { await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } }); }
 
-async function logout() {
-  await auth0Client.logout({
-    logoutParams: {
-      returnTo: window.location.origin
-    }
-  });
-}
-
-// Concordance search
+// ── SEARCH ──
 async function searchCompound() {
   const name = document.getElementById('search-input').value.trim();
   if (!name) return;
-
   const loading = document.getElementById('search-loading');
   const results = document.getElementById('results');
   loading.style.display = 'block';
   results.style.display = 'none';
+  
+  let faersCount = 0, dailymedCount = 0;
+  let faersOk = false, dailymedOk = false;
 
   try {
-    // Query FAERS
     const faersRes = await fetch(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:"${encodeURIComponent(name)}"&limit=1`);
-    const faersData = faersRes.ok ? await faersRes.json() : null;
-    const faersCount = faersData?.meta?.results?.total || 0;
+    if (faersRes.ok) { const d = await faersRes.json(); faersCount = d?.meta?.results?.total || 0; faersOk = true; }
+  } catch(e) { console.log('FAERS error:', e); }
 
-    // Query DailyMed
-    const dailymedRes = await fetch(`https://dailymed.nlm.nih.gov/dailymed/services/v2/spls.json?drug_name=${encodeURIComponent(name)}&page_size=1`);
-    const dailymedData = dailymedRes.ok ? await dailymedRes.json() : null;
-    const dailymedCount = dailymedData?.metadata?.total_elements || 0;
+  try {
+    const dmRes = await fetch(`https://dailymed.nlm.nih.gov/dailymed/services/v2/spls.json?drug_name=${encodeURIComponent(name)}&page_size=1`);
+    if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = d?.metadata?.total_elements || 0; dailymedOk = true; }
+  } catch(e) { console.log('DailyMed error:', e); }
 
-    loading.style.display = 'none';
-    results.style.display = 'block';
+  loading.style.display = 'none';
+  results.style.display = 'block';
 
-    const faersClass = faersCount > 0 ? 'found' : 'null';
-    const dailymedClass = dailymedCount > 0 ? 'found' : 'null';
-
-    results.innerHTML = `
-      <div class="result-card">
-        <h3>${name.charAt(0).toUpperCase() + name.slice(1)}</h3>
-        <div class="result-row">
-          <span class="result-label">FDA FAERS</span>
-          <span class="result-value ${faersClass}">${faersCount > 0 ? faersCount.toLocaleString() + ' adverse event reports' : '0 — null'}</span>
-        </div>
-        <div class="result-row">
-          <span class="result-label">NLM DailyMed</span>
-          <span class="result-value ${dailymedClass}">${dailymedCount > 0 ? 'Label found (' + dailymedCount + ' SPL' + (dailymedCount > 1 ? 's' : '') + ')' : 'Not found'}</span>
-        </div>
-        <div class="result-row">
-          <span class="result-label">DrugMatrix</span>
-          <span class="result-value" style="color: var(--chrome-light);">Static dataset — query via API</span>
-        </div>
-        <div class="result-row">
-          <span class="result-label">TG-GATEs</span>
-          <span class="result-value" style="color: var(--chrome-light);">Static dataset — query via API</span>
-        </div>
-        <div class="result-row">
-          <span class="result-label">NEMP Forecast</span>
-          <span class="result-value">${faersCount > 0 ? 'Concordance available' : 'Forecast available; concordance pending'}</span>
-        </div>
-        <div class="result-locked">
-          Run a full preclinical forecast on <a href="https://mosaeq.com" target="_blank">mosaeQ.com</a> 
-          to unlock NEMP predictions, θ coordinates, and geodesic concordance scoring.
-        </div>
-      </div>
-    `;
-
-  } catch (e) {
-    loading.style.display = 'none';
-    results.style.display = 'block';
-    results.innerHTML = `
-      <div class="result-card">
-        <h3>Search Error</h3>
-        <p style="color: var(--chrome); font-size: 0.9rem;">Unable to query databases. Please try again or contact 
-        <a href="mailto:partnerships@mosaeq.com" style="color: var(--red);">partnerships@mosaeq.com</a></p>
-      </div>
-    `;
+  if (!faersOk && !dailymedOk) {
+    results.innerHTML = `<div class="result-card"><h3>Search Error</h3><p style="color:var(--chrome);font-size:0.9rem;">Unable to query databases. This may be a browser security restriction. Please try again or contact <a href="mailto:partnerships@mosaeq.com" style="color:var(--red);">partnerships@mosaeq.com</a></p></div>`;
+    return;
   }
+
+  results.innerHTML = `
+    <div class="result-card">
+      <h3>${name.charAt(0).toUpperCase() + name.slice(1)}</h3>
+      <div class="result-row">
+        <span class="result-label">FDA FAERS</span>
+        <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersOk ? (faersCount > 0 ? faersCount.toLocaleString() + ' adverse event reports' : '0 — null') : 'Query failed'}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">NLM DailyMed</span>
+        <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedOk ? (dailymedCount > 0 ? 'Label found (' + dailymedCount + ' SPL' + (dailymedCount > 1 ? 's' : '') + ')' : 'Not found') : 'Query failed'}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">DrugMatrix</span>
+        <span class="result-value" style="color:var(--chrome-light);">Static dataset — query via API</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">TG-GATEs</span>
+        <span class="result-value" style="color:var(--chrome-light);">Static dataset — query via API</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">NEMP Forecast</span>
+        <span class="result-value">${faersCount > 0 ? 'Concordance available' : 'Forecast available; concordance pending'}</span>
+      </div>
+      <div class="result-locked">
+        Run a full preclinical forecast on <a href="https://mosaeq.com" target="_blank">mosaeQ.com</a> 
+        to unlock NEMP predictions, θ coordinates, and geodesic concordance scoring.
+      </div>
+    </div>
+  `;
 }
 
-// Init
-document.addEventListener('DOMContentLoaded', initAuth);
+// ── LEGAL OVERLAYS ──
+function showLegal(type) {
+  document.getElementById(type + '-overlay').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeLegal(type) {
+  document.getElementById(type + '-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── COOKIES ──
+function acceptCookies() {
+  localStorage.setItem('msq_cookies_accepted', 'true');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  initAuth();
+  if (!localStorage.getItem('msq_cookies_accepted')) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+});
 </script>
 
 </body>
