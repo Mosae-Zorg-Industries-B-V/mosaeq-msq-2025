@@ -84,6 +84,15 @@ body {
 .hero .subtitle { font-size: 1.05rem; color: var(--chrome); max-width: 640px; margin: 0 auto 2rem; line-height: 1.7; }
 .hero .doi { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--chrome-light); margin-bottom: 2rem; }
 .hero .doi a { color: var(--chrome); text-decoration: underline; }
+.cliff-cta { margin-top: 2rem; }
+.btn-cliff {
+  display: inline-block; background: var(--red); color: var(--white);
+  padding: 16px 36px; border-radius: 10px; font-size: 1.15rem; font-weight: 700;
+  text-decoration: none; letter-spacing: 0.3px; transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35);
+}
+.btn-cliff:hover { background: var(--red-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(229, 57, 53, 0.45); }
+.cliff-subtitle { font-size: 0.85rem; color: var(--chrome); margin-top: 0.75rem; font-style: italic; }
 
 /* ── BETA BANNER ── */
 .beta-banner { display: none; background: var(--navy); color: var(--white); padding: 12px 2rem; text-align: center; font-size: 0.85rem; font-weight: 500; }
@@ -278,6 +287,10 @@ body {
   <div class="doi">
     Preprint: <a href="https://doi.org/10.5281/zenodo.19219725" target="_blank">doi:10.5281/zenodo.19219725</a>
     &nbsp;·&nbsp; Campbell, F.H. (2026)
+  </div>
+  <div class="cliff-cta">
+    <a href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22carbenoxolone%22&limit=1" target="_blank" rel="noopener noreferrer" class="btn-cliff">Verify the Digital Cliff</a>
+    <p class="cliff-subtitle">Click to see the FDA API return NOT_FOUND for a clinically validated 1957 drug.</p>
   </div>
 </section>
 
