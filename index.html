@@ -84,7 +84,36 @@ body {
 .hero .subtitle { font-size: 1.05rem; color: var(--chrome); max-width: 640px; margin: 0 auto 2rem; line-height: 1.7; }
 .hero .doi { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--chrome-light); margin-bottom: 2rem; }
 .hero .doi a { color: var(--chrome); text-decoration: underline; }
-.cliff-cta { margin-top: 2rem; }
+/* ── EXAMPLE PILLS ── */
+.pill-row { margin-top: 1.25rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.pill-row.left { justify-content: flex-start; }
+.pill-label { font-size: 0.82rem; color: var(--chrome); font-weight: 500; }
+.pill {
+  display: inline-block; padding: 6px 14px; background: var(--off-white); border: 1px solid var(--border);
+  border-radius: 20px; font-size: 0.82rem; font-family: 'DM Mono', monospace; color: var(--navy);
+  text-decoration: none; cursor: pointer; transition: all 0.2s; font-weight: 500;
+}
+.pill:hover { background: #991b1b; color: var(--white); border-color: #991b1b; }
+
+/* ── CONCORDANCE EXPLAINER ── */
+.explainer-box {
+  background: #F1F5F9; border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.5rem; margin-bottom: 1.5rem; text-align: left;
+}
+.explainer-box h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
+.explainer-box p { font-size: 0.88rem; color: var(--chrome); line-height: 1.7; margin-bottom: 0; }
+.explainer-listen { margin-top: 0.75rem; font-size: 0.85rem; color: var(--chrome); }
+.explainer-listen a { color: var(--red); font-weight: 600; text-decoration: none; }
+.explainer-listen a:hover { text-decoration: underline; }
+
+/* ── SECTION DIVIDER ── */
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+/* ── DIGITAL CLIFF ── */
+.cliff-section { padding: 3rem 2rem; max-width: 800px; margin: 0 auto; text-align: center; }
+.cliff-section h2 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: var(--navy); }
+.cliff-section .cliff-text { font-size: 0.9rem; color: var(--chrome); line-height: 1.7; max-width: 640px; margin: 0 auto 1.5rem; text-align: left; }
+.cliff-cta { margin-top: 1.5rem; }
 .btn-cliff {
   display: inline-block; background: var(--red); color: var(--white);
   padding: 16px 36px; border-radius: 10px; font-size: 1.15rem; font-weight: 700;
@@ -288,25 +317,75 @@ body {
     Preprint: <a href="https://doi.org/10.5281/zenodo.19219725" target="_blank">doi:10.5281/zenodo.19219725</a>
     &nbsp;·&nbsp; Campbell, F.H. (2026)
   </div>
-  <div class="cliff-cta">
-    <a href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22carbenoxolone%22&limit=1" target="_blank" rel="noopener noreferrer" class="btn-cliff">Verify the Digital Cliff</a>
-    <p class="cliff-subtitle">Click to see the FDA API return NOT_FOUND for a clinically validated 1957 drug.</p>
-  </div>
 </section>
 
 <!-- SEARCH -->
 <section class="search-section">
   <h2>Concordance Search</h2>
   <p>Enter a compound name to query concordance data across all four public safety databases.</p>
+  <div class="explainer-box">
+    <h3>What is concordance?</h3>
+    <p>Concordance means: does our quantum prediction match what actually happened to real patients? We compute drug safety from molecular structure alone, then check it against four independent databases of real-world clinical outcomes. When mosaeQ predicts cardiac risk and FAERS confirms cardiac adverse events &mdash; that&rsquo;s concordance.</p>
+    <div class="explainer-listen">
+      &#127911; Hear it explained in 5 minutes: <a href="https://mosaeq.com/podcasts/mosaeq-nomenclature-blindness-drug-safety.mp4" target="_blank" rel="noopener noreferrer">&#9654; Listen: The Aspirin Test (Podcast)</a>
+    </div>
+  </div>
   <div class="search-box">
     <input type="text" id="search-input" placeholder="e.g., risperidone, venetoclax, masitinib..." 
            onkeydown="if(event.key==='Enter') searchCompound()">
     <button onclick="searchCompound()">Search</button>
   </div>
+  <div class="pill-row">
+    <span class="pill-label">Try these:</span>
+    <span class="pill" onclick="searchPill('risperidone')">risperidone</span>
+    <span class="pill" onclick="searchPill('venetoclax')">venetoclax</span>
+    <span class="pill" onclick="searchPill('tofacitinib')">tofacitinib</span>
+    <span class="pill" onclick="searchPill('mefloquine')">mefloquine</span>
+    <span class="pill" onclick="searchPill('imatinib')">imatinib</span>
+    <span class="pill" onclick="searchPill('aspirin')">aspirin</span>
+    <span class="pill" onclick="searchPill('metformin')">metformin</span>
+  </div>
   <div class="search-loading" id="search-loading">
     <span class="spinner"></span> Querying concordance databases...
   </div>
   <div class="results" id="results"></div>
+</section>
+
+<!-- DIVIDER -->
+<hr class="section-divider">
+
+<!-- THE DIGITAL CLIFF -->
+<section class="cliff-section">
+  <h2>The Digital Cliff</h2>
+  <p class="cliff-text">
+    In 2026, msq.mosaeQ.com discovered that the FDA&rsquo;s openFDA API returns NOT_FOUND for clinically validated drugs that were never marketed in the United States &mdash; erasing decades of European clinical evidence from automated safety queries.
+  </p>
+  <p class="cliff-text">
+    The FAERS Product Dictionary is built from Structured Product Labeling for &ldquo;all marketed US drugs&rdquo; (Potter et al., <em>Clinical Pharmacology &amp; Therapeutics</em>, 2025; PMC12393772).
+  </p>
+  <p class="cliff-text">
+    Any drug never US-marketed is invisible. We call this the Digital Cliff.
+  </p>
+  <div class="cliff-cta">
+    <a href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22carbenoxolone%22&limit=1" target="_blank" rel="noopener noreferrer" class="btn-cliff">Verify the Digital Cliff</a>
+    <p class="cliff-subtitle">Click to see the FDA API return NOT_FOUND for a clinically validated 1957 drug.</p>
+  </div>
+  <div class="pill-row" style="margin-top:1.5rem;">
+    <span class="pill-label">Try these drugs that fall off the cliff:</span>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22carbenoxolone%22&limit=1" target="_blank" rel="noopener noreferrer">carbenoxolone</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22flufenamic%20acid%22&limit=1" target="_blank" rel="noopener noreferrer">flufenamic acid</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22meclofenamic%20acid%22&limit=1" target="_blank" rel="noopener noreferrer">meclofenamic acid</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22niflumic%20acid%22&limit=1" target="_blank" rel="noopener noreferrer">niflumic acid</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22pipemidic%20acid%22&limit=1" target="_blank" rel="noopener noreferrer">pipemidic acid</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22metamizole%22&limit=1" target="_blank" rel="noopener noreferrer">metamizole</a>
+  </div>
+  <div class="pill-row" style="margin-top:1rem;">
+    <span class="pill-label">Now try these drugs that DO appear:</span>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22aspirin%22&limit=1" target="_blank" rel="noopener noreferrer">aspirin</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22ibuprofen%22&limit=1" target="_blank" rel="noopener noreferrer">ibuprofen</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22metformin%22&limit=1" target="_blank" rel="noopener noreferrer">metformin</a>
+    <a class="pill" href="https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:%22risperidone%22&limit=1" target="_blank" rel="noopener noreferrer">risperidone</a>
+  </div>
 </section>
 
 <!-- TISSUE TRAPS -->
@@ -627,6 +706,12 @@ function showLegal(type) {
 function closeLegal(type) {
   document.getElementById(type + '-overlay').style.display = 'none';
   document.body.style.overflow = '';
+}
+
+// ── SEARCH PILLS ──
+function searchPill(name) {
+  document.getElementById('search-input').value = name;
+  searchCompound();
 }
 
 // ── COOKIES ──
