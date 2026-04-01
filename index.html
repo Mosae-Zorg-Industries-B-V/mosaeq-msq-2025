@@ -352,6 +352,16 @@ body {
 .opioid-panel .op-note { font-size: 0.8rem; color: #92400E; line-height: 1.6; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(251,191,36,0.3); }
 .opioid-panel .op-error { font-size: 0.85rem; color: #92400E; }
 
+/* ── SOURCE BANNER ── */
+.source-banner {
+  margin-bottom: 0.75rem; padding: 10px 14px;
+  background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
+  font-size: 0.82rem; color: #1E40AF; display: flex; align-items: center; gap: 8px;
+}
+.source-banner a { color: #1E40AF; font-weight: 600; text-decoration: none; }
+.source-banner a:hover { text-decoration: underline; }
+.prop-source { font-size: 0.68rem; color: var(--chrome-light); font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 2px; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .hero h1 { font-size: 1.8rem; }
@@ -406,9 +416,9 @@ body {
   <img src="_mosaeQ-logo-red.png" alt="mosaeQ logo" class="hero-logo">
   <h1>Translational Preclinical Safety <span class="accent">Concordance</span></h1>
   <p class="subtitle">
-    A quantum ontology encoding molecular entities as quaternion coordinates on the unit hypersphere S³.
-    Cross-referencing NEMP-predicted toxicological profiles against FDA FAERS, NTP DrugMatrix,
-    Open TG-GATEs, and NLM DailyMed.
+    Translational concordance auditor. Queries four public pharmacovigilance databases and classifies
+    compounds into tissue trap zones on S&sup3;.
+    Properties from PubChem. Quantum-computed properties available via <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a>.
   </p>
   <div class="doi">
     Preprint: <a href="https://doi.org/10.5281/zenodo.19219725" target="_blank">doi:10.5281/zenodo.19219725</a>
@@ -449,7 +459,7 @@ body {
 <!-- §3 TRAP ZONE REFERENCE -->
 <section class="tissue-section">
   <h2>Tissue Trap Zones on S³</h2>
-  <p class="intro">The NEMP encoding maps LogP (θ) and TPSA (φ) directly into quaternion coordinates. Natural pharmacological zones emerge on the hypersphere, identifying where drugs accumulate before clinical exposure.</p>
+  <p class="intro">LogP and TPSA are mapped to quaternion coordinates (θ, φ) on S³. On msq, these values are sourced from PubChem. For NEMP quantum-computed values from SMILES alone, use <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a>. Natural pharmacological zones emerge on the hypersphere, identifying where drugs accumulate before clinical exposure.</p>
   <div class="zone-grid">
     <div class="zone-card" data-zone="brain">
       <div class="zone-name">Brain Trap</div>
@@ -606,7 +616,7 @@ body {
   <h2>FAQ</h2>
   <div class="faq-item" onclick="toggleFaq(this)">
     <div class="faq-q">What is concordance? <span class="faq-arrow">&#9660;</span></div>
-    <div class="faq-a">Concordance means: does our quantum prediction match what actually happened to real patients? We compute drug safety from molecular structure alone, then check it against four independent databases of real-world clinical outcomes. When mosaeQ predicts cardiac risk and FAERS confirms cardiac adverse events &mdash; that&rsquo;s concordance.<br><br>&#127911; Hear it explained in 5 minutes: <a href="https://mosaeq.com/podcasts/mosaeq-nomenclature-blindness-drug-safety.mp4" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:600;text-decoration:none;">&#9654; Listen: The Aspirin Test (Podcast)</a></div>
+    <div class="faq-a">Concordance means: does the predicted safety profile match real-world patient outcomes? msq queries four public databases. For quantum-computed predictions from molecular structure alone, run the compound on <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a>. When mosaeQ predicts cardiac risk and FAERS confirms cardiac adverse events &mdash; that&rsquo;s concordance.<br><br>&#127911; Hear it explained in 5 minutes: <a href="https://mosaeq.com/podcasts/mosaeq-nomenclature-blindness-drug-safety.mp4" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:600;text-decoration:none;">&#9654; Listen: The Aspirin Test (Podcast)</a></div>
   </div>
 </section>
 
@@ -1069,13 +1079,16 @@ async function searchCompound() {
     }
   }
 
+  const srcLabel = '<span class="prop-source">(PubChem)</span>';
+
   results.innerHTML = `
     <div class="result-card">
+      ${compoundProps ? '<div class="source-banner">\u2139\ufe0f Quick Lookup &mdash; properties from PubChem. For NEMP quantum computation from SMILES: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>' : ''}
       <h3>${displayName}</h3>
       ${compoundProps ? `<div class="result-props">
-        <div class="prop"><span class="prop-label">LogP:</span> <span class="prop-value">${compoundProps.logP.toFixed(2)}</span></div>
-        <div class="prop"><span class="prop-label">TPSA:</span> <span class="prop-value">${compoundProps.tpsa.toFixed(1)} \u00c5\u00b2</span></div>
-        ${compoundProps.pka !== null ? '<div class="prop"><span class="prop-label">pKa:</span> <span class="prop-value">' + compoundProps.pka.toFixed(1) + '</span></div>' : ''}
+        <div class="prop"><span class="prop-label">LogP:</span> <span class="prop-value">${compoundProps.logP.toFixed(2)}</span> ${srcLabel}</div>
+        <div class="prop"><span class="prop-label">TPSA:</span> <span class="prop-value">${compoundProps.tpsa.toFixed(1)} \u00c5\u00b2</span> ${srcLabel}</div>
+        ${compoundProps.pka !== null ? '<div class="prop"><span class="prop-label">pKa:</span> <span class="prop-value">' + compoundProps.pka.toFixed(1) + '</span> ' + srcLabel + '</div>' : ''}
         <div class="prop"><span class="prop-label">S\u00b3:</span> <span class="prop-value">(\u03b8=${coords ? coords.theta : '-'}, \u03c6=${coords ? coords.phi : '-'})</span></div>
       </div>` : ''}
       <div class="result-columns">
