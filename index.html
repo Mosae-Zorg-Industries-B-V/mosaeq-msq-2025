@@ -334,6 +334,24 @@ body {
 .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ── OPIOID / CNS PANEL ── */
+.screening-options { display: flex; gap: 1.25rem; margin-top: 0.75rem; flex-wrap: wrap; }
+.screening-options label { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: var(--chrome); cursor: pointer; font-weight: 500; }
+.screening-options input[type="checkbox"] { accent-color: var(--red); width: 16px; height: 16px; cursor: pointer; }
+.opioid-panel { margin-top: 1rem; border: 1px solid #FDE68A; border-radius: 10px; background: #FFFBEB; padding: 1.25rem; }
+.opioid-panel-header { font-size: 0.92rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+.opioid-panel-header .badge { font-size: 0.7rem; background: var(--warning); color: var(--white); padding: 2px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.opioid-panel .op-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.opioid-panel .op-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(251,191,36,0.2); font-size: 0.85rem; }
+.opioid-panel .op-row:last-child { border-bottom: none; }
+.opioid-panel .op-label { color: var(--chrome); font-weight: 500; }
+.opioid-panel .op-value { font-family: 'DM Mono', monospace; font-weight: 600; }
+.opioid-panel .op-value.risk-high { color: var(--red); }
+.opioid-panel .op-value.risk-low { color: var(--success); }
+.opioid-panel .op-value.risk-moderate { color: var(--warning); }
+.opioid-panel .op-note { font-size: 0.8rem; color: #92400E; line-height: 1.6; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(251,191,36,0.3); }
+.opioid-panel .op-error { font-size: 0.85rem; color: #92400E; }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .hero h1 { font-size: 1.8rem; }
@@ -343,6 +361,8 @@ body {
   .cookie-banner { flex-direction: column; text-align: center; }
   .result-columns { grid-template-columns: 1fr; }
   .result-props { flex-direction: column; gap: 0.5rem; }
+  .opioid-panel .op-grid { grid-template-columns: 1fr; }
+  .screening-options { flex-direction: column; gap: 0.5rem; }
 }
 </style>
 </head>
@@ -414,6 +434,10 @@ body {
     <span class="pill" onclick="searchPill('imatinib')">imatinib</span>
     <span class="pill" onclick="searchPill('aspirin')">aspirin</span>
     <span class="pill" onclick="searchPill('metformin')">metformin</span>
+  </div>
+  <div class="screening-options">
+    <label><input type="checkbox" id="chk-herg"> hERG channel screening</label>
+    <label><input type="checkbox" id="chk-cardiotox"> Cardiotoxicity panel</label>
   </div>
   <div class="search-loading" id="search-loading">
     <span class="spinner"></span> Querying concordance databases...
@@ -927,6 +951,10 @@ async function searchCompound() {
   let dailymedCount = 0;
   let compoundProps = getCompoundProperties(name);
 
+  const hergChecked = document.getElementById('chk-herg').checked;
+  const cardiotoxChecked = document.getElementById('chk-cardiotox').checked;
+  let opioidPanelData = null;
+
   await Promise.allSettled([
     (async () => {
       try {
@@ -954,12 +982,15 @@ async function searchCompound() {
 
   let trapHTML = '';
   let concordanceHTML = '';
+  let opioidPanelHTML = '';
   let coords = null;
 
   if (compoundProps && compoundProps.logP !== null && compoundProps.tpsa !== null) {
     const classification = classifyTrapZone(compoundProps.logP, compoundProps.tpsa, compoundProps.pka);
     coords = computeS3Coords(compoundProps.logP, compoundProps.tpsa);
     highlightZoneCards(classification, displayName, coords);
+
+    const bbbPenetration = classification.zones.includes('brain');
 
     let zoneLine = '';
     if (classification.primary !== 'intermediate') {
@@ -969,6 +1000,25 @@ async function searchCompound() {
       }
     } else {
       zoneLine = 'Intermediate Zone (nearest: ' + classification.zones.map(z => ZONE_NAMES[z]).join(', ') + ')';
+    }
+
+    // Opioid & CNS Safety Panel: call when BBB=true OR hERG/cardiotox checked
+    if (bbbPenetration || hergChecked || cardiotoxChecked) {
+      try {
+        const opParams = new URLSearchParams({
+          compound: name,
+          logP: compoundProps.logP,
+          tpsa: compoundProps.tpsa,
+          bbb: bbbPenetration,
+          ...(compoundProps.pka !== null && { pka: compoundProps.pka }),
+          ...(hergChecked && { herg: true }),
+          ...(cardiotoxChecked && { cardiotox: true })
+        });
+        const opRes = await fetch(`https://65.109.94.91:8000/api/v1/opioid-panel?${opParams}`, { mode: 'cors' });
+        if (opRes.ok) { opioidPanelData = await opRes.json(); }
+      } catch(e) { console.log('Opioid panel error:', e); }
+
+      opioidPanelHTML = buildOpioidPanelHTML(opioidPanelData, displayName, bbbPenetration, hergChecked, cardiotoxChecked);
     }
 
     const riskZone = classification.primary !== 'intermediate' ? classification.primary : classification.zones[0];
@@ -1003,6 +1053,20 @@ async function searchCompound() {
         Run this compound on <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a> to compute trap zone classification from SMILES structure.
       </div>
     `;
+    // Still call opioid panel if checkboxes are selected
+    if (hergChecked || cardiotoxChecked) {
+      try {
+        const opParams = new URLSearchParams({
+          compound: name,
+          ...(hergChecked && { herg: true }),
+          ...(cardiotoxChecked && { cardiotox: true })
+        });
+        const opRes = await fetch(`https://65.109.94.91:8000/api/v1/opioid-panel?${opParams}`, { mode: 'cors' });
+        if (opRes.ok) { opioidPanelData = await opRes.json(); }
+      } catch(e) { console.log('Opioid panel error:', e); }
+
+      opioidPanelHTML = buildOpioidPanelHTML(opioidPanelData, displayName, false, hergChecked, cardiotoxChecked);
+    }
   }
 
   results.innerHTML = `
@@ -1040,9 +1104,67 @@ async function searchCompound() {
         </div>
       </div>
       ${concordanceHTML}
+      ${opioidPanelHTML}
       <div class="result-locked" style="margin-top:1rem;">
         <a href="https://mosaeq.com" target="_blank" style="display:inline-block;background:var(--red);color:var(--white);padding:10px 24px;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;">Run Full Preclinical Forecast on mosaeQ.com</a>
       </div>
+    </div>
+  `;
+}
+
+// ── OPIOID PANEL BUILDER ──
+function buildOpioidPanelHTML(data, displayName, bbb, herg, cardiotox) {
+  const triggers = [];
+  if (bbb) triggers.push('BBB penetration');
+  if (herg) triggers.push('hERG screening');
+  if (cardiotox) triggers.push('cardiotoxicity panel');
+
+  let content = '';
+  if (data) {
+    const rows = [];
+    if (data.mu_opioid_risk !== undefined) rows.push(['μ-Opioid receptor risk', data.mu_opioid_risk]);
+    if (data.kappa_opioid_risk !== undefined) rows.push(['κ-Opioid receptor risk', data.kappa_opioid_risk]);
+    if (data.delta_opioid_risk !== undefined) rows.push(['δ-Opioid receptor risk', data.delta_opioid_risk]);
+    if (data.cns_depression_risk !== undefined) rows.push(['CNS depression risk', data.cns_depression_risk]);
+    if (data.respiratory_depression !== undefined) rows.push(['Respiratory depression', data.respiratory_depression]);
+    if (data.serotonin_syndrome !== undefined) rows.push(['Serotonin syndrome risk', data.serotonin_syndrome]);
+    if (data.herg_ic50 !== undefined) rows.push(['hERG IC₅₀', data.herg_ic50]);
+    if (data.qt_prolongation !== undefined) rows.push(['QT prolongation risk', data.qt_prolongation]);
+    if (data.cardiac_risk !== undefined) rows.push(['Cardiac risk score', data.cardiac_risk]);
+    if (data.abuse_potential !== undefined) rows.push(['Abuse potential', data.abuse_potential]);
+    if (data.naloxone_reversible !== undefined) rows.push(['Naloxone reversible', data.naloxone_reversible]);
+    // Fallback: render any keys not explicitly handled
+    const handled = new Set(['mu_opioid_risk','kappa_opioid_risk','delta_opioid_risk','cns_depression_risk','respiratory_depression','serotonin_syndrome','herg_ic50','qt_prolongation','cardiac_risk','abuse_potential','naloxone_reversible','compound','summary','note']);
+    for (const [k, v] of Object.entries(data)) {
+      if (!handled.has(k) && typeof v !== 'object') rows.push([k.replace(/_/g, ' '), v]);
+    }
+
+    if (rows.length > 0) {
+      content = '<div class="op-grid">' + rows.map(([label, value]) => {
+        let cls = 'op-value';
+        const vs = String(value).toLowerCase();
+        if (vs === 'high' || vs === 'yes' || vs === 'positive') cls += ' risk-high';
+        else if (vs === 'low' || vs === 'no' || vs === 'negative' || vs === 'none') cls += ' risk-low';
+        else if (vs === 'moderate' || vs === 'medium') cls += ' risk-moderate';
+        return `<div class="op-row"><span class="op-label">${label}</span><span class="${cls}">${value}</span></div>`;
+      }).join('') + '</div>';
+    }
+    if (data.summary) content += `<div class="op-note">${data.summary}</div>`;
+    if (data.note) content += `<div class="op-note">${data.note}</div>`;
+  } else {
+    content = '<div class="op-error">Opioid panel endpoint unavailable. Deploy <code>/api/v1/opioid-panel</code> on the concordance proxy to enable.</div>';
+  }
+
+  return `
+    <div class="opioid-panel">
+      <div class="opioid-panel-header">
+        Opioid &amp; CNS Safety Panel
+        <span class="badge">NEMP Quantum</span>
+      </div>
+      <div style="font-size:0.78rem;color:#92400E;margin-bottom:0.75rem;">
+        Triggered by: ${triggers.join(', ')} &mdash; computed from NEMP quantum properties for ${displayName}
+      </div>
+      ${content}
     </div>
   `;
 }
