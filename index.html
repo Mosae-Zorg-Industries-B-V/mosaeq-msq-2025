@@ -697,20 +697,74 @@ async function updateUI() {
 async function login() { await auth0Client.loginWithRedirect(); }
 async function logout() { await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } }); }
 
-// ── COMPOUND PROPERTIES ──
-const PKA_DB = {
-  'risperidone': 8.24, 'mefloquine': 9.46, 'imatinib': 8.07,
-  'chlorpromazine': 9.30, 'haloperidol': 8.66, 'amiodarone': 8.47,
-  'imipramine': 9.50, 'irinotecan': 8.81, 'metformin': 12.4,
-  'tofacitinib': 4.3, 'quetiapine': 7.06, 'olanzapine': 7.37,
-  'clozapine': 7.76, 'aripiprazole': 7.46, 'sertraline': 9.47,
-  'fluoxetine': 9.80, 'venlafaxine': 9.40, 'duloxetine': 9.70,
-  'tamoxifen': 8.87, 'propranolol': 9.42, 'metoprolol': 9.56,
-  'citalopram': 9.59, 'diphenhydramine': 8.87, 'hydroxychloroquine': 9.67,
-  'azithromycin': 8.74, 'erythromycin': 8.88, 'ciprofloxacin': 8.74,
-  'loperamide': 8.66, 'desipramine': 10.32, 'nortriptyline': 10.1,
-  'clomipramine': 9.20, 'doxepin': 8.96, 'promethazine': 9.05,
-  'thioridazine': 9.50, 'fluphenazine': 8.10, 'trifluoperazine': 8.10
+// ── COMPOUND PROPERTIES (LogP = XLogP3, TPSA = Å², pKa = basic) ──
+// Source: PubChem CID property tables + DrugBank pKa values
+const COMPOUND_DB = {
+  'risperidone':    { logP: 3.27, tpsa: 61.9,  pka: 8.24 },
+  'venetoclax':     { logP: 5.40, tpsa: 183.5, pka: null },
+  'tofacitinib':    { logP: 1.00, tpsa: 88.7,  pka: 4.3 },
+  'mefloquine':     { logP: 3.60, tpsa: 45.2,  pka: 9.46 },
+  'imatinib':       { logP: 3.50, tpsa: 86.3,  pka: 8.07 },
+  'aspirin':        { logP: 1.24, tpsa: 63.6,  pka: null },
+  'metformin':      { logP: -1.43, tpsa: 91.5, pka: 12.4 },
+  'chlorpromazine': { logP: 5.41, tpsa: 6.5,   pka: 9.30 },
+  'haloperidol':    { logP: 4.30, tpsa: 40.5,  pka: 8.66 },
+  'amiodarone':     { logP: 7.57, tpsa: 42.7,  pka: 8.47 },
+  'imipramine':     { logP: 4.80, tpsa: 6.5,   pka: 9.50 },
+  'irinotecan':     { logP: 3.20, tpsa: 112.5, pka: 8.81 },
+  'methotrexate':   { logP: -1.85, tpsa: 210.5, pka: null },
+  'fluconazole':    { logP: 0.50, tpsa: 81.7,  pka: null },
+  'quetiapine':     { logP: 2.81, tpsa: 73.6,  pka: 7.06 },
+  'olanzapine':     { logP: 3.00, tpsa: 30.9,  pka: 7.37 },
+  'clozapine':      { logP: 3.23, tpsa: 30.9,  pka: 7.76 },
+  'aripiprazole':   { logP: 4.97, tpsa: 44.8,  pka: 7.46 },
+  'sertraline':     { logP: 5.10, tpsa: 12.0,  pka: 9.47 },
+  'fluoxetine':     { logP: 4.05, tpsa: 21.3,  pka: 9.80 },
+  'venlafaxine':    { logP: 3.20, tpsa: 32.7,  pka: 9.40 },
+  'duloxetine':     { logP: 4.20, tpsa: 21.3,  pka: 9.70 },
+  'tamoxifen':      { logP: 6.30, tpsa: 12.5,  pka: 8.87 },
+  'propranolol':    { logP: 3.48, tpsa: 41.5,  pka: 9.42 },
+  'metoprolol':     { logP: 1.88, tpsa: 50.7,  pka: 9.56 },
+  'citalopram':     { logP: 3.76, tpsa: 36.3,  pka: 9.59 },
+  'diphenhydramine':{ logP: 3.27, tpsa: 12.5,  pka: 8.87 },
+  'hydroxychloroquine':{ logP: 3.58, tpsa: 48.4, pka: 9.67 },
+  'azithromycin':   { logP: 4.02, tpsa: 180.1, pka: 8.74 },
+  'erythromycin':   { logP: 3.06, tpsa: 193.9, pka: 8.88 },
+  'ciprofloxacin':  { logP: 0.28, tpsa: 74.6,  pka: 8.74 },
+  'loperamide':     { logP: 5.15, tpsa: 43.8,  pka: 8.66 },
+  'desipramine':    { logP: 4.90, tpsa: 15.3,  pka: 10.32 },
+  'nortriptyline':  { logP: 4.70, tpsa: 12.0,  pka: 10.1 },
+  'clomipramine':   { logP: 5.19, tpsa: 6.5,   pka: 9.20 },
+  'doxepin':        { logP: 4.29, tpsa: 12.5,  pka: 8.96 },
+  'promethazine':   { logP: 4.81, tpsa: 31.8,  pka: 9.05 },
+  'thioridazine':   { logP: 5.90, tpsa: 6.5,   pka: 9.50 },
+  'fluphenazine':   { logP: 4.36, tpsa: 6.5,   pka: 8.10 },
+  'trifluoperazine':{ logP: 5.03, tpsa: 35.0,  pka: 8.10 },
+  'carbamazepine':  { logP: 2.45, tpsa: 46.3,  pka: null },
+  'diazepam':       { logP: 2.82, tpsa: 32.7,  pka: null },
+  'warfarin':       { logP: 2.70, tpsa: 67.5,  pka: null },
+  'omeprazole':     { logP: 2.23, tpsa: 96.3,  pka: null },
+  'atorvastatin':   { logP: 6.36, tpsa: 111.8, pka: null },
+  'simvastatin':    { logP: 4.68, tpsa: 72.8,  pka: null },
+  'amlodipine':     { logP: 3.00, tpsa: 100.0, pka: 8.60 },
+  'losartan':       { logP: 4.01, tpsa: 92.5,  pka: null },
+  'lisinopril':     { logP: -0.86, tpsa: 132.0, pka: null },
+  'gabapentin':     { logP: -1.10, tpsa: 63.3, pka: null },
+  'pregabalin':     { logP: -1.35, tpsa: 63.3, pka: null },
+  'tramadol':       { logP: 2.51, tpsa: 32.7,  pka: 9.41 },
+  'morphine':       { logP: 0.89, tpsa: 52.9,  pka: 8.21 },
+  'fentanyl':       { logP: 4.05, tpsa: 23.6,  pka: 8.99 },
+  'oxycodone':      { logP: 0.70, tpsa: 59.0,  pka: 8.53 },
+  'codeine':        { logP: 1.39, tpsa: 41.9,  pka: 8.21 },
+  'diclofenac':     { logP: 4.51, tpsa: 49.3,  pka: null },
+  'naproxen':       { logP: 3.18, tpsa: 46.5,  pka: null },
+  'ibuprofen':      { logP: 3.97, tpsa: 37.3,  pka: null },
+  'celecoxib':      { logP: 3.53, tpsa: 86.4,  pka: null },
+  'doxorubicin':    { logP: 1.27, tpsa: 206.1, pka: 8.22 },
+  'paclitaxel':     { logP: 3.96, tpsa: 221.3, pka: null },
+  'cyclophosphamide':{ logP: 0.63, tpsa: 41.1, pka: null },
+  'masitinib':      { logP: 3.78, tpsa: 77.6,  pka: null },
+  'fluoronitrazene':{ logP: 3.82, tpsa: 38.4,  pka: null }
 };
 
 const ZONE_NAMES = {
@@ -738,21 +792,10 @@ const ZONE_FAERS_TERMS = {
   plasma: []
 };
 
-async function fetchCompoundProperties(name) {
-  const key = name.toLowerCase();
-  try {
-    const res = await fetch(
-      'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/'
-      + encodeURIComponent(name) + '/property/XLogP3,TPSA/JSON'
-    );
-    if (res.ok) {
-      const data = await res.json();
-      const props = data?.PropertyTable?.Properties?.[0];
-      if (props && props.XLogP3 !== undefined && props.TPSA !== undefined) {
-        return { logP: props.XLogP3, tpsa: props.TPSA, pka: PKA_DB[key] ?? null, source: 'PubChem' };
-      }
-    }
-  } catch (e) { console.log('PubChem error:', e); }
+function getCompoundProperties(name) {
+  const key = name.toLowerCase().trim();
+  const entry = COMPOUND_DB[key];
+  if (entry) return { logP: entry.logP, tpsa: entry.tpsa, pka: entry.pka };
   return null;
 }
 
@@ -846,9 +889,9 @@ async function searchCompound() {
 
   let faersCount = 0, faersReactions = [];
   let dailymedCount = 0;
-  let compoundProps = null;
+  let compoundProps = getCompoundProperties(name);
 
-  const [, , propsResult] = await Promise.allSettled([
+  await Promise.allSettled([
     (async () => {
       try {
         const faersRes = await fetch(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:"${encodeURIComponent(name)}"&limit=5`);
@@ -868,11 +911,8 @@ async function searchCompound() {
         const dmRes = await fetch(`https://65.109.94.91:8000/api/v1/concordance/sync/dailymed/${encodeURIComponent(name)}`, { mode: 'cors' });
         if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = (d?.warnings_found?.length || 0) + (d?.boxed_warnings_found?.length || 0); }
       } catch(e) { console.log('DailyMed proxy error:', e); dailymedCount = -1; }
-    })(),
-    fetchCompoundProperties(name)
+    })()
   ]);
-
-  compoundProps = propsResult.status === 'fulfilled' ? propsResult.value : null;
   loading.style.display = 'none';
   results.style.display = 'block';
 
