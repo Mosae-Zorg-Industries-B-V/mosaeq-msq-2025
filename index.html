@@ -173,6 +173,51 @@ body {
 .zone-card .zone-desc { font-size: 0.82rem; color: var(--chrome); line-height: 1.5; }
 .zone-card .zone-examples { font-size: 0.75rem; color: var(--chrome-light); margin-top: 6px; font-style: italic; }
 
+/* ── TRAP ZONE DYNAMIC ── */
+.zone-card.active {
+  border-color: #991b1b !important; border-left-width: 4px;
+  box-shadow: 0 0 16px rgba(153, 27, 27, 0.25);
+  transition: all 0.3s ease;
+}
+.zone-card.dimmed {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.zone-label {
+  font-family: 'DM Mono', monospace; font-size: 0.75rem;
+  color: #991b1b; font-weight: 600; margin-top: 8px;
+  padding: 4px 8px; background: rgba(153, 27, 27, 0.08);
+  border-radius: 4px; display: none;
+}
+.zone-card.active .zone-label { display: block; }
+.trap-risk-inline {
+  margin-top: 0.75rem; padding: 0.75rem 1rem;
+  background: #FEF2F2; border-left: 3px solid #991b1b; border-radius: 6px;
+  font-size: 0.85rem; color: #991b1b; line-height: 1.6;
+}
+.trap-risk-inline strong { color: #7F1D1D; }
+.trap-unavailable {
+  margin-top: 0.5rem; padding: 0.75rem 1rem;
+  background: var(--off-white); border-radius: 6px;
+  font-size: 0.82rem; color: var(--chrome); line-height: 1.5;
+}
+.trap-unavailable a { color: var(--red); font-weight: 600; text-decoration: none; }
+.trap-unavailable a:hover { text-decoration: underline; }
+.faers-concordance {
+  margin-top: 0.75rem; padding: 0.75rem 1rem;
+  background: #FFF7ED; border-left: 3px solid var(--warning); border-radius: 6px;
+  font-size: 0.82rem; color: #92400E; line-height: 1.5;
+}
+.faers-concordance strong { color: #78350F; }
+#trap-risk-summary {
+  margin-top: 1.25rem; padding: 1rem 1.25rem;
+  background: #FEF2F2; border: 1px solid #991b1b; border-radius: 8px;
+  font-size: 0.85rem; color: #991b1b; line-height: 1.6; font-weight: 500;
+  display: none;
+}
+#trap-risk-summary.visible { display: block; }
+#trap-risk-summary strong { color: #7F1D1D; }
+
 /* ── DATABASES ── */
 .databases { padding: 3rem 2rem; background: var(--off-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .databases-inner { max-width: 900px; margin: 0 auto; }
@@ -313,8 +358,8 @@ body {
   <img src="_mosaeQ-logo-red.png" alt="mosaeQ logo" class="hero-logo">
   <h1>Translational Preclinical Safety <span class="accent">Concordance</span></h1>
   <p class="subtitle">
-    A quantum ontology encoding molecular entities as quaternion coordinates on the unit hypersphere S³. 
-    Cross-referencing NEMP-predicted toxicological profiles against FDA FAERS, NTP DrugMatrix, 
+    A quantum ontology encoding molecular entities as quaternion coordinates on the unit hypersphere S³.
+    Cross-referencing NEMP-predicted toxicological profiles against FDA FAERS, NTP DrugMatrix,
     Open TG-GATEs, and NLM DailyMed.
   </p>
   <div class="doi">
@@ -335,7 +380,7 @@ body {
     </div>
   </div>
   <div class="search-box">
-    <input type="text" id="search-input" placeholder="e.g., risperidone, venetoclax, masitinib..." 
+    <input type="text" id="search-input" placeholder="e.g., risperidone, venetoclax, masitinib..."
            onkeydown="if(event.key==='Enter') searchCompound()">
     <button onclick="searchCompound()">Search</button>
   </div>
@@ -397,31 +442,36 @@ body {
   <h2>Tissue Trap Zones on S³</h2>
   <p class="intro">The NEMP encoding maps LogP (θ) and TPSA (φ) directly into quaternion coordinates. Natural pharmacological zones emerge on the hypersphere, identifying where drugs accumulate before clinical exposure.</p>
   <div class="zone-grid">
-    <div class="zone-card">
+    <div class="zone-card" data-zone="brain">
       <div class="zone-name">Brain Trap</div>
       <div class="zone-params">High θ · Low φ</div>
       <div class="zone-desc">BBB-penetrating compounds. High lipophilicity + low polar surface area enables CNS entry. Sedation, extrapyramidal effects.</div>
       <div class="zone-examples">e.g., chlorpromazine, haloperidol</div>
+      <div class="zone-label"></div>
     </div>
-    <div class="zone-card">
+    <div class="zone-card" data-zone="lysosomal">
       <div class="zone-name">Lysosomal Trap</div>
       <div class="zone-params">High θ · Basic pKa</div>
       <div class="zone-desc">Lysosomotropic accumulation. Ion trapping in acidic organelles drives liver, kidney, and lung concentration far above plasma levels.</div>
       <div class="zone-examples">e.g., amiodarone, imipramine</div>
+      <div class="zone-label"></div>
     </div>
-    <div class="zone-card">
+    <div class="zone-card" data-zone="gut">
       <div class="zone-name">Gut Trap</div>
       <div class="zone-params">High θ · Mid φ</div>
       <div class="zone-desc">GI mucosa sequestration. Structure-driven over-exposure causing nausea and emesis — the functional blind spot histopathology misses entirely.</div>
       <div class="zone-examples">e.g., irinotecan, metformin</div>
+      <div class="zone-label"></div>
     </div>
-    <div class="zone-card">
+    <div class="zone-card" data-zone="plasma">
       <div class="zone-name">Plasma-Retained</div>
       <div class="zone-params">Low θ · High φ</div>
       <div class="zone-desc">Hydrophilic compounds that remain in circulation. Low tissue penetration, predictable PK, lowest tissue-trap risk.</div>
       <div class="zone-examples">e.g., methotrexate, fluconazole</div>
+      <div class="zone-label"></div>
     </div>
   </div>
+  <div id="trap-risk-summary"></div>
 </section>
 
 <!-- DATABASES -->
@@ -512,6 +562,7 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
+  <p>Member of Johnson &amp; Johnson&rsquo;s External Innovation Network</p>
   <p>&copy; 2026 Mosae Zorg Industries UG (haftungsbeschr&auml;nkt), Berlin, Germany. Patent-protected technology. NATO CAGE: CNLJ5.</p>
   <div class="footer-links">
     <a href="mailto:partnerships@mosaeq.com">partnerships@mosaeq.com</a>
@@ -646,66 +697,278 @@ async function updateUI() {
 async function login() { await auth0Client.loginWithRedirect(); }
 async function logout() { await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } }); }
 
+// ── COMPOUND PROPERTIES ──
+const PKA_DB = {
+  'risperidone': 8.24, 'mefloquine': 9.46, 'imatinib': 8.07,
+  'chlorpromazine': 9.30, 'haloperidol': 8.66, 'amiodarone': 8.47,
+  'imipramine': 9.50, 'irinotecan': 8.81, 'metformin': 12.4,
+  'tofacitinib': 4.3, 'quetiapine': 7.06, 'olanzapine': 7.37,
+  'clozapine': 7.76, 'aripiprazole': 7.46, 'sertraline': 9.47,
+  'fluoxetine': 9.80, 'venlafaxine': 9.40, 'duloxetine': 9.70,
+  'tamoxifen': 8.87, 'propranolol': 9.42, 'metoprolol': 9.56,
+  'citalopram': 9.59, 'diphenhydramine': 8.87, 'hydroxychloroquine': 9.67,
+  'azithromycin': 8.74, 'erythromycin': 8.88, 'ciprofloxacin': 8.74,
+  'loperamide': 8.66, 'desipramine': 10.32, 'nortriptyline': 10.1,
+  'clomipramine': 9.20, 'doxepin': 8.96, 'promethazine': 9.05,
+  'thioridazine': 9.50, 'fluphenazine': 8.10, 'trifluoperazine': 8.10
+};
+
+const ZONE_NAMES = {
+  brain: 'Brain Trap', lysosomal: 'Lysosomal Trap',
+  gut: 'Gut Trap', plasma: 'Plasma-Retained'
+};
+
+const ZONE_RISKS = {
+  brain: 'CNS accumulation risk. Monitor for sedation, respiratory depression, neuropsychiatric effects.',
+  lysosomal: 'Tissue accumulation in liver, kidney, lung. Monitor for organ toxicity and phospholipidosis.',
+  gut: 'GI mucosa sequestration. Monitor for nausea, emesis, and GI erosion.',
+  plasma: 'Low tissue penetration. Predictable PK. Lowest tissue-trap risk.'
+};
+
+const ZONE_FAERS_TERMS = {
+  brain: ['somnolence', 'sedation', 'dizziness', 'respiratory depression', 'confusion',
+    'tremor', 'extrapyramidal', 'akathisia', 'dyskinesia', 'hallucination',
+    'lethargy', 'coma', 'seizure', 'ataxia', 'cognitive disorder'],
+  lysosomal: ['hepatotoxicity', 'liver injury', 'hepatic', 'renal', 'kidney',
+    'nephrotoxicity', 'pulmonary', 'lung', 'phospholipidosis', 'fibrosis',
+    'liver disorder', 'interstitial lung'],
+  gut: ['nausea', 'vomiting', 'emesis', 'diarrhoea', 'diarrhea', 'abdominal pain',
+    'gastrointestinal', 'gi haemorrhage', 'gi hemorrhage', 'colitis', 'stomatitis',
+    'dyspepsia', 'gastric erosion'],
+  plasma: []
+};
+
+async function fetchCompoundProperties(name) {
+  const key = name.toLowerCase();
+  try {
+    const res = await fetch(
+      'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/'
+      + encodeURIComponent(name) + '/property/XLogP3,TPSA/JSON'
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const props = data?.PropertyTable?.Properties?.[0];
+      if (props && props.XLogP3 !== undefined && props.TPSA !== undefined) {
+        return { logP: props.XLogP3, tpsa: props.TPSA, pka: PKA_DB[key] ?? null, source: 'PubChem' };
+      }
+    }
+  } catch (e) { console.log('PubChem error:', e); }
+  return null;
+}
+
+function classifyTrapZone(logP, tpsa, pka) {
+  const zones = [];
+  if (logP > 3.0 && tpsa < 70) zones.push('brain');
+  if (logP > 3.0 && pka !== null && pka > 7.0) zones.push('lysosomal');
+  if (logP > 3.0 && tpsa >= 70 && tpsa <= 120) zones.push('gut');
+  if (logP < 2.0 && tpsa > 100) zones.push('plasma');
+  if (zones.length >= 1) return { primary: zones[0], zones: zones, intermediate: zones.length > 1 };
+  const scores = [
+    { zone: 'brain', dist: Math.max(0, 3.0 - logP) + Math.max(0, tpsa - 70) },
+    { zone: 'lysosomal', dist: Math.max(0, 3.0 - logP) + (pka !== null ? Math.max(0, 7.0 - pka) : 100) },
+    { zone: 'gut', dist: Math.max(0, 3.0 - logP) + (tpsa < 70 ? 70 - tpsa : tpsa > 120 ? tpsa - 120 : 0) },
+    { zone: 'plasma', dist: Math.max(0, logP - 2.0) + Math.max(0, 100 - tpsa) }
+  ];
+  scores.sort((a, b) => a.dist - b.dist);
+  return { primary: 'intermediate', zones: [scores[0].zone, scores[1].zone], intermediate: true };
+}
+
+function computeS3Coords(logP, tpsa) {
+  const theta = Math.min(Math.max((logP + 5) / 15, 0), 1) * Math.PI;
+  const phi = Math.min(Math.max(tpsa / 250, 0), 1) * Math.PI;
+  return { theta: theta.toFixed(2), phi: phi.toFixed(2) };
+}
+
+function checkFAERSConcordance(zone, reactions) {
+  if (!reactions.length || zone === 'plasma') return null;
+  const terms = ZONE_FAERS_TERMS[zone] || [];
+  const matched = [];
+  for (const rxn of reactions) {
+    const lower = rxn.toLowerCase();
+    for (const term of terms) {
+      if (lower.includes(term)) { matched.push(rxn); break; }
+    }
+  }
+  if (matched.length === 0) return null;
+  return { zone: zone, matched: [...new Set(matched)].slice(0, 5), count: matched.length };
+}
+
+function highlightZoneCards(classification, compoundName, coords) {
+  const cards = document.querySelectorAll('.zone-card');
+  const riskEl = document.getElementById('trap-risk-summary');
+  cards.forEach(card => {
+    const z = card.getAttribute('data-zone');
+    const label = card.querySelector('.zone-label');
+    card.classList.remove('active', 'dimmed');
+    if (label) label.style.display = 'none';
+    if (classification.zones.includes(z)) {
+      card.classList.add('active');
+      if (label) {
+        label.textContent = compoundName + ' \u2192 ' + ZONE_NAMES[z] + ' (\u03b8=' + coords.theta + ', \u03c6=' + coords.phi + ')';
+        label.style.display = 'block';
+      }
+    } else {
+      card.classList.add('dimmed');
+    }
+  });
+  if (riskEl) {
+    if (classification.primary !== 'intermediate') {
+      riskEl.innerHTML = '<strong>' + compoundName + ': ' + ZONE_NAMES[classification.primary] + ' Zone</strong> \u2014 ' + ZONE_RISKS[classification.primary];
+    } else {
+      const z1 = ZONE_NAMES[classification.zones[0]];
+      const z2 = ZONE_NAMES[classification.zones[1]];
+      riskEl.innerHTML = '<strong>' + compoundName + ': Intermediate Zone</strong> \u2014 Between ' + z1 + ' and ' + z2 + '. ' + ZONE_RISKS[classification.zones[0]];
+    }
+    riskEl.classList.add('visible');
+  }
+}
+
+function resetZoneCards() {
+  document.querySelectorAll('.zone-card').forEach(card => {
+    card.classList.remove('active', 'dimmed');
+    const label = card.querySelector('.zone-label');
+    if (label) label.style.display = 'none';
+  });
+  const riskEl = document.getElementById('trap-risk-summary');
+  if (riskEl) { riskEl.classList.remove('visible'); riskEl.innerHTML = ''; }
+}
+
 // ── SEARCH ──
 async function searchCompound() {
   const name = document.getElementById('search-input').value.trim();
   if (!name) return;
+  const displayName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
   const loading = document.getElementById('search-loading');
   const results = document.getElementById('results');
   loading.style.display = 'block';
   results.style.display = 'none';
-  
-  let faersCount = 0, dailymedCount = 0;
-  let faersOk = false, dailymedOk = false;
+  resetZoneCards();
 
-  try {
-    const faersRes = await fetch(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:"${encodeURIComponent(name)}"&limit=1`);
-    if (faersRes.ok) { const d = await faersRes.json(); faersCount = d?.meta?.results?.total || 0; }
-    faersOk = true; // 404 = no data = valid null result
-  } catch(e) { console.log('FAERS error:', e); faersOk = true; faersCount = 0; }
+  let faersCount = 0, faersReactions = [];
+  let dailymedCount = 0;
+  let compoundProps = null;
 
-  // DailyMed blocks browser CORS — query via Hetzner proxy
-  try {
-    const dmRes = await fetch(`https://65.109.94.91:8000/api/v1/concordance/sync/dailymed/${encodeURIComponent(name)}`, { mode: 'cors' });
-    if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = (d?.warnings_found?.length || 0) + (d?.boxed_warnings_found?.length || 0); dailymedOk = true; }
-  } catch(e) {
-    console.log('DailyMed proxy error:', e);
-    dailymedOk = true; dailymedCount = -1; // -1 = query attempted but blocked
-  }
+  const [, , propsResult] = await Promise.allSettled([
+    (async () => {
+      try {
+        const faersRes = await fetch(`https://api.fda.gov/drug/event.json?search=patient.drug.openfda.generic_name:"${encodeURIComponent(name)}"&limit=5`);
+        if (faersRes.ok) {
+          const d = await faersRes.json();
+          faersCount = d?.meta?.results?.total || 0;
+          for (const rec of (d?.results || [])) {
+            for (const r of (rec?.patient?.reaction || [])) {
+              if (r.reactionmeddrapt) faersReactions.push(r.reactionmeddrapt);
+            }
+          }
+        }
+      } catch(e) { console.log('FAERS error:', e); }
+    })(),
+    (async () => {
+      try {
+        const dmRes = await fetch(`https://65.109.94.91:8000/api/v1/concordance/sync/dailymed/${encodeURIComponent(name)}`, { mode: 'cors' });
+        if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = (d?.warnings_found?.length || 0) + (d?.boxed_warnings_found?.length || 0); }
+      } catch(e) { console.log('DailyMed proxy error:', e); dailymedCount = -1; }
+    })(),
+    fetchCompoundProperties(name)
+  ]);
 
+  compoundProps = propsResult.status === 'fulfilled' ? propsResult.value : null;
   loading.style.display = 'none';
   results.style.display = 'block';
 
-  if (false) { // never show total error — always show partial results
-    return;
+  let trapHTML = '';
+  let concordanceHTML = '';
+
+  if (compoundProps && compoundProps.logP !== null && compoundProps.tpsa !== null) {
+    const classification = classifyTrapZone(compoundProps.logP, compoundProps.tpsa, compoundProps.pka);
+    const coords = computeS3Coords(compoundProps.logP, compoundProps.tpsa);
+    highlightZoneCards(classification, displayName, coords);
+
+    let zoneLine = '';
+    if (classification.primary !== 'intermediate') {
+      zoneLine = ZONE_NAMES[classification.primary] + ' Zone';
+      if (classification.intermediate) {
+        zoneLine += ' (also: ' + classification.zones.slice(1).map(z => ZONE_NAMES[z]).join(', ') + ')';
+      }
+    } else {
+      zoneLine = 'Intermediate Zone (nearest: ' + classification.zones.map(z => ZONE_NAMES[z]).join(', ') + ')';
+    }
+
+    const riskZone = classification.primary !== 'intermediate' ? classification.primary : classification.zones[0];
+    trapHTML = `
+      <div class="result-row">
+        <span class="result-label">LogP</span>
+        <span class="result-value">${compoundProps.logP.toFixed(2)}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">TPSA</span>
+        <span class="result-value">${compoundProps.tpsa.toFixed(1)} \u00c5\u00b2</span>
+      </div>
+      ${compoundProps.pka !== null ? '<div class="result-row"><span class="result-label">Basic pKa</span><span class="result-value">' + compoundProps.pka.toFixed(1) + '</span></div>' : ''}
+      <div class="result-row">
+        <span class="result-label">S\u00b3 Coordinates</span>
+        <span class="result-value">\u03b8=${coords.theta} \u00b7 \u03c6=${coords.phi}</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Tissue Trap Zone</span>
+        <span class="result-value" style="color:#991b1b;font-weight:700;">${zoneLine}</span>
+      </div>
+      <div class="trap-risk-inline">
+        <strong>${displayName}: ${zoneLine}</strong> \u2014 ${ZONE_RISKS[riskZone]}
+      </div>
+    `;
+
+    if (faersCount > 0 && faersReactions.length > 0) {
+      const concordance = checkFAERSConcordance(riskZone, faersReactions);
+      if (concordance) {
+        concordanceHTML = `
+          <div class="faers-concordance">
+            <strong>FAERS Concordance: ${ZONE_NAMES[concordance.zone]} signals confirmed</strong><br>
+            Matching adverse events: ${concordance.matched.join(', ')}
+          </div>
+        `;
+      }
+    }
+  } else {
+    trapHTML = `
+      <div class="result-row">
+        <span class="result-label">Tissue Trap Zone</span>
+        <span class="result-value" style="color:var(--chrome-light)">Properties not available</span>
+      </div>
+      <div class="trap-unavailable">
+        Run this compound on <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a> to compute trap zone classification from SMILES structure.
+      </div>
+    `;
   }
 
   results.innerHTML = `
     <div class="result-card">
-      <h3>${name.charAt(0).toUpperCase() + name.slice(1)}</h3>
-      <div class="result-row">
+      <h3>${displayName}</h3>
+      ${trapHTML}
+      <div class="result-row" style="margin-top:0.5rem;border-top:1px solid var(--border);padding-top:12px;">
         <span class="result-label">FDA FAERS</span>
-        <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersCount > 0 ? faersCount.toLocaleString() + ' adverse event reports' : '0 — null'}</span>
+        <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersCount > 0 ? faersCount.toLocaleString() + ' adverse event reports' : '0 \u2014 null'}</span>
       </div>
       <div class="result-row">
         <span class="result-label">NLM DailyMed</span>
-        <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedCount > 0 ? 'Label data found' : (dailymedCount === -1 ? 'Query via API' : 'Not found — null')}</span>
+        <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedCount > 0 ? 'Label data found' : (dailymedCount === -1 ? 'Query via API' : 'Not found \u2014 null')}</span>
       </div>
       <div class="result-row">
         <span class="result-label">DrugMatrix</span>
-        <span class="result-value" style="color:var(--chrome-light);">Static dataset — query via API</span>
+        <span class="result-value" style="color:var(--chrome-light);">Static dataset \u2014 query via API</span>
       </div>
       <div class="result-row">
         <span class="result-label">TG-GATEs</span>
-        <span class="result-value" style="color:var(--chrome-light);">Static dataset — query via API</span>
+        <span class="result-value" style="color:var(--chrome-light);">Static dataset \u2014 query via API</span>
       </div>
       <div class="result-row">
         <span class="result-label">NEMP Forecast</span>
         <span class="result-value">${faersCount > 0 ? 'Concordance available' : 'Forecast available; concordance pending'}</span>
       </div>
+      ${concordanceHTML}
       <div class="result-locked">
-        Run a full preclinical forecast on <a href="https://mosaeq.com" target="_blank">mosaeQ.com</a> 
-        to unlock NEMP predictions, θ coordinates, and geodesic concordance scoring.
+        Run a full preclinical forecast on <a href="https://mosaeq.com" target="_blank">mosaeQ.com</a>
+        to unlock NEMP predictions, \u03b8 coordinates, and geodesic concordance scoring.
       </div>
     </div>
   `;
