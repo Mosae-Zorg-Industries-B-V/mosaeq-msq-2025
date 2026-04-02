@@ -200,14 +200,22 @@ body {
 .zone-card .zone-examples { font-size: 0.75rem; color: var(--chrome-light); margin-top: 6px; font-style: italic; }
 
 /* ── TRAP ZONE DYNAMIC ── */
+.zone-card.idle {
+  opacity: 0.5; border-style: dashed;
+  transition: all 0.3s ease;
+}
 .zone-card.active {
-  border-color: #991b1b !important; border-left-width: 4px;
-  box-shadow: 0 0 16px rgba(153, 27, 27, 0.25);
+  border-color: #991b1b !important; border-left-width: 4px; border-style: solid;
+  box-shadow: 0 0 16px rgba(153, 27, 27, 0.25); opacity: 1;
   transition: all 0.3s ease;
 }
 .zone-card.dimmed {
-  opacity: 0.5;
+  opacity: 0.5; border-style: solid;
   transition: opacity 0.3s ease;
+}
+.zone-card.unavailable {
+  opacity: 0.5; border-style: dashed;
+  transition: all 0.3s ease;
 }
 .zone-label {
   font-family: 'DM Mono', monospace; font-size: 0.75rem;
@@ -216,6 +224,12 @@ body {
   border-radius: 4px; display: none;
 }
 .zone-card.active .zone-label { display: block; }
+.zone-status {
+  font-size: 0.82rem; color: var(--chrome-light); margin-top: 8px;
+  font-style: italic; line-height: 1.5;
+}
+.zone-status a { color: var(--red); font-weight: 600; text-decoration: none; }
+.zone-status a:hover { text-decoration: underline; }
 .trap-risk-inline {
   margin-top: 0.75rem; padding: 0.75rem 1rem;
   background: #FEF2F2; border-left: 3px solid #991b1b; border-radius: 6px;
@@ -461,33 +475,37 @@ body {
   <h2>Tissue Trap Zones on S³</h2>
   <p class="intro">LogP and TPSA are mapped to quaternion coordinates (θ, φ) on S³. On msq, these values are sourced from PubChem. For NEMP quantum-computed values from SMILES alone, use <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a>. Natural pharmacological zones emerge on the hypersphere, identifying where drugs accumulate before clinical exposure.</p>
   <div class="zone-grid">
-    <div class="zone-card" data-zone="brain">
+    <div class="zone-card idle" data-zone="brain">
       <div class="zone-name">Brain Trap</div>
       <div class="zone-params">High θ · Low φ</div>
       <div class="zone-desc">BBB-penetrating compounds. High lipophilicity + low polar surface area enables CNS entry. Sedation, extrapyramidal effects.</div>
       <div class="zone-examples">e.g., chlorpromazine, haloperidol</div>
       <div class="zone-label"></div>
+      <div class="zone-status">Search a compound above to classify</div>
     </div>
-    <div class="zone-card" data-zone="lysosomal">
+    <div class="zone-card idle" data-zone="lysosomal">
       <div class="zone-name">Lysosomal Trap</div>
       <div class="zone-params">High θ · Basic pKa</div>
       <div class="zone-desc">Lysosomotropic accumulation. Ion trapping in acidic organelles drives liver, kidney, and lung concentration far above plasma levels.</div>
       <div class="zone-examples">e.g., amiodarone, imipramine</div>
       <div class="zone-label"></div>
+      <div class="zone-status">Search a compound above to classify</div>
     </div>
-    <div class="zone-card" data-zone="gut">
+    <div class="zone-card idle" data-zone="gut">
       <div class="zone-name">Gut Trap</div>
       <div class="zone-params">High θ · Mid φ</div>
       <div class="zone-desc">GI mucosa sequestration. Structure-driven over-exposure causing nausea and emesis &mdash; the functional blind spot histopathology misses entirely.</div>
       <div class="zone-examples">e.g., irinotecan, metformin</div>
       <div class="zone-label"></div>
+      <div class="zone-status">Search a compound above to classify</div>
     </div>
-    <div class="zone-card" data-zone="plasma">
+    <div class="zone-card idle" data-zone="plasma">
       <div class="zone-name">Plasma-Retained</div>
       <div class="zone-params">Low θ · High φ</div>
       <div class="zone-desc">Hydrophilic compounds that remain in circulation. Low tissue penetration, predictable PK, lowest tissue-trap risk.</div>
       <div class="zone-examples">e.g., methotrexate, fluconazole</div>
       <div class="zone-label"></div>
+      <div class="zone-status">Search a compound above to classify</div>
     </div>
   </div>
   <div id="trap-risk-summary"></div>
@@ -912,16 +930,21 @@ function highlightZoneCards(classification, compoundName, coords) {
   cards.forEach(card => {
     const z = card.getAttribute('data-zone');
     const label = card.querySelector('.zone-label');
-    card.classList.remove('active', 'dimmed');
+    const status = card.querySelector('.zone-status');
+    const examples = card.querySelector('.zone-examples');
+    card.classList.remove('active', 'dimmed', 'idle', 'unavailable');
     if (label) label.style.display = 'none';
+    if (examples) examples.style.display = 'none';
     if (classification.zones.includes(z)) {
       card.classList.add('active');
       if (label) {
         label.textContent = compoundName + ' \u2192 ' + ZONE_NAMES[z] + ' (\u03b8=' + coords.theta + ', \u03c6=' + coords.phi + ')';
         label.style.display = 'block';
       }
+      if (status) status.textContent = ZONE_RISKS[z];
     } else {
       card.classList.add('dimmed');
+      if (status) status.textContent = compoundName + ': Not classified in this zone';
     }
   });
   if (riskEl) {
@@ -936,11 +959,32 @@ function highlightZoneCards(classification, compoundName, coords) {
   }
 }
 
+function showZoneCardsUnavailable(compoundName) {
+  const cards = document.querySelectorAll('.zone-card');
+  cards.forEach(card => {
+    card.classList.remove('active', 'dimmed', 'idle');
+    card.classList.add('unavailable');
+    const label = card.querySelector('.zone-label');
+    const status = card.querySelector('.zone-status');
+    const examples = card.querySelector('.zone-examples');
+    if (label) label.style.display = 'none';
+    if (examples) examples.style.display = 'none';
+    if (status) status.innerHTML = compoundName + ': Properties not available from PubChem. <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab</a> for NEMP quantum classification.';
+  });
+  const riskEl = document.getElementById('trap-risk-summary');
+  if (riskEl) { riskEl.classList.remove('visible'); riskEl.innerHTML = ''; }
+}
+
 function resetZoneCards() {
   document.querySelectorAll('.zone-card').forEach(card => {
-    card.classList.remove('active', 'dimmed');
+    card.classList.remove('active', 'dimmed', 'unavailable');
+    card.classList.add('idle');
     const label = card.querySelector('.zone-label');
+    const examples = card.querySelector('.zone-examples');
+    const status = card.querySelector('.zone-status');
     if (label) label.style.display = 'none';
+    if (examples) examples.style.display = 'block';
+    if (status) status.textContent = 'Search a compound above to classify';
   });
   const riskEl = document.getElementById('trap-risk-summary');
   if (riskEl) { riskEl.classList.remove('visible'); riskEl.innerHTML = ''; }
@@ -1054,6 +1098,7 @@ async function searchCompound() {
       }
     }
   } else {
+    showZoneCardsUnavailable(displayName);
     trapHTML = `
       <div class="result-row">
         <span class="result-label">Tissue Trap Zone</span>
