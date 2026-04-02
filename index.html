@@ -230,6 +230,45 @@ body {
 }
 .zone-status a { color: var(--red); font-weight: 600; text-decoration: none; }
 .zone-status a:hover { text-decoration: underline; }
+.zone-learn-more {
+  font-size: 0.78rem; color: var(--red); cursor: pointer; margin-top: 8px;
+  font-weight: 600; user-select: none;
+}
+.zone-learn-more:hover { text-decoration: underline; }
+.zone-detail {
+  display: none; margin-top: 8px; padding: 10px 12px;
+  background: #F8F9FA; border-radius: 6px;
+  font-size: 0.8rem; color: var(--chrome); line-height: 1.65;
+}
+.zone-detail.open { display: block; }
+.zone-detail strong { color: var(--navy); }
+.zone-detail .zone-ref { font-size: 0.72rem; color: var(--chrome-light); margin-top: 6px; font-style: italic; }
+.quantum-upgrade {
+  margin-top: 1.5rem; padding: 1.5rem;
+  background: var(--navy); color: var(--white); border-radius: 10px;
+}
+.quantum-upgrade h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.quantum-upgrade h3 .q-icon { margin-right: 6px; }
+.quantum-upgrade p { font-size: 0.85rem; color: var(--chrome-light); line-height: 1.7; margin-bottom: 0.75rem; }
+.quantum-upgrade p:last-of-type { margin-bottom: 1rem; }
+.quantum-upgrade .btn-quantum {
+  display: inline-block; background: var(--red); color: var(--white);
+  padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.88rem;
+  text-decoration: none; transition: background 0.2s;
+}
+.quantum-upgrade .btn-quantum:hover { background: var(--red-hover); }
+.pubchem-note {
+  margin-top: 0.5rem; font-size: 0.8rem; color: var(--chrome-light); line-height: 1.5;
+}
+.pubchem-note a { color: var(--red); font-weight: 600; text-decoration: none; }
+.pubchem-note a:hover { text-decoration: underline; }
+.cliff-guidance {
+  margin-top: 0.75rem; padding: 0.75rem 1rem;
+  background: #FEF2F2; border-left: 3px solid var(--red); border-radius: 6px;
+  font-size: 0.82rem; color: #991b1b; line-height: 1.6;
+}
+.cliff-guidance a { color: var(--red); font-weight: 700; text-decoration: none; }
+.cliff-guidance a:hover { text-decoration: underline; }
 .trap-risk-inline {
   margin-top: 0.75rem; padding: 0.75rem 1rem;
   background: #FEF2F2; border-left: 3px solid #991b1b; border-radius: 6px;
@@ -482,6 +521,8 @@ body {
       <div class="zone-examples">e.g., chlorpromazine, haloperidol</div>
       <div class="zone-label"></div>
       <div class="zone-status">Search a compound above to classify</div>
+      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
+      <div class="zone-detail"><strong>Why it matters:</strong> Compounds in the Brain Trap zone cross the blood-brain barrier and accumulate in CNS tissue. This is the primary mechanism behind opioid overdose deaths (respiratory depression), sedation side effects, and neuropsychiatric adverse events. P-glycoprotein (P-gp) status determines whether accumulation is sustained or reversible.<br><br><strong>Properties used:</strong> LogP &gt; 3.0, TPSA &lt; 90<div class="zone-ref">Kelder et al. (1999) Pharm Res 16:1514–1519</div></div>
     </div>
     <div class="zone-card idle" data-zone="lysosomal">
       <div class="zone-name">Lysosomal Trap</div>
@@ -490,6 +531,8 @@ body {
       <div class="zone-examples">e.g., amiodarone, imipramine</div>
       <div class="zone-label"></div>
       <div class="zone-status">Search a compound above to classify</div>
+      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
+      <div class="zone-detail"><strong>Why it matters:</strong> Lipophilic amines (LogP &gt; 1, pKa &gt; 6.5) diffuse into lysosomes where the acidic pH (4–5) protonates them. The charged molecule cannot diffuse back out — it is trapped. This causes organ-level toxicity in lysosome-rich tissues: liver, kidney, lung, spleen. Phospholipidosis is the hallmark adverse event.<br><br><strong>Properties used:</strong> LogP &gt; 1.0, basic amine nitrogen<div class="zone-ref">Kazmi et al. (2013) Drug Metab Dispos 41:897–905</div></div>
     </div>
     <div class="zone-card idle" data-zone="gut">
       <div class="zone-name">Gut Trap</div>
@@ -498,6 +541,8 @@ body {
       <div class="zone-examples">e.g., irinotecan, metformin</div>
       <div class="zone-label"></div>
       <div class="zone-status">Search a compound above to classify</div>
+      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
+      <div class="zone-detail"><strong>Why it matters:</strong> Compounds with moderate polarity sequester in GI mucosa, causing local over-exposure that blood-level PK monitoring misses entirely. Histopathology in animal studies often fails to detect this because gut tissue processing destroys the evidence. This is the functional blind spot in preclinical safety.<br><br><strong>Properties used:</strong> LogP &gt; 3.0, TPSA 70–120</div>
     </div>
     <div class="zone-card idle" data-zone="plasma">
       <div class="zone-name">Plasma-Retained</div>
@@ -506,9 +551,18 @@ body {
       <div class="zone-examples">e.g., methotrexate, fluconazole</div>
       <div class="zone-label"></div>
       <div class="zone-status">Search a compound above to classify</div>
+      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
+      <div class="zone-detail"><strong>Why it matters:</strong> Hydrophilic compounds with high polar surface area stay in circulation. They have predictable pharmacokinetics, low tissue accumulation, and the lowest tissue-trap risk. Adverse events for these compounds are typically dose-dependent toxicity rather than accumulation-driven.<br><br><strong>Properties used:</strong> LogP &lt; 2.0, TPSA &gt; 100</div>
     </div>
   </div>
   <div id="trap-risk-summary"></div>
+  <div class="quantum-upgrade">
+    <h3><span class="q-icon">⚛</span> NEMP Quantum Classification Available</h3>
+    <p>The trap zones above use PubChem properties &mdash; precomputed, public, approximate.</p>
+    <p>mosaeQ.com/lab computes trap zone classification from NEMP quantum properties &mdash; deterministic, from SMILES alone, with P-gp efflux prediction, brain/plasma ratio, FAERS concordance, and opioid safety panel.</p>
+    <p>For novel compounds not in PubChem, quantum classification is the <strong style="color:var(--white)">only</strong> option.</p>
+    <a href="https://mosaeq.com/lab" target="_blank" class="btn-quantum">Run Quantum Classification &rarr; mosaeQ.com</a>
+  </div>
 </section>
 
 <hr class="section-divider">
@@ -1084,6 +1138,7 @@ async function searchCompound() {
       <div class="trap-risk-inline">
         <strong>${displayName}: ${zoneLine}</strong> \u2014 ${ZONE_RISKS[riskZone]}
       </div>
+      <div class="pubchem-note">This classification uses PubChem LogP and TPSA. For NEMP quantum-computed values with P-gp efflux prediction and FAERS concordance: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>
     `;
 
     if (faersCount > 0 && faersReactions.length > 0) {
@@ -1143,6 +1198,7 @@ async function searchCompound() {
             <span class="result-label">FDA FAERS</span>
             <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersCount > 0 ? faersCount.toLocaleString() + ' reports' : 'NOT_FOUND'}</span>
           </div>
+          ${faersCount === 0 ? '<div class="cliff-guidance">This compound is not in the FDA\'s adverse event database (Digital Cliff). Quantum concordance on mosaeQ.com/lab provides the only computational safety assessment available. <a href="https://mosaeq.com/lab" target="_blank">Run Quantum Concordance &rarr;</a></div>' : ''}
           <div class="result-row">
             <span class="result-label">NLM DailyMed</span>
             <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedCount > 0 ? 'Label found' : (dailymedCount === -1 ? 'Query via API' : 'NOT_FOUND')}</span>
