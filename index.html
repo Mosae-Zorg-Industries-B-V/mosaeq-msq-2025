@@ -405,14 +405,7 @@ body {
 .opioid-panel .op-note { font-size: 0.8rem; color: #92400E; line-height: 1.6; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(251,191,36,0.3); }
 .opioid-panel .op-error { font-size: 0.85rem; color: #92400E; }
 
-/* ── SOURCE BANNER ── */
-.source-banner {
-  margin-bottom: 0.75rem; padding: 10px 14px;
-  background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
-  font-size: 0.82rem; color: #1E40AF; display: flex; align-items: center; gap: 8px;
-}
-.source-banner a { color: #1E40AF; font-weight: 600; text-decoration: none; }
-.source-banner a:hover { text-decoration: underline; }
+/* ── SOURCE LABEL ── */
 .prop-source { font-size: 0.68rem; color: var(--chrome-light); font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 2px; }
 
 /* ── RESPONSIVE ── */
@@ -1183,8 +1176,8 @@ async function searchCompound() {
 
   results.innerHTML = `
     <div class="result-card">
-      ${compoundProps ? '<div class="source-banner">\u2139\ufe0f Quick Lookup &mdash; properties from PubChem. For NEMP quantum computation from SMILES: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>' : ''}
       <h3>${displayName}</h3>
+      ${compoundProps ? '<p style="font-size:0.88rem;color:var(--chrome);margin-bottom:0.75rem;">Properties sourced from PubChem. Quantum-computed values from SMILES available on <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a></p>' : ''}
       ${compoundProps ? `<div class="result-props">
         <div class="prop"><span class="prop-label">LogP:</span> <span class="prop-value">${compoundProps.logP.toFixed(2)}</span> ${srcLabel}</div>
         <div class="prop"><span class="prop-label">TPSA:</span> <span class="prop-value">${compoundProps.tpsa.toFixed(1)} \u00c5\u00b2</span> ${srcLabel}</div>
