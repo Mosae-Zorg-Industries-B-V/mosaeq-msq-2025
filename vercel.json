@@ -6,7 +6,7 @@
   ],
   "headers": [
     {
-      "source": "/ontology{/,}**/*.ttl",
+      "source": "/ontology/(.*\\.ttl)",
       "headers": [
         { "key": "Content-Type", "value": "text/turtle; charset=utf-8" },
         { "key": "X-Frame-Options", "value": "DENY" },
