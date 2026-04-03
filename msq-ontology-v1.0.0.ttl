@@ -1,0 +1,217 @@
+@prefix msq:    <https://msq.mosaeq.com/ontology#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+# ──────────────────────────────────────────────────────────────
+# msq: Quantum Safety Ontology
+# Namespace: https://msq.mosaeq.com/ontology#
+# Version:   1.0.0
+# Publisher: Mosae Zorg Industries UG (haftungsbeschraenkt)
+# License:   Commercial — partnerships@mosaeq.com
+# ──────────────────────────────────────────────────────────────
+
+<https://msq.mosaeq.com/ontology> a owl:Ontology ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:title "msq Quantum Safety Ontology"@en ;
+    dcterms:description "Quantum ontology encoding molecular entities as quaternion coordinates on S\u00B3 for translational preclinical safety concordance."@en ;
+    dcterms:publisher "Mosae Zorg Industries UG (haftungsbeschraenkt)" ;
+    dcterms:creator "F. Hanna Campbell" ;
+    dcterms:created "2026-04-03"^^xsd:date ;
+    dcterms:license "Commercial — partnerships@mosaeq.com" .
+
+# ══════════════════════════════════════════════════════════════
+#  CORE CLASSES
+# ══════════════════════════════════════════════════════════════
+
+msq:Compound a owl:Class ;
+    rdfs:label "Compound"@en ;
+    rdfs:comment "A molecular entity subject to safety concordance analysis."@en .
+
+msq:S3Coordinate a owl:Class ;
+    rdfs:label "S3Coordinate"@en ;
+    rdfs:comment "Quaternion coordinate (theta, phi) on the three-sphere S\u00B3, computed from LogP and TPSA via NEMP."@en .
+
+msq:TrapZone a owl:Class ;
+    rdfs:label "TrapZone"@en ;
+    rdfs:comment "Tissue accumulation zone on S\u00B3 where compounds concentrate before clinical exposure."@en .
+
+# ── TrapZone subclasses (9) ──
+
+msq:BrainTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Brain Trap"@en ;
+    rdfs:comment "BBB-penetrating compounds. High lipophilicity + low polar surface area enables CNS entry."@en .
+
+msq:LysosomalTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Lysosomal Trap"@en ;
+    rdfs:comment "Lysosomotropic accumulation via ion trapping in acidic organelles."@en .
+
+msq:GutTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Gut Trap"@en ;
+    rdfs:comment "GI mucosa sequestration causing nausea and emesis."@en .
+
+msq:PlasmaRetained a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Plasma-Retained"@en ;
+    rdfs:comment "Hydrophilic compounds that remain in circulation with lowest tissue-trap risk."@en .
+
+msq:HepaticTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Hepatic Trap"@en ;
+    rdfs:comment "Hepatocyte accumulation driven by active uptake transporters and first-pass metabolism."@en .
+
+msq:RenalTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Renal Trap"@en ;
+    rdfs:comment "Proximal tubule accumulation via organic cation/anion transporters."@en .
+
+msq:PulmonaryTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Pulmonary Trap"@en ;
+    rdfs:comment "Lung tissue sequestration of basic lipophilic amines."@en .
+
+msq:CardiacTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Cardiac Trap"@en ;
+    rdfs:comment "Myocardial accumulation with hERG channel interaction risk."@en .
+
+msq:IntermediateZone a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Intermediate Zone"@en ;
+    rdfs:comment "Compound falls between primary trap zones on S\u00B3."@en .
+
+# ── Safety and pharmacovigilance classes ──
+
+msq:EffluxTransporter a owl:Class ;
+    rdfs:label "EffluxTransporter"@en ;
+    rdfs:comment "Membrane transporter that actively exports compounds from cells, modulating tissue accumulation."@en .
+
+msq:SafetyProfile a owl:Class ;
+    rdfs:label "SafetyProfile"@en ;
+    rdfs:comment "Aggregate safety assessment combining trap zone classification, concordance data, and risk scores."@en .
+
+msq:OpioidPanel a owl:Class ;
+    rdfs:label "OpioidPanel"@en ;
+    rdfs:comment "CNS and opioid receptor safety screening panel triggered by BBB penetration or hERG risk."@en .
+
+msq:Concordance a owl:Class ;
+    rdfs:label "Concordance"@en ;
+    rdfs:comment "Agreement between predicted safety profile and real-world pharmacovigilance outcomes."@en .
+
+msq:DigitalCliff a owl:Class ;
+    rdfs:label "DigitalCliff"@en ;
+    rdfs:comment "Systematic absence of a clinically validated drug from a regulatory database (e.g., FDA FAERS NOT_FOUND for non-US-marketed drugs)."@en .
+
+msq:DataSource a owl:Class ;
+    rdfs:label "DataSource"@en ;
+    rdfs:comment "Public pharmacovigilance or toxicogenomics database integrated into the concordance pipeline."@en .
+
+msq:EnvironmentalFate a owl:Class ;
+    rdfs:label "EnvironmentalFate"@en ;
+    rdfs:comment "Environmental persistence and ecological impact profile of a compound (EcoFate analysis)."@en .
+
+msq:AuxiliaryMetabolicGene a owl:Class ;
+    rdfs:label "AuxiliaryMetabolicGene"@en ;
+    rdfs:comment "Gene encoding auxiliary metabolic function in viral or microbial genomes, relevant to pathogen surveillance."@en .
+
+msq:AntiDefenseGene a owl:Class ;
+    rdfs:label "AntiDefenseGene"@en ;
+    rdfs:comment "Gene encoding mechanisms that counteract host immune defenses."@en .
+
+msq:ViralLifecycle a owl:Class ;
+    rdfs:label "ViralLifecycle"@en ;
+    rdfs:comment "Classification of viral replication strategy (lytic, lysogenic, chronic) relevant to outbreak surveillance."@en .
+
+# ══════════════════════════════════════════════════════════════
+#  CORE PROPERTIES
+# ══════════════════════════════════════════════════════════════
+
+msq:hasS3Coordinate a owl:ObjectProperty ;
+    rdfs:label "hasS3Coordinate"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:S3Coordinate .
+
+msq:hasTrapZone a owl:ObjectProperty ;
+    rdfs:label "hasTrapZone"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:TrapZone .
+
+msq:hasSafetyProfile a owl:ObjectProperty ;
+    rdfs:label "hasSafetyProfile"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:SafetyProfile .
+
+msq:hasConcordance a owl:ObjectProperty ;
+    rdfs:label "hasConcordance"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:Concordance .
+
+msq:hasDataSource a owl:ObjectProperty ;
+    rdfs:label "hasDataSource"@en ;
+    rdfs:domain msq:Concordance ;
+    rdfs:range msq:DataSource .
+
+msq:hasEnvironmentalFate a owl:ObjectProperty ;
+    rdfs:label "hasEnvironmentalFate"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:EnvironmentalFate .
+
+msq:theta a owl:DatatypeProperty ;
+    rdfs:label "theta"@en ;
+    rdfs:domain msq:S3Coordinate ;
+    rdfs:range xsd:double ;
+    rdfs:comment "Polar angle on S\u00B3, computed from LogP."@en .
+
+msq:phi a owl:DatatypeProperty ;
+    rdfs:label "phi"@en ;
+    rdfs:domain msq:S3Coordinate ;
+    rdfs:range xsd:double ;
+    rdfs:comment "Azimuthal angle on S\u00B3, computed from TPSA."@en .
+
+msq:logP a owl:DatatypeProperty ;
+    rdfs:label "logP"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:double .
+
+msq:tpsa a owl:DatatypeProperty ;
+    rdfs:label "tpsa"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:double ;
+    rdfs:comment "Topological polar surface area in Angstrom squared."@en .
+
+msq:pka a owl:DatatypeProperty ;
+    rdfs:label "pka"@en ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:double .
+
+msq:concordanceScore a owl:DatatypeProperty ;
+    rdfs:label "concordanceScore"@en ;
+    rdfs:domain msq:Concordance ;
+    rdfs:range xsd:double ;
+    rdfs:comment "Numerical concordance score between predicted and observed safety outcomes."@en .
+
+# ══════════════════════════════════════════════════════════════
+#  DATA SOURCE INSTANCES
+# ══════════════════════════════════════════════════════════════
+
+msq:FAERS a msq:DataSource ;
+    rdfs:label "FDA FAERS"@en ;
+    rdfs:comment "Post-market adverse event reporting system."@en .
+
+msq:DrugMatrix a msq:DataSource ;
+    rdfs:label "NTP DrugMatrix"@en ;
+    rdfs:comment "Repeat-dose histopathology database."@en .
+
+msq:TGGATEs a msq:DataSource ;
+    rdfs:label "Open TG-GATEs"@en ;
+    rdfs:comment "Toxicogenomics database."@en .
+
+msq:DailyMed a msq:DataSource ;
+    rdfs:label "NLM DailyMed"@en ;
+    rdfs:comment "FDA-approved drug labels."@en .

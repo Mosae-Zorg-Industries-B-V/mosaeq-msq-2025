@@ -16,7 +16,7 @@
 <title>msq — Quantum Ontology for Translational Preclinical Safety Concordance</title>
 <meta name="description" content="msq.mosaeQ.com — A quantum ontology encoding molecular entities as quaternion coordinates on S³ for translational preclinical safety concordance.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --navy: #0D1B2A;
@@ -408,6 +408,67 @@ body {
 /* ── SOURCE LABEL ── */
 .prop-source { font-size: 0.68rem; color: var(--chrome-light); font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 2px; }
 
+/* ── ONTOLOGY SECTION ── */
+.ontology-section {
+  padding: 3rem 2rem; background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.ontology-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.ontology-section h2 {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--white);
+}
+.ontology-section .onto-sub {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.9rem; color: var(--chrome-light); margin-bottom: 2rem;
+}
+.onto-meta {
+  display: grid; grid-template-columns: auto 1fr; gap: 6px 1.5rem;
+  text-align: left; margin-bottom: 1.5rem;
+  padding: 1.25rem; background: var(--navy-light); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+}
+.onto-meta .meta-label {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.82rem; color: var(--chrome-light); font-weight: 500;
+}
+.onto-meta .meta-value {
+  font-family: 'JetBrains Mono', 'DM Mono', monospace;
+  font-size: 0.82rem; color: var(--white); font-weight: 500;
+}
+.onto-vocab {
+  text-align: left; margin-bottom: 1.5rem;
+  padding: 1.25rem; background: var(--navy-light); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+}
+.onto-vocab h3 {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem;
+}
+.onto-vocab .class-list {
+  font-family: 'JetBrains Mono', 'DM Mono', monospace;
+  font-size: 0.8rem; color: var(--chrome-light); line-height: 1.9;
+}
+.onto-vocab .class-list .cls {
+  display: inline-block; padding: 3px 10px; margin: 3px 4px;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px; color: var(--white); font-weight: 500;
+}
+.onto-buttons { display: flex; gap: 12px; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.btn-onto {
+  display: inline-block; padding: 12px 28px; border-radius: 8px;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;
+}
+.btn-onto-primary { background: var(--red); color: var(--white); }
+.btn-onto-primary:hover { background: var(--red-hover); transform: translateY(-2px); }
+.btn-onto-secondary { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+.btn-onto-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.onto-licensing {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.82rem; color: var(--chrome-light); font-style: italic;
+}
+.onto-licensing a { color: var(--chrome-light); text-decoration: underline; }
+.onto-licensing a:hover { color: var(--white); }
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .hero h1 { font-size: 1.8rem; }
@@ -419,6 +480,8 @@ body {
   .result-props { flex-direction: column; gap: 0.5rem; }
   .opioid-panel .op-grid { grid-template-columns: 1fr; }
   .screening-options { flex-direction: column; gap: 0.5rem; }
+  .onto-meta { grid-template-columns: 1fr; }
+  .onto-buttons { flex-direction: column; align-items: stretch; }
 }
 </style>
 </head>
@@ -432,6 +495,7 @@ body {
   </a>
   <div class="nav-links">
     <a href="https://mosaeq.com">mosaeQ.com</a>
+    <a href="#ontology">Ontology</a>
     <a href="https://create.mosaeq.com">create</a>
     <a href="https://outbreak.mosaeq.com">outbreak</a>
     <div id="auth-anonymous">
@@ -676,7 +740,46 @@ body {
   </div>
 </section>
 
-<!-- §8 FAQ -->
+<!-- §8 ONTOLOGY -->
+<section class="ontology-section" id="ontology">
+  <div class="ontology-inner">
+    <h2>Quantum Safety Ontology (msq: namespace)</h2>
+    <p class="onto-sub">Formal vocabulary for translational preclinical safety concordance on S&sup3;.</p>
+    <div class="onto-meta">
+      <span class="meta-label">Namespace</span>
+      <span class="meta-value">https://msq.mosaeq.com/ontology#</span>
+      <span class="meta-label">Prefix</span>
+      <span class="meta-value">msq:</span>
+      <span class="meta-label">Version</span>
+      <span class="meta-value">1.0.0</span>
+    </div>
+    <div class="onto-vocab">
+      <h3>Core Vocabulary</h3>
+      <div class="class-list">
+        <span class="cls">Compound</span>
+        <span class="cls">S3Coordinate</span>
+        <span class="cls">TrapZone</span> <span style="font-size:0.72rem;color:var(--chrome-light);">(9 subclasses)</span>
+        <span class="cls">EffluxTransporter</span>
+        <span class="cls">SafetyProfile</span>
+        <span class="cls">OpioidPanel</span>
+        <span class="cls">Concordance</span>
+        <span class="cls">DigitalCliff</span>
+        <span class="cls">DataSource</span>
+        <span class="cls">EnvironmentalFate</span>
+        <span class="cls">AuxiliaryMetabolicGene</span>
+        <span class="cls">AntiDefenseGene</span>
+        <span class="cls">ViralLifecycle</span>
+      </div>
+    </div>
+    <div class="onto-buttons">
+      <a href="/ontology.ttl" download="msq-ontology-v1.0.0.ttl" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
+      <a href="/ontology.ttl" target="_blank" class="btn-onto btn-onto-secondary">View Documentation</a>
+    </div>
+    <p class="onto-licensing">Commercial licensing: <a href="mailto:partnerships@mosaeq.com">partnerships@mosaeq.com</a></p>
+  </div>
+</section>
+
+<!-- §9 FAQ -->
 <section class="faq-section">
   <h2>FAQ</h2>
   <div class="faq-item" onclick="toggleFaq(this)">
@@ -685,7 +788,7 @@ body {
   </div>
 </section>
 
-<!-- §9 ACCESS + FOOTER -->
+<!-- §10 ACCESS + FOOTER -->
 <section class="beta-cta">
   <h2>Exclusive Introductory Beta Access for Health Technology Professionals</h2>
   <p>Qualifying researchers, regulatory scientists, and pharmaceutical professionals in health technology may apply for complimentary two-month access to the msq quantum ontology. Academic, government, and clinical applicants are prioritised.</p>
