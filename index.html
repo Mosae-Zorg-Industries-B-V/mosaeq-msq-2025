@@ -633,7 +633,7 @@ body {
   line-height: 1.3;
 }
 .app-tile.active .app-name { font-weight: 700; }
-.app-tile.green-pharma { background: #052e16; }
+.app-tile.eco { background: #052e16; }
 .app-tile .new-tag {
   font-size: 10px; font-weight: 600; text-transform: uppercase;
   color: #4ade80; margin-left: 6px;
@@ -661,10 +661,14 @@ body {
     <div class="app-name">msq.mosaeQ.com</div>
     <div class="app-desc">Concordance auditor</div>
   </a>
-  <!-- TODO: update to green.mosaeQ.com when DNS is configured -->
-  <a class="app-tile green-pharma" href="https://create.mosaeq.com" data-app="green-pharma">
-    <div class="app-name">&#127807; Green Pharma <span class="new-tag">NEW</span></div>
-    <div class="app-desc">Safer structural alternatives</div>
+  <a class="app-tile" href="https://create.mosaeq.com" data-app="create.mosaeq.com">
+    <div class="app-name">create.mosaeQ.com</div>
+    <div class="app-desc">Molecular design</div>
+  </a>
+  <!-- TODO: update URL to https://eco.mosaeQ.com when domain is live -->
+  <a class="app-tile eco" href="https://create.mosaeq.com" data-app="eco">
+    <div class="app-name">&#127807; Eco <span class="new-tag">NEW</span></div>
+    <div class="app-desc">Ecological safety chain and alternatives</div>
   </a>
   <a class="app-tile" href="https://outbreak.mosaeq.com" data-app="outbreak.mosaeq.com">
     <div class="app-name">outbreak.mosaeQ.com</div>
@@ -693,7 +697,7 @@ body {
   <a class="ham-link" href="#cliff" onclick="closeHamburger()">Digital Cliff</a>
   <a class="ham-link" href="#databases" onclick="closeHamburger()">Databases</a>
   <a class="ham-link" href="#ontology" onclick="closeHamburger()">Ontology</a>
-  <a class="ham-link" href="https://green.mosaeQ.com" target="_blank" rel="noopener noreferrer" onclick="closeHamburger()">&#127807; Green Pharma <span class="ham-new-tag">NEW</span></a>
+  <a class="ham-link" href="https://create.mosaeQ.com" target="_blank" rel="noopener noreferrer" onclick="closeHamburger()">&#127807; Eco <span class="ham-new-tag">NEW</span></a>
   <a class="ham-link" href="#podcasts" onclick="closeHamburger()">Podcasts</a>
   <a class="ham-link" href="#beta" onclick="closeHamburger()">Beta Access</a>
   <div class="ham-divider"></div>
@@ -1772,7 +1776,8 @@ document.addEventListener('keydown', function(e) {
   var appMap = {
     'mosaeq.com': 'mosaeq.com', 'www.mosaeq.com': 'mosaeq.com',
     'msq.mosaeq.com': 'msq.mosaeq.com',
-    'create.mosaeq.com': 'green-pharma',
+    'create.mosaeq.com': 'create.mosaeq.com',
+    'eco.mosaeq.com': 'eco',
     'outbreak.mosaeq.com': 'outbreak.mosaeq.com',
     'q0q0.mosaeq.com': 'q0q0.mosaeq.com'
   };
