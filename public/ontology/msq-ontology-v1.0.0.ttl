@@ -1,0 +1,677 @@
+@prefix msq:    <https://msq.mosaeq.com/ontology#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+# ═══════════════════════════════════════════════════════
+# mosaeQ Quantum Safety Ontology (msq:)
+# Version 1.0.0
+# 
+# A formal semantic vocabulary for encoding molecular
+# entities as quaternion coordinates on the unit
+# hypersphere S³, with translational concordance
+# against pharmacovigilance databases.
+#
+# Publisher: Mosae Zorg Industries UG (haftungsbeschränkt)
+#            Berlin-Adlershof, Germany
+#            HRB 279526 | NATO CAGE CNLJ5
+# Creator:   F. Hanna Campbell, M.E., B.E.
+#            CEO & President
+#
+# Namespace: https://msq.mosaeq.com/ontology#
+# Prefix:    msq:
+#
+# ═══════════════════════════════════════════════════════
+# LICENSE AND TERMS OF USE
+# ═══════════════════════════════════════════════════════
+#
+# © 2026 Mosae Zorg Industries UG. All rights reserved.
+# Patent-protected technology.
+#
+# This ontology vocabulary (the "msq: namespace") is the
+# intellectual property of Mosae Zorg Industries UG. 
+# The underlying quantum algorithm (NEMP) is NOT disclosed
+# in this specification. This file defines the vocabulary
+# and class structure only — not the computational method.
+#
+# PERMITTED USE:
+#   - Viewing and referencing for academic research
+#   - Citation in scientific publications with attribution
+#   - Evaluation for commercial licensing
+#
+# ATTRIBUTION REQUIRED:
+#   Any use of the msq: namespace, class definitions, or
+#   trap zone classification system must cite:
+#     "mosaeQ Quantum Safety Ontology (msq:), v1.0.0,
+#      Mosae Zorg Industries UG, 2026.
+#      https://msq.mosaeq.com/ontology"
+#
+# PROHIBITED WITHOUT LICENSE:
+#   - Integration into commercial products or services
+#   - Redistribution or modification of this vocabulary
+#   - Use of msq: namespace in derivative ontologies
+#   - Automated querying or scraping for commercial use
+#
+# COMMERCIAL LICENSING:
+#   Contact partnerships@mosaeq.com
+#
+# ═══════════════════════════════════════════════════════
+# mosaeQ PLATFORM PRODUCTS (by subscription)
+# ═══════════════════════════════════════════════════════
+#
+# This ontology powers the following products:
+#
+#   mosaeQ.com          Quantum preclinical safety engine.
+#                       ICH M3(R2) reports from SMILES.
+#                       Tissue trap zone classification.
+#                       Opioid & CNS safety panel.
+#
+#   msq.mosaeQ.com      Translational concordance auditor.
+#                       FAERS, DrugMatrix, TG-GATEs, DailyMed.
+#                       Quantum ontology browser.
+#
+#   create.mosaeQ.com   Molecular design and green pharma
+#                       conversion. EcoFate environmental
+#                       fate analysis. Quantum search for
+#                       structurally equivalent compounds
+#                       with lower environmental persistence.
+#
+#   outbreak.mosaeQ.com Pathogen surveillance. G-quadruplex
+#                       density mapping. Viral AMG activation
+#                       monitoring. Mutation threat detection.
+#
+#   q0q0.mosaeQ.com     Cosmetic and consumer product safety.
+#                       Pre-market toxicological screening.
+#
+#   registry.mosaeQ.com Quantum drug registry (forthcoming).
+#                       S³ coordinates for all approved drugs.
+#                       Green alternative mapping.
+#
+#   analytics.mosaeQ.com Platform analytics (forthcoming).
+#
+# All products: https://mosaeq.com
+# Enterprise licensing: partnerships@mosaeq.com
+# Member of Johnson & Johnson's External Innovation Network.
+#
+# ═══════════════════════════════════════════════════════
+
+<https://msq.mosaeq.com/ontology> a owl:Ontology ;
+    dcterms:title "mosaeQ Quantum Safety Ontology"@en ;
+    dcterms:creator "F. Hanna Campbell" ;
+    dcterms:publisher "Mosae Zorg Industries UG (haftungsbeschränkt)" ;
+    dcterms:date "2026-04-02"^^xsd:date ;
+    dcterms:rights """
+        © 2026 Mosae Zorg Industries UG. All rights reserved.
+        Patent-protected technology. The underlying NEMP quantum 
+        algorithm is not disclosed in this specification.
+        Attribution required for any use. Commercial licensing: 
+        partnerships@mosaeq.com
+    """@en ;
+    owl:versionInfo "1.0.0" ;
+    dcterms:description """
+        Formal ontology for translational preclinical safety 
+        concordance. Encodes molecular entities as quaternion 
+        coordinates on the unit hypersphere S³ using NEMP 
+        (Non-Euclidean Molecular Partitioning) quantum-computed 
+        properties. Cross-references tissue trap zone 
+        classifications against FDA FAERS, NTP DrugMatrix, 
+        Open TG-GATEs, and NLM DailyMed.
+    """@en .
+
+
+# ═══════════════════════════════════════════════════════
+# CLASSES
+# ═══════════════════════════════════════════════════════
+
+# --- Core Molecular Entity ---
+
+msq:Compound a owl:Class ;
+    rdfs:label "Chemical Compound"@en ;
+    rdfs:comment """
+        A small molecule identified by SMILES, PubChem CID, 
+        or IUPAC name. The fundamental entity of the ontology.
+    """@en .
+
+msq:BiologicEntity a owl:Class ;
+    rdfs:label "Biologic Entity"@en ;
+    rdfs:comment """
+        A large molecule (antibody, protein, viral vector, 
+        peptide) identified by sequence. Not currently 
+        computable by NEMP small-molecule pipeline.
+    """@en .
+
+# --- S³ Hypersphere Coordinate System ---
+
+msq:S3Coordinate a owl:Class ;
+    rdfs:label "S³ Quaternion Coordinate"@en ;
+    rdfs:comment """
+        A point on the unit hypersphere S³ defined by 
+        theta (θ) and phi (φ) angles derived from NEMP 
+        quantum-computed molecular properties.
+        θ = f(LogP) — lipophilicity axis
+        φ = f(TPSA) — polarity axis
+        Together they define the compound's position in 
+        pharmacological property space.
+    """@en .
+
+# --- Tissue Trap Zones ---
+
+msq:TrapZone a owl:Class ;
+    rdfs:label "Tissue Trap Zone"@en ;
+    rdfs:comment """
+        A pharmacological neighbourhood on S³ where 
+        compounds accumulate in specific tissues before 
+        clinical exposure. Trap zones predict organ-level 
+        adverse events from molecular structure alone.
+    """@en .
+
+msq:BrainTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Brain Trap Zone"@en ;
+    rdfs:comment """
+        BBB-penetrating compounds. High lipophilicity 
+        (LogP > 3.0) + low polar surface area (TPSA < 90).
+        CNS accumulation causes sedation, respiratory 
+        depression, neuropsychiatric effects.
+        Reference: Kelder et al. (1999) Pharm Res 16:1514.
+    """@en ;
+    msq:threshold_logp "3.0"^^xsd:float ;
+    msq:threshold_tpsa "90.0"^^xsd:float ;
+    msq:threshold_operator "LogP > 3.0 AND TPSA < 90" .
+
+msq:LysosomalTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Lysosomal Trap Zone"@en ;
+    rdfs:comment """
+        pH-partitioning trapping. Lipophilic amines 
+        (LogP > 1.0, basic pKa > 6.5) diffuse into 
+        lysosomes (pH 4-5), protonate, and cannot 
+        diffuse back. Accumulates in liver, kidney, 
+        lung, spleen. Causes phospholipidosis.
+        Reference: Kazmi et al. (2013) Drug Metab 
+        Dispos 41:897-905.
+    """@en ;
+    msq:threshold_logp "1.0"^^xsd:float ;
+    msq:threshold_pka "6.5"^^xsd:float ;
+    msq:threshold_operator "LogP > 1.0 AND basic amine pKa > 6.5" .
+
+msq:GutTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Gut Trap Zone"@en ;
+    rdfs:comment """
+        GI mucosa sequestration. Lipophilic compounds 
+        (LogP > 3.0) with moderate polarity (TPSA 70-120) 
+        concentrate in gut tissue. Causes nausea, emesis, 
+        GI haemorrhage. The functional blind spot that 
+        histopathology misses.
+    """@en ;
+    msq:threshold_logp "3.0"^^xsd:float ;
+    msq:threshold_tpsa_min "70.0"^^xsd:float ;
+    msq:threshold_tpsa_max "120.0"^^xsd:float ;
+    msq:threshold_operator "LogP > 3.0 AND TPSA 70-120" .
+
+msq:PlasmaRetained a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Plasma-Retained Zone"@en ;
+    rdfs:comment """
+        Hydrophilic compounds retained in circulation.
+        Low lipophilicity (LogP < 2.0) + high polarity 
+        (TPSA > 100). Predictable PK. Lowest tissue-trap 
+        risk. Adverse events are dose-dependent, not 
+        accumulation-driven.
+    """@en ;
+    msq:threshold_logp "2.0"^^xsd:float ;
+    msq:threshold_tpsa "100.0"^^xsd:float ;
+    msq:threshold_operator "LogP < 2.0 AND TPSA > 100" .
+
+msq:RenalTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Renal Trap Zone"@en ;
+    rdfs:comment """
+        Kidney tubular accumulation. Hydrophilic ionizable 
+        compounds (LogP < 1.0, carboxylic acids, sulfonates) 
+        concentrate in renal tubules. Causes crystalluria, 
+        nephrotoxicity, proteinuria.
+    """@en ;
+    msq:threshold_logp "1.0"^^xsd:float ;
+    msq:threshold_operator "LogP < 1.0 AND ionizable acid" .
+
+msq:MitochondrialTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Mitochondrial Trap Zone"@en ;
+    rdfs:comment """
+        Mitochondrial accumulation via membrane potential.
+        Lipophilic cations (LogP > 3.0, permanent positive 
+        charge) are driven into mitochondria by the ~180mV 
+        membrane potential. Causes lactic acidosis, myopathy, 
+        cardiomyopathy. Note: nitro groups [N+](=O) are NOT 
+        cationic — they do not trigger this trap.
+    """@en ;
+    msq:threshold_logp "3.0"^^xsd:float ;
+    msq:threshold_operator "LogP > 3.0 AND cationic charge" .
+
+msq:MelaninTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Melanin Trap Zone"@en ;
+    rdfs:comment """
+        Melanin binding in retinal pigment epithelium and 
+        skin. Aminoquinolines and polycyclic aromatic amines 
+        with moderate lipophilicity (LogP 2-5). Causes 
+        retinopathy, skin discolouration, phototoxicity.
+    """@en ;
+    msq:threshold_operator "Aminoquinoline scaffold AND LogP 2.0-5.0" .
+
+msq:BoneTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Bone Trap Zone"@en ;
+    rdfs:comment """
+        Calcium chelation and bone matrix deposition.
+        Phosphonate groups, polyketide chelators (MW > 300).
+        Causes dental discolouration, osteonecrosis.
+        Contraindicated in pregnancy and paediatric use.
+    """@en ;
+    msq:threshold_operator "Calcium chelating group AND MW > 300" .
+
+msq:PlacentalTrap a owl:Class ;
+    rdfs:subClassOf msq:TrapZone ;
+    rdfs:label "Placental Trap Zone"@en ;
+    rdfs:comment """
+        Predicted placental barrier crossing. Lipophilic 
+        (LogP 1-5), low MW (< 500), moderate polarity 
+        (TPSA < 80). Fetal exposure likely. Pregnancy 
+        safety assessment required.
+    """@en ;
+    msq:threshold_logp_min "1.0"^^xsd:float ;
+    msq:threshold_logp_max "5.0"^^xsd:float ;
+    msq:threshold_mw "500.0"^^xsd:float ;
+    msq:threshold_tpsa "80.0"^^xsd:float ;
+    msq:threshold_operator "LogP 1.0-5.0 AND MW < 500 AND TPSA < 80" .
+
+# --- Efflux Transporters ---
+
+msq:EffluxTransporter a owl:Class ;
+    rdfs:label "Efflux Transporter"@en ;
+    rdfs:comment """
+        Membrane protein that actively pumps compounds 
+        out of cells or across barriers. Critical 
+        determinant of brain accumulation and tissue 
+        trap zone outcome.
+    """@en .
+
+msq:PGlycoprotein a owl:NamedIndividual ;
+    a msq:EffluxTransporter ;
+    rdfs:label "P-glycoprotein (P-gp / ABCB1)"@en ;
+    rdfs:comment """
+        Primary efflux pump at the blood-brain barrier.
+        Recognises substrates via hydrogen bond donors.
+        HBD = 0 → NOT substrate → brain accumulation.
+        HBD >= 1 → potential substrate → brain efflux.
+        The safety switch for CNS-active opioids.
+        Reference: Polli et al. (2001) JPET 299:620.
+    """@en ;
+    msq:gene "ABCB1" ;
+    msq:location "Blood-brain barrier, intestine, kidney, liver" .
+
+msq:BCRP a owl:NamedIndividual ;
+    a msq:EffluxTransporter ;
+    rdfs:label "Breast Cancer Resistance Protein (BCRP / ABCG2)"@en ;
+    rdfs:comment """
+        Second major efflux transporter at BBB.
+        DFNZ is a dual P-gp/BCRP substrate — both 
+        transporters contribute to its safety profile.
+    """@en ;
+    msq:gene "ABCG2" ;
+    msq:location "Blood-brain barrier, intestine, placenta" .
+
+# --- Safety Assessments ---
+
+msq:SafetyProfile a owl:Class ;
+    rdfs:label "Preclinical Safety Profile"@en ;
+    rdfs:comment """
+        Complete ICH M3(R2)-aligned safety assessment 
+        computed by the NEMP quantum algorithm from 
+        SMILES structure alone.
+    """@en .
+
+msq:OpioidPanel a owl:Class ;
+    rdfs:label "Opioid & CNS Safety Panel"@en ;
+    rdfs:comment """
+        Post-processing classification layer applied 
+        to NEMP quantum-computed properties for compounds 
+        in the Brain Trap zone. Predicts P-gp substrate 
+        status, brain/plasma ratio, respiratory depression 
+        risk, addiction liability, and tolerance risk.
+        Not an independent computation — consumes NEMP 
+        quantum values.
+    """@en .
+
+# --- Concordance ---
+
+msq:Concordance a owl:Class ;
+    rdfs:label "Translational Concordance"@en ;
+    rdfs:comment """
+        Agreement between quantum-predicted safety signals 
+        and real-world pharmacovigilance data. When NEMP 
+        predicts Brain Trap and FAERS confirms respiratory 
+        depression — that is concordance.
+    """@en .
+
+msq:ConcordanceStatus a owl:Class ;
+    rdfs:label "Concordance Status"@en .
+
+msq:Confirmed a owl:NamedIndividual ;
+    a msq:ConcordanceStatus ;
+    rdfs:label "CONFIRMED"@en ;
+    rdfs:comment "FAERS adverse events match predicted trap zone." .
+
+msq:Pending a owl:NamedIndividual ;
+    a msq:ConcordanceStatus ;
+    rdfs:label "PENDING"@en ;
+    rdfs:comment "FAERS returns NOT_FOUND — Digital Cliff." .
+
+msq:Contradicted a owl:NamedIndividual ;
+    a msq:ConcordanceStatus ;
+    rdfs:label "CONTRADICTED"@en ;
+    rdfs:comment "FAERS data does not support predicted trap zone." .
+
+# --- Digital Cliff ---
+
+msq:DigitalCliff a owl:Class ;
+    rdfs:label "Digital Cliff"@en ;
+    rdfs:comment """
+        Systematic gap in FDA FAERS where clinically 
+        validated compounds return NOT_FOUND because 
+        they were never marketed in the United States.
+        The FAERS Product Dictionary is built from 
+        Structured Product Labeling for US-marketed 
+        drugs only.
+        Reference: Potter et al. (2025) Clinical 
+        Pharmacology & Therapeutics. PMC12393772.
+        Discovery: msq.mosaeQ.com (2026).
+    """@en .
+
+# --- Data Sources ---
+
+msq:DataSource a owl:Class ;
+    rdfs:label "Data Source"@en .
+
+msq:NEMPQuantum a owl:NamedIndividual ;
+    a msq:DataSource ;
+    rdfs:label "NEMP Quantum Computation"@en ;
+    rdfs:comment """
+        Values computed by the NEMP algorithm from SMILES 
+        structure. Deterministic. No training data. 
+        Patent-protected.
+    """@en .
+
+msq:PubChemLookup a owl:NamedIndividual ;
+    a msq:DataSource ;
+    rdfs:label "PubChem Database Lookup"@en ;
+    rdfs:comment """
+        Values retrieved from NCBI PubChem. Precomputed.
+        Public. Not deterministic from SMILES — may use 
+        experimental or predicted values from various 
+        sources.
+    """@en .
+
+msq:FAERS a owl:NamedIndividual ;
+    a msq:DataSource ;
+    rdfs:label "FDA FAERS (Adverse Event Reporting System)"@en ;
+    rdfs:comment """
+        Post-market adverse event reports. Subject to 
+        Digital Cliff limitation for non-US-marketed drugs.
+    """@en .
+
+msq:DrugMatrix a owl:NamedIndividual ;
+    a msq:DataSource ;
+    rdfs:label "NTP DrugMatrix"@en ;
+    rdfs:comment "Repeat-dose histopathology. 365 compounds."@en .
+
+msq:TGGATEs a owl:NamedIndividual ;
+    a msq:DataSource ;
+    rdfs:label "Open TG-GATEs"@en ;
+    rdfs:comment "Toxicogenomics expression data. 98 compounds."@en .
+
+msq:DailyMed a owl:NamedIndividual ;
+    a msq:DataSource ;
+    rdfs:label "NLM DailyMed"@en ;
+    rdfs:comment "FDA-approved drug labeling. All approved drugs."@en .
+
+
+# ═══════════════════════════════════════════════════════
+# OBJECT PROPERTIES
+# ═══════════════════════════════════════════════════════
+
+msq:hasS3Coordinate a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:S3Coordinate ;
+    rdfs:label "has S³ coordinate"@en .
+
+msq:inTrapZone a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:TrapZone ;
+    rdfs:label "classified in trap zone"@en .
+
+msq:hasSafetyProfile a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:SafetyProfile ;
+    rdfs:label "has safety profile"@en .
+
+msq:hasOpioidPanel a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:OpioidPanel ;
+    rdfs:label "has opioid safety panel"@en .
+
+msq:hasConcordance a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:Concordance ;
+    rdfs:label "has concordance assessment"@en .
+
+msq:isSubstrateOf a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:EffluxTransporter ;
+    rdfs:label "is substrate of efflux transporter"@en .
+
+msq:hasDataSource a owl:ObjectProperty ;
+    rdfs:range msq:DataSource ;
+    rdfs:label "has data source"@en .
+
+msq:hasDigitalCliffStatus a owl:ObjectProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range msq:DigitalCliff ;
+    rdfs:label "falls off Digital Cliff"@en .
+
+
+# ═══════════════════════════════════════════════════════
+# DATATYPE PROPERTIES
+# ═══════════════════════════════════════════════════════
+
+msq:smiles a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:string ;
+    rdfs:label "SMILES notation"@en .
+
+msq:pubchemCID a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:integer ;
+    rdfs:label "PubChem Compound ID"@en .
+
+msq:theta a owl:DatatypeProperty ;
+    rdfs:domain msq:S3Coordinate ;
+    rdfs:range xsd:float ;
+    rdfs:label "θ (theta) — lipophilicity axis on S³"@en .
+
+msq:phi a owl:DatatypeProperty ;
+    rdfs:domain msq:S3Coordinate ;
+    rdfs:range xsd:float ;
+    rdfs:label "φ (phi) — polarity axis on S³"@en .
+
+msq:logP a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:float ;
+    rdfs:label "LogP (octanol-water partition coefficient)"@en .
+
+msq:tpsa a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:float ;
+    rdfs:label "TPSA (topological polar surface area, Å²)"@en .
+
+msq:pKa a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:float ;
+    rdfs:label "pKa (most basic nitrogen)"@en .
+
+msq:molecularWeight a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:float ;
+    rdfs:label "Molecular weight (Da)"@en .
+
+msq:hbd a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:integer ;
+    rdfs:label "Hydrogen bond donor count"@en .
+
+msq:ppb a owl:DatatypeProperty ;
+    rdfs:domain msq:Compound ;
+    rdfs:range xsd:float ;
+    rdfs:label "Plasma protein binding (%)"@en .
+
+msq:brainPlasmaRatio a owl:DatatypeProperty ;
+    rdfs:domain msq:OpioidPanel ;
+    rdfs:range xsd:float ;
+    rdfs:label "Brain-to-plasma concentration ratio"@en .
+
+msq:pgpSubstrate a owl:DatatypeProperty ;
+    rdfs:domain msq:OpioidPanel ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "P-glycoprotein substrate status"@en .
+
+msq:respiratoryRisk a owl:DatatypeProperty ;
+    rdfs:domain msq:OpioidPanel ;
+    rdfs:range xsd:string ;
+    rdfs:label "Respiratory depression risk (High/Moderate/Low/None)"@en .
+
+msq:addictionLiability a owl:DatatypeProperty ;
+    rdfs:domain msq:OpioidPanel ;
+    rdfs:range xsd:string ;
+    rdfs:label "Addiction liability (High/Moderate/Low)"@en .
+
+msq:faersCount a owl:DatatypeProperty ;
+    rdfs:domain msq:Concordance ;
+    rdfs:range xsd:integer ;
+    rdfs:label "FAERS adverse event report count"@en .
+
+msq:concordanceStatus a owl:DatatypeProperty ;
+    rdfs:domain msq:Concordance ;
+    rdfs:range xsd:string ;
+    rdfs:label "Concordance status (Confirmed/Pending/Contradicted)"@en .
+
+msq:sha256Hash a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "SHA-256 cryptographic hash for auditability"@en .
+
+msq:computationTimestamp a owl:DatatypeProperty ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "ISO 8601 computation timestamp"@en .
+
+
+# ═══════════════════════════════════════════════════════
+# EXAMPLE INSTANCE: Fluoronitrazene (FNZ)
+# ═══════════════════════════════════════════════════════
+
+msq:FNZ a msq:Compound ;
+    rdfs:label "Fluoronitrazene (FNZ)"@en ;
+    msq:smiles "CCN(CC)CCn1c(Cc2ccc(OCCF)cc2)nc3cc([N+](=O)[O-])ccc13" ;
+    msq:logP 4.23 ;
+    msq:tpsa 73.0 ;
+    msq:molecularWeight 414.5 ;
+    msq:hbd 0 ;
+    msq:ppb 94.6 ;
+    msq:hasS3Coordinate msq:FNZ_coord ;
+    msq:inTrapZone msq:BrainTrap, msq:LysosomalTrap, 
+        msq:GutTrap, msq:PlacentalTrap ;
+    msq:hasSafetyProfile msq:FNZ_safety ;
+    msq:hasOpioidPanel msq:FNZ_opioid ;
+    msq:hasDigitalCliffStatus msq:FNZ_cliff ;
+    msq:hasDataSource msq:NEMPQuantum .
+
+msq:FNZ_coord a msq:S3Coordinate ;
+    msq:theta 1.86 ;
+    msq:phi 0.91 .
+
+msq:FNZ_opioid a msq:OpioidPanel ;
+    msq:pgpSubstrate false ;
+    msq:brainPlasmaRatio 2.96 ;
+    msq:respiratoryRisk "High" ;
+    msq:addictionLiability "High" .
+
+msq:FNZ_cliff a msq:DigitalCliff ;
+    rdfs:comment "FAERS NOT_FOUND. Novel compound." .
+
+
+# ═══════════════════════════════════════════════════════
+# EXAMPLE INSTANCE: DFNZ (safe metabolite)
+# ═══════════════════════════════════════════════════════
+
+msq:DFNZ a msq:Compound ;
+    rdfs:label "N-desethyl-fluoronitrazene (DFNZ)"@en ;
+    msq:smiles "CCNCCn1c(Cc2ccc(OCCF)cc2)nc3cc([N+](=O)[O-])ccc13" ;
+    msq:logP 3.5 ;
+    msq:tpsa 73.0 ;
+    msq:molecularWeight 386.4 ;
+    msq:hbd 1 ;
+    msq:ppb 91.5 ;
+    msq:hasS3Coordinate msq:DFNZ_coord ;
+    msq:inTrapZone msq:BrainTrap, msq:LysosomalTrap, 
+        msq:GutTrap, msq:PlacentalTrap ;
+    msq:isSubstrateOf msq:PGlycoprotein, msq:BCRP ;
+    msq:hasSafetyProfile msq:DFNZ_safety ;
+    msq:hasOpioidPanel msq:DFNZ_opioid ;
+    msq:hasDigitalCliffStatus msq:DFNZ_cliff ;
+    msq:hasDataSource msq:NEMPQuantum .
+
+msq:DFNZ_coord a msq:S3Coordinate ;
+    msq:theta 1.54 ;
+    msq:phi 0.91 .
+
+msq:DFNZ_opioid a msq:OpioidPanel ;
+    msq:pgpSubstrate true ;
+    msq:brainPlasmaRatio 0.65 ;
+    msq:respiratoryRisk "Low" ;
+    msq:addictionLiability "Low" ;
+    rdfs:comment """
+        Brain Trap coordinates but P-gp/BCRP efflux 
+        limits accumulation. One ethyl group removed 
+        from FNZ exposes NH → P-gp recognition → safety.
+        Reference: Michaelides et al. (2026) Nature.
+    """ .
+
+msq:DFNZ_cliff a msq:DigitalCliff ;
+    rdfs:comment "FAERS NOT_FOUND. Novel compound." .
+
+
+# ═══════════════════════════════════════════════════════
+# EXAMPLE INSTANCE: Fentanyl (reference)
+# ═══════════════════════════════════════════════════════
+
+msq:Fentanyl a msq:Compound ;
+    rdfs:label "Fentanyl"@en ;
+    msq:pubchemCID 3345 ;
+    msq:logP 4.05 ;
+    msq:tpsa 23.6 ;
+    msq:hasS3Coordinate msq:Fentanyl_coord ;
+    msq:inTrapZone msq:BrainTrap, msq:LysosomalTrap ;
+    msq:hasConcordance msq:Fentanyl_concordance ;
+    msq:hasDataSource msq:NEMPQuantum .
+
+msq:Fentanyl_coord a msq:S3Coordinate ;
+    msq:theta 1.90 ;
+    msq:phi 0.30 .
+
+msq:Fentanyl_concordance a msq:Concordance ;
+    msq:faersCount 112077 ;
+    msq:concordanceStatus "Confirmed" ;
+    rdfs:comment "Brain Trap prediction confirmed by FAERS: respiratory depression, somnolence, loss of consciousness." .
