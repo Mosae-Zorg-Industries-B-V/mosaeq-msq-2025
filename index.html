@@ -516,11 +516,6 @@ body {
 }
 .app-tile:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); }
 .app-tile.active { border-left-color: #991b1b; background: rgba(255,255,255,0.06); }
-.app-tile .app-dot {
-  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 0.7rem; letter-spacing: 0.5px;
-}
 .app-tile .app-info { min-width: 0; }
 .app-tile .app-name {
   font-size: 0.85rem; font-weight: 600; letter-spacing: -0.2px;
@@ -530,7 +525,6 @@ body {
   font-size: 0.72rem; color: rgba(255,255,255,0.5);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.app-tile .lock-icon { font-size: 0.72rem; margin-left: auto; opacity: 0.4; }
 </style>
 </head>
 <body>
@@ -540,29 +534,19 @@ body {
 <div class="app-launcher-panel" id="app-launcher-panel">
   <h3>mosaeQ Apps</h3>
   <a class="app-tile" href="https://mosaeq.com" data-app="mosaeq.com">
-    <div class="app-dot" style="background:#991b1b;">mQ</div>
     <div class="app-info"><div class="app-name">mosaeQ.com</div><div class="app-desc">Quantum preclinical safety</div></div>
   </a>
   <a class="app-tile" href="https://msq.mosaeq.com" data-app="msq.mosaeq.com">
-    <div class="app-dot" style="background:#E53935;">msq</div>
     <div class="app-info"><div class="app-name">msq.mosaeQ.com</div><div class="app-desc">Concordance auditor</div></div>
   </a>
   <a class="app-tile" href="https://create.mosaeq.com" data-app="create.mosaeq.com">
-    <div class="app-dot" style="background:#2563eb;">crt</div>
     <div class="app-info"><div class="app-name">create.mosaeQ.com</div><div class="app-desc">Molecular design</div></div>
   </a>
   <a class="app-tile" href="https://outbreak.mosaeq.com" data-app="outbreak.mosaeq.com">
-    <div class="app-dot" style="background:#059669;">ob</div>
     <div class="app-info"><div class="app-name">outbreak.mosaeQ.com</div><div class="app-desc">Pathogen surveillance</div></div>
   </a>
   <a class="app-tile" href="https://q0q0.mosaeq.com" data-app="q0q0.mosaeq.com">
-    <div class="app-dot" style="background:#7c3aed;">q0</div>
     <div class="app-info"><div class="app-name">q0q0.mosaeQ.com</div><div class="app-desc">Cosmetic safety</div></div>
-  </a>
-  <a class="app-tile" href="https://space.mosaeq.com" data-app="space.mosaeq.com">
-    <div class="app-dot" style="background:#334155;">sp</div>
-    <div class="app-info"><div class="app-name">space.mosaeQ.com</div><div class="app-desc">Cislunar defence — restricted</div></div>
-    <span class="lock-icon">&#128274;</span>
   </a>
 </div>
 
