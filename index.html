@@ -106,6 +106,11 @@ body {
   margin-bottom: 2px;
 }
 .ham-link:hover { background: rgba(13,27,42,0.05); }
+.ham-new-tag {
+  display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; background: var(--success); color: var(--white);
+  padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle;
+}
 .ham-divider { height: 1px; background: var(--border); margin: 12px 0; }
 .ham-auth { padding: 4px 0; }
 
@@ -462,57 +467,94 @@ body {
 
 /* ── ONTOLOGY SECTION ── */
 .ontology-section {
-  padding: 3rem 2rem; background: var(--navy);
-  border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 4rem 2rem; background: var(--white);
 }
-.ontology-inner { max-width: 800px; margin: 0 auto; text-align: center; }
+.ontology-inner { max-width: 960px; margin: 0 auto; }
 .ontology-section h2 {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--white);
+  font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; color: #0a192f;
 }
 .ontology-section .onto-sub {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.9rem; color: var(--chrome-light); margin-bottom: 2rem;
+  font-size: 1rem; color: var(--chrome); margin-bottom: 1.5rem; font-style: italic;
 }
-.onto-meta {
-  display: grid; grid-template-columns: auto 1fr; gap: 6px 1.5rem;
-  text-align: left; margin-bottom: 1.5rem;
-}
-.onto-meta .meta-label {
+.ontology-section .onto-intro {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.82rem; color: var(--chrome-light); font-weight: 500;
+  font-size: 0.92rem; color: var(--navy); line-height: 1.7; margin-bottom: 2.5rem;
+  max-width: 740px;
 }
-.onto-meta .meta-value {
-  font-family: 'JetBrains Mono', 'DM Mono', monospace;
-  font-size: 0.82rem; color: var(--white); font-weight: 500;
+/* coverage grid */
+.onto-coverage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 2.5rem; }
+.onto-card {
+  border: 1px solid var(--border); border-radius: 8px; padding: 20px 16px;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
-.onto-vocab {
-  text-align: left; margin-bottom: 1.5rem;
-}
-.onto-vocab h3 {
+.onto-card:hover { box-shadow: 0 4px 16px rgba(13,27,42,0.08); transform: translateY(-2px); }
+.onto-card .card-icon { width: 28px; height: 28px; margin-bottom: 8px; color: #0a192f; }
+.onto-card .card-title {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem;
+  font-size: 0.88rem; font-weight: 600; color: #0a192f; margin-bottom: 4px;
 }
-.onto-vocab .class-list {
-  font-family: 'JetBrains Mono', 'DM Mono', monospace;
-  font-size: 0.8rem; color: var(--chrome-light); line-height: 1.9;
+.onto-card .card-desc {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.78rem; color: var(--chrome); line-height: 1.5;
 }
-.onto-buttons { display: flex; gap: 12px; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+/* architecture diagram */
+.onto-arch { margin-bottom: 2.5rem; }
+.onto-arch-flow {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  flex-wrap: wrap; margin-bottom: 12px;
+}
+.onto-arch-box {
+  background: #0a192f; color: var(--white); padding: 14px 24px; border-radius: 8px;
+  font-family: 'JetBrains Mono', 'DM Mono', monospace; font-size: 0.82rem; font-weight: 500;
+  text-align: center; white-space: nowrap;
+}
+.onto-arch-arrow {
+  font-size: 1.4rem; color: var(--chrome); padding: 0 12px;
+  font-family: 'Inter', sans-serif;
+}
+.onto-arch-label {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.82rem; color: var(--chrome); text-align: center; font-style: italic;
+}
+/* download area */
+.onto-download { margin-bottom: 2rem; }
+.onto-download h3 {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 1.1rem; font-weight: 600; color: #0a192f; margin-bottom: 1rem;
+}
+.onto-dl-buttons { display: flex; gap: 12px; margin-bottom: 1.25rem; flex-wrap: wrap; }
 .btn-onto {
   display: inline-block; padding: 12px 28px; border-radius: 8px;
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;
+  font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: all 0.2s;
+  cursor: pointer; border: 2px solid #991b1b;
 }
-.btn-onto-primary { background: var(--red); color: var(--white); }
-.btn-onto-primary:hover { background: var(--red-hover); transform: translateY(-2px); }
-.btn-onto-secondary { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
-.btn-onto-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
-.onto-licensing {
+.btn-onto-primary { background: #991b1b; color: var(--white); }
+.btn-onto-primary:hover { background: #7f1d1d; transform: translateY(-2px); }
+.btn-onto-outline { background: transparent; color: #991b1b; }
+.btn-onto-outline:hover { background: rgba(153,27,27,0.06); transform: translateY(-2px); }
+.btn-onto-disabled {
+  background: transparent; color: #991b1b; opacity: 0.7; cursor: pointer;
+}
+.btn-onto-disabled:hover { opacity: 1; }
+/* license links */
+.onto-licenses { display: flex; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.onto-licenses a {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.82rem; color: var(--chrome-light); font-style: italic;
+  font-size: 0.82rem; color: #991b1b; text-decoration: none; font-weight: 500;
 }
-.onto-licensing a { color: var(--chrome-light); text-decoration: underline; }
-.onto-licensing a:hover { color: var(--white); }
+.onto-licenses a:hover { text-decoration: underline; }
+.onto-footer-text {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 0.82rem; color: var(--chrome); line-height: 1.6; margin-bottom: 0.75rem;
+  max-width: 740px;
+}
+.onto-version {
+  font-family: 'JetBrains Mono', 'DM Mono', monospace;
+  font-size: 0.72rem; color: var(--chrome-light); letter-spacing: 0.3px;
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
@@ -525,8 +567,11 @@ body {
   .result-props { flex-direction: column; gap: 0.5rem; }
   .opioid-panel .op-grid { grid-template-columns: 1fr; }
   .screening-options { flex-direction: column; gap: 0.5rem; }
-  .onto-meta { grid-template-columns: 1fr; }
-  .onto-buttons { flex-direction: column; align-items: stretch; }
+  .onto-coverage { grid-template-columns: 1fr; }
+  .onto-dl-buttons { flex-direction: column; align-items: stretch; }
+  .onto-licenses { flex-direction: column; gap: 0.75rem; }
+  .onto-arch-flow { flex-direction: column; gap: 8px; }
+  .onto-arch-arrow { transform: rotate(90deg); padding: 0; }
 }
 
 /* ── APP LAUNCHER ── */
@@ -651,6 +696,7 @@ body {
   <a class="ham-link" href="#cliff" onclick="closeHamburger()">Digital Cliff</a>
   <a class="ham-link" href="#databases" onclick="closeHamburger()">Databases</a>
   <a class="ham-link" href="#ontology" onclick="closeHamburger()">Ontology</a>
+  <a class="ham-link" href="https://green.mosaeQ.com" target="_blank" rel="noopener noreferrer" onclick="closeHamburger()">&#127807; Green Pharma <span class="ham-new-tag">NEW</span></a>
   <a class="ham-link" href="#podcasts" onclick="closeHamburger()">Podcasts</a>
   <a class="ham-link" href="#beta" onclick="closeHamburger()">Beta Access</a>
   <div class="ham-divider"></div>
@@ -926,27 +972,91 @@ body {
 <!-- §8 ONTOLOGY -->
 <section class="ontology-section" id="ontology">
   <div class="ontology-inner">
-    <h2>Quantum Safety Ontology (msq: namespace)</h2>
-    <p class="onto-sub">Formal vocabulary for translational preclinical safety concordance on S&sup3;.</p>
-    <div class="onto-meta">
-      <span class="meta-label">Namespace</span>
-      <span class="meta-value">https://msq.mosaeq.com/ontology#</span>
-      <span class="meta-label">Prefix</span>
-      <span class="meta-value">msq:</span>
-      <span class="meta-label">Version</span>
-      <span class="meta-value">1.0.0</span>
-    </div>
-    <div class="onto-vocab">
-      <h3>Core Vocabulary</h3>
-      <div class="class-list">
-        Compound, S3Coordinate, TrapZone, EffluxTransporter, SafetyProfile, OpioidPanel, Concordance, DigitalCliff, DataSource, EnvironmentalFate, AuxiliaryMetabolicGene, AntiDefenseGene, ViralLifecycle
+    <h2>msq: Quantum Safety Ontology v2.0.0</h2>
+    <p class="onto-sub">A machine-readable rulebook for quantum-computed drug safety classification</p>
+    <p class="onto-intro">The msq: ontology defines how molecular safety data is structured, classified, and queried across the mosaeQ platform. It receives computed property values from the quantum engine and classifies compounds into safety zones using formal logic. It connects to international regulatory formats used by EMA, FDA, and ECHA.</p>
+
+    <div class="onto-coverage">
+      <!-- Row 1 -->
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+        <div class="card-title">Molecular Positioning</div>
+        <div class="card-desc">Every compound gets a mathematically precise 4D safety coordinate</div>
+      </div>
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <div class="card-title">Safety Zones</div>
+        <div class="card-desc">9 default zones + unlimited custom zones defined by threshold conditions</div>
+      </div>
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h6"/></svg>
+        <div class="card-title">Mechanism Naming</div>
+        <div class="card-desc">Zones named by physical mechanism, not tissue appearance</div>
+      </div>
+      <!-- Row 2 -->
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        <div class="card-title">Concordance</div>
+        <div class="card-desc">Validates predictions against FAERS, DailyMed, DrugMatrix, TG-GATEs</div>
+      </div>
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c-4-2.5-8-6-8-11a8 8 0 0116 0c0 5-4 8.5-8 11z"/></svg>
+        <div class="card-title">Environmental Fate</div>
+        <div class="card-desc">Tracks pharmaceutical discharge across 7 environmental compartments</div>
+      </div>
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/><circle cx="7" cy="6" r="1.5" fill="currentColor"/><circle cx="17" cy="12" r="1.5" fill="currentColor"/><circle cx="10" cy="18" r="1.5" fill="currentColor"/></svg>
+        <div class="card-title">Regulatory Status</div>
+        <div class="card-desc">EU CosIng, REACH, IFRA, SCCS ban/restriction flags</div>
+      </div>
+      <!-- Row 3 -->
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="4"/><circle cx="16" cy="16" r="4"/><path d="M11 11l2 2"/></svg>
+        <div class="card-title">Large Molecules</div>
+        <div class="card-desc">Extends to antibodies, spike proteins, gene therapy vectors</div>
+      </div>
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <div class="card-title">Circadian Context</div>
+        <div class="card-desc">Time-of-day and lunar phase effects on drug metabolism</div>
+      </div>
+      <div class="onto-card">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M16 4l2 2-4 4"/><path d="M22 2l-6 2 2 6"/></svg>
+        <div class="card-title">Virus-Host Evolution</div>
+        <div class="card-desc">Cx43 targeting and pandemic potential classification</div>
       </div>
     </div>
-    <div class="onto-buttons">
-      <a href="#" onclick="downloadOntology(event)" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
-      <a href="mailto:partnerships@mosaeq.com" class="btn-onto btn-onto-secondary">Contact for Licensing</a>
+
+    <!-- Architecture diagram -->
+    <div class="onto-arch">
+      <div class="onto-arch-flow">
+        <div class="onto-arch-box">Quantum Engine</div>
+        <span class="onto-arch-arrow">&rarr;</span>
+        <div class="onto-arch-box">OWL Reasoner + Ontology</div>
+        <span class="onto-arch-arrow">&rarr;</span>
+        <div class="onto-arch-box">SPARQL Query</div>
+      </div>
+      <p class="onto-arch-label">Three-layer separation: the engine computes, the ontology classifies, SPARQL queries.</p>
     </div>
-    <p class="onto-licensing">Attribution required. Commercial use by license only.</p>
+
+    <!-- Download -->
+    <div class="onto-download">
+      <h3>Access the Ontology</h3>
+      <div class="onto-dl-buttons" id="onto-dl-anon">
+        <a href="#" onclick="downloadOntology(event)" class="btn-onto btn-onto-disabled">Sign in to download ontology specification</a>
+      </div>
+      <div class="onto-dl-buttons" id="onto-dl-auth" style="display:none;">
+        <a href="#" onclick="downloadOntology(event)" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
+        <a href="#" onclick="downloadShacl(event)" class="btn-onto btn-onto-outline">Download SHACL Shapes (.ttl)</a>
+      </div>
+      <div class="onto-licenses">
+        <a href="mailto:partnerships@mosaeq.com?subject=msq%20Ontology%20Enterprise%20License">Request Enterprise License</a>
+        <a href="mailto:partnerships@mosaeq.com?subject=msq%20Ontology%20Academic%20License">Request Academic License</a>
+        <a href="mailto:partnerships@mosaeq.com?subject=msq%20Ontology%20Government%20License">Request Government License</a>
+      </div>
+      <p class="onto-footer-text">The msq: quantum safety ontology is available for evaluation after sign-in. Commercial integration, government deployment, and academic research each require a license from Mosae Zorg Industries UG.</p>
+      <p class="onto-version">v2.0.0 | April 2026 | OWL 2 DL | 39 classes | 87 properties | 11 SHACL shapes | 18 namespace alignments (ChEBI, MedDRA, NCIT, CDISC/SEND, ENVO, GO, OBI, SNOMED CT)</p>
+    </div>
   </div>
 </section>
 
@@ -1122,10 +1232,28 @@ async function downloadOntology(e) {
   }
   triggerOntologyDownload();
 }
+async function downloadShacl(e) {
+  e.preventDefault();
+  var isAuth = auth0Client && await auth0Client.isAuthenticated();
+  if (!isAuth) {
+    localStorage.setItem('msq_pending_download', 'shacl');
+    await auth0Client.loginWithRedirect();
+    return;
+  }
+  triggerShaclDownload();
+}
 function triggerOntologyDownload() {
   var a = document.createElement('a');
-  a.href = '/ontology.ttl';
-  a.download = 'msq-ontology-v1.0.0.ttl';
+  a.href = '/ontology/msq-ontology-v2.0.0.ttl';
+  a.download = 'msq-ontology-v2.0.0.ttl';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+function triggerShaclDownload() {
+  var a = document.createElement('a');
+  a.href = '/ontology/msq-shacl-v2.0.0.ttl';
+  a.download = 'msq-shacl-v2.0.0.ttl';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
