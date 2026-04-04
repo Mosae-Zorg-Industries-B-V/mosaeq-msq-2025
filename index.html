@@ -66,6 +66,7 @@ body {
   align-items: center; justify-content: space-between; gap: 1rem;
   font-size: 0.85rem;
 }
+.cookie-banner span { color: var(--white); }
 .cookie-banner a { color: var(--chrome-light); text-decoration: underline; }
 .cookie-banner button {
   background: var(--red); color: var(--white); border: none;
@@ -478,16 +479,106 @@ body {
   .onto-meta { grid-template-columns: 1fr; }
   .onto-buttons { flex-direction: column; align-items: stretch; }
 }
+
+/* ── APP LAUNCHER ── */
+.app-launcher-btn {
+  background: none; border: none; cursor: pointer; padding: 6px;
+  display: grid; grid-template-columns: repeat(3, 6px); gap: 3px;
+  margin-right: 8px; border-radius: 6px; transition: background 0.2s;
+}
+.app-launcher-btn:hover { background: rgba(13,27,42,0.08); }
+.app-launcher-btn span {
+  width: 6px; height: 6px; border-radius: 1.5px;
+  background: var(--navy);
+}
+.app-launcher-overlay {
+  position: fixed; inset: 0; z-index: 998; background: rgba(0,0,0,0.3);
+  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
+}
+.app-launcher-overlay.open { opacity: 1; visibility: visible; }
+.app-launcher-panel {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 999;
+  width: 320px; max-width: 85vw; background: #0a192f;
+  color: #fff; padding: 1.5rem; overflow-y: auto;
+  transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.app-launcher-panel.open { transform: translateX(0); }
+.app-launcher-panel h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: rgba(255,255,255,0.45); margin-bottom: 1.25rem; font-weight: 600;
+}
+.app-tile {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border-radius: 8px; text-decoration: none; color: #fff;
+  border: 1px solid transparent; transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 4px; border-left: 3px solid transparent;
+}
+.app-tile:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); }
+.app-tile.active { border-left-color: #991b1b; background: rgba(255,255,255,0.06); }
+.app-tile .app-dot {
+  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.7rem; letter-spacing: 0.5px;
+}
+.app-tile .app-info { min-width: 0; }
+.app-tile .app-name {
+  font-size: 0.85rem; font-weight: 600; letter-spacing: -0.2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.app-tile .app-desc {
+  font-size: 0.72rem; color: rgba(255,255,255,0.5);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.app-tile .lock-icon { font-size: 0.72rem; margin-left: auto; opacity: 0.4; }
 </style>
 </head>
 <body>
 
+<!-- APP LAUNCHER PANEL -->
+<div class="app-launcher-overlay" id="app-launcher-overlay" onclick="closeAppLauncher()"></div>
+<div class="app-launcher-panel" id="app-launcher-panel">
+  <h3>mosaeQ Apps</h3>
+  <a class="app-tile" href="https://mosaeq.com" data-app="mosaeq.com">
+    <div class="app-dot" style="background:#991b1b;">mQ</div>
+    <div class="app-info"><div class="app-name">mosaeQ.com</div><div class="app-desc">Quantum preclinical safety</div></div>
+  </a>
+  <a class="app-tile" href="https://msq.mosaeq.com" data-app="msq.mosaeq.com">
+    <div class="app-dot" style="background:#E53935;">msq</div>
+    <div class="app-info"><div class="app-name">msq.mosaeQ.com</div><div class="app-desc">Concordance auditor</div></div>
+  </a>
+  <a class="app-tile" href="https://create.mosaeq.com" data-app="create.mosaeq.com">
+    <div class="app-dot" style="background:#2563eb;">crt</div>
+    <div class="app-info"><div class="app-name">create.mosaeQ.com</div><div class="app-desc">Molecular design</div></div>
+  </a>
+  <a class="app-tile" href="https://outbreak.mosaeq.com" data-app="outbreak.mosaeq.com">
+    <div class="app-dot" style="background:#059669;">ob</div>
+    <div class="app-info"><div class="app-name">outbreak.mosaeQ.com</div><div class="app-desc">Pathogen surveillance</div></div>
+  </a>
+  <a class="app-tile" href="https://q0q0.mosaeq.com" data-app="q0q0.mosaeq.com">
+    <div class="app-dot" style="background:#7c3aed;">q0</div>
+    <div class="app-info"><div class="app-name">q0q0.mosaeQ.com</div><div class="app-desc">Cosmetic safety</div></div>
+  </a>
+  <a class="app-tile" href="https://space.mosaeq.com" data-app="space.mosaeq.com">
+    <div class="app-dot" style="background:#334155;">sp</div>
+    <div class="app-info"><div class="app-name">space.mosaeQ.com</div><div class="app-desc">Cislunar defence — restricted</div></div>
+    <span class="lock-icon">&#128274;</span>
+  </a>
+</div>
+
 <!-- NAV -->
 <nav class="nav">
-  <a href="/" class="nav-brand">
-    <span class="msq">msq</span>
-    <span class="label">Quantum Ontology</span>
-  </a>
+  <div style="display:flex;align-items:center;">
+    <button class="app-launcher-btn" id="app-launcher-btn" onclick="toggleAppLauncher()" aria-label="Open app launcher">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </button>
+    <a href="/" class="nav-brand">
+      <span class="msq">msq</span>
+      <span class="label">Quantum Ontology</span>
+    </a>
+  </div>
   <div class="nav-links">
     <a href="https://mosaeq.com">mosaeQ.com</a>
     <a href="#ontology">Ontology</a>
@@ -518,7 +609,6 @@ body {
 
 <!-- HERO -->
 <section class="hero">
-  <img src="_mosaeQ-logo-red.png" alt="mosaeQ logo" class="hero-logo">
   <h1>Translational Preclinical Safety <span class="accent">Concordance</span></h1>
   <p class="subtitle">
     Translational concordance auditor. Queries four public pharmacovigilance databases and classifies
@@ -1397,6 +1487,31 @@ function acceptCookies() {
   localStorage.setItem('msq_cookies_accepted', 'true');
   document.getElementById('cookie-banner').style.display = 'none';
 }
+
+// ── APP LAUNCHER ──
+function toggleAppLauncher() {
+  var p = document.getElementById('app-launcher-panel');
+  var o = document.getElementById('app-launcher-overlay');
+  var isOpen = p.classList.contains('open');
+  p.classList.toggle('open', !isOpen);
+  o.classList.toggle('open', !isOpen);
+}
+function closeAppLauncher() {
+  document.getElementById('app-launcher-panel').classList.remove('open');
+  document.getElementById('app-launcher-overlay').classList.remove('open');
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeAppLauncher();
+});
+(function highlightCurrentApp() {
+  var host = location.hostname.toLowerCase();
+  var tiles = document.querySelectorAll('.app-tile[data-app]');
+  for (var i = 0; i < tiles.length; i++) {
+    if (tiles[i].getAttribute('data-app') === host) {
+      tiles[i].classList.add('active');
+    }
+  }
+})();
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
