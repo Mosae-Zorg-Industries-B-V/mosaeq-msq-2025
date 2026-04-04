@@ -639,9 +639,11 @@ body {
       <button class="btn-signin" onclick="login()" style="width:100%;">Sign In</button>
     </div>
     <div class="user-info" id="auth-user">
-      <img class="avatar" id="user-avatar" src="" alt="">
-      <span class="name" id="user-name"></span>
-      <button class="btn-signout" onclick="logout()">Sign Out</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <img class="avatar" id="user-avatar" src="" alt="">
+        <span class="name" id="user-name"></span>
+      </div>
+      <button class="btn-signout" onclick="logout()" style="width:100%;">Sign Out</button>
     </div>
   </div>
 </div>
