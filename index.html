@@ -430,9 +430,9 @@ body {
 }
 
 /* ── USER INFO ── */
-.user-info { display: none; align-items: center; gap: 10px; }
+.user-info { display: none; }
 .user-info .avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); }
-.user-info .name { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
+.user-info .name { font-size: 0.85rem; font-weight: 600; color: var(--navy); }
 
 /* ── LOADING ── */
 .search-loading { display: none; text-align: center; padding: 2rem; color: var(--chrome); font-size: 0.9rem; }
@@ -1064,7 +1064,7 @@ async function updateUI() {
   if (isAuth) {
     const user = await auth0Client.getUser();
     document.getElementById('auth-anonymous').style.display = 'none';
-    document.getElementById('auth-user').style.display = 'flex';
+    document.getElementById('auth-user').style.display = 'block';
     document.getElementById('user-name').textContent = user.name || user.email;
     document.getElementById('user-avatar').src = user.picture || '';
     const claims = await auth0Client.getIdTokenClaims();
