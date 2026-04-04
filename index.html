@@ -921,7 +921,7 @@ body {
       </div>
     </div>
     <div class="onto-buttons">
-      <a href="/ontology.ttl" download="msq-ontology-v1.0.0.ttl" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
+      <a href="#" onclick="downloadOntology(event)" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
       <a href="mailto:partnerships@mosaeq.com" class="btn-onto btn-onto-secondary">Contact for Licensing</a>
     </div>
     <p class="onto-licensing">Attribution required. Commercial use by license only.</p>
@@ -1083,6 +1083,21 @@ async function updateUI() {
 
 async function login() { await auth0Client.loginWithRedirect(); }
 async function logout() { await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } }); }
+
+async function downloadOntology(e) {
+  e.preventDefault();
+  var isAuth = auth0Client && await auth0Client.isAuthenticated();
+  if (!isAuth) {
+    await auth0Client.loginWithRedirect();
+    return;
+  }
+  var a = document.createElement('a');
+  a.href = '/ontology.ttl';
+  a.download = 'msq-ontology-v1.0.0.ttl';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 
 // ── COMPOUND PROPERTIES (LogP = XLogP3, TPSA = Å², pKa = basic) ──
 // Source: PubChem CID property tables + DrugBank pKa values
