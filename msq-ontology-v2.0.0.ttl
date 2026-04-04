@@ -234,6 +234,11 @@ msq:hasDataSource a owl:ObjectProperty ;
     rdfs:domain msq:Concordance ;
     rdfs:range msq:DataSource .
 
+msq:computationRunID a owl:DatatypeProperty ;
+    rdfs:label "computation run ID"@en ;
+    rdfs:range xsd:string ;
+    rdfs:comment """Unique identifier linking this ontology classification to the quantum computation that produced the input property values. Format: run-{timestamp}. Stored in Supabase with input SMILES, timestamp, and user ID. The computation is performed by patent-protected technology on secure infrastructure owned by Mosae Zorg Industries UG. The computation method is not specified in this ontology."""@en .
+
 msq:hasEnvironmentalFate a owl:ObjectProperty ;
     rdfs:label "hasEnvironmentalFate"@en ;
     rdfs:domain msq:Compound ;
@@ -292,3 +297,66 @@ msq:TGGATEs a msq:DataSource ;
 msq:DailyMed a msq:DataSource ;
     rdfs:label "NLM DailyMed"@en ;
     rdfs:comment "FDA-approved drug labels."@en .
+
+msq:EudraVigilance a msq:DataSource ;
+    rdfs:label "EudraVigilance"@en ;
+    rdfs:comment """European Medicines Agency pharmacovigilance database. Adverse drug reaction reports from EU/EEA."""@en ;
+    msq:sourceURL "https://www.adrreports.eu/"^^xsd:anyURI .
+
+msq:EARSNet a msq:DataSource ;
+    rdfs:label "EARS-Net"@en ;
+    rdfs:comment """European Antimicrobial Resistance Surveillance Network. AMR data from 30 EU/EEA countries."""@en ;
+    msq:sourceURL "https://www.ecdc.europa.eu/"^^xsd:anyURI .
+
+msq:ClinVarDB a msq:DataSource ;
+    rdfs:label "ClinVar"@en ;
+    rdfs:comment """NCBI database of genetic variants and their clinical significance."""@en ;
+    msq:sourceURL "https://www.ncbi.nlm.nih.gov/clinvar/"^^xsd:anyURI .
+
+msq:OrphanetDB a msq:DataSource ;
+    rdfs:label "Orphanet"@en ;
+    rdfs:comment """Rare disease database with genes, clinical signs, and management. ORDO codes are the standard identifiers for rare diseases."""@en ;
+    msq:sourceURL "https://www.orpha.net/"^^xsd:anyURI .
+
+msq:GWASCatalog a msq:DataSource ;
+    rdfs:label "GWAS Catalog"@en ;
+    rdfs:comment """NHGRI-EBI Catalog of Genome-Wide Association Studies. Links genetic variants to disease traits."""@en ;
+    msq:sourceURL "https://www.ebi.ac.uk/gwas/"^^xsd:anyURI .
+
+msq:SINList a msq:DataSource ;
+    rdfs:label "SIN List"@en ;
+    rdfs:comment """ChemSec Substitute It Now list. Chemicals identified as needing substitution based on SVHC criteria."""@en ;
+    msq:sourceURL "https://sinlist.chemsec.org/"^^xsd:anyURI .
+
+msq:NORMANNetwork a msq:DataSource ;
+    rdfs:label "NORMAN Network"@en ;
+    rdfs:comment """Network of reference laboratories for monitoring emerging environmental substances. Over 100,000 entries."""@en ;
+    msq:sourceURL "https://www.norman-network.net/"^^xsd:anyURI .
+
+msq:sourceURL a owl:DatatypeProperty ;
+    rdfs:domain msq:DataSource ;
+    rdfs:range xsd:anyURI ;
+    rdfs:comment "URL of the data source."@en .
+
+# ══════════════════════════════════════════════════════════════
+#  PRODUCT SUITE
+# ══════════════════════════════════════════════════════════════
+
+msq:Product a owl:Class ;
+    rdfs:label "Product"@en ;
+    rdfs:comment "A mosaeQ platform product or service."@en .
+
+msq:productURL a owl:DatatypeProperty ;
+    rdfs:domain msq:Product ;
+    rdfs:range xsd:anyURI ;
+    rdfs:comment "URL of the product."@en .
+
+msq:createEditor a msq:Product ;
+    rdfs:label "create.mosaeQ.com"@en ;
+    rdfs:comment "Molecular design tools. EcoFate environmental fate analysis."@en ;
+    msq:productURL "https://create.mosaeQ.com"^^xsd:anyURI .
+
+msq:ecoChain a msq:Product ;
+    rdfs:label "eco.mosaeQ.com"@en ;
+    rdfs:comment """Ecological safety chain and alternatives. Computes environmental fate, microbial impact, viral activation risk, and pathogen emergence prediction for any compound. Identifies safer structural alternatives with lower ecological impact."""@en ;
+    msq:productURL "https://eco.mosaeQ.com"^^xsd:anyURI .

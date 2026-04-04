@@ -1,7 +1,9 @@
 {
   "rewrites": [
     { "source": "/ontology/msq-ontology-v1.0.0.ttl", "destination": "/msq-ontology-v1.0.0.ttl" },
-    { "source": "/ontology.ttl", "destination": "/msq-ontology-v1.0.0.ttl" },
+    { "source": "/ontology/msq-ontology-v2.0.0.ttl", "destination": "/msq-ontology-v2.0.0.ttl" },
+    { "source": "/ontology/msq-shacl-v2.0.0.ttl", "destination": "/msq-shacl-v2.0.0.ttl" },
+    { "source": "/ontology.ttl", "destination": "/msq-ontology-v2.0.0.ttl" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
