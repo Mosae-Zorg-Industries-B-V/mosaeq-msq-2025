@@ -586,6 +586,18 @@ body {
   font-size: 0.75rem; color: rgba(255,255,255,0.5);
   line-height: 1.3;
 }
+.app-tile .app-icon {
+  display: inline-block; width: 18px; height: 18px;
+  margin-right: 8px; vertical-align: middle; flex-shrink: 0;
+}
+.app-tile.has-icon {
+  display: flex; align-items: center;
+}
+.app-tile.has-icon .app-info { min-width: 0; }
+.app-divider {
+  height: 1px; background: rgba(255,255,255,0.1);
+  margin: 8px 12px;
+}
 </style>
 </head>
 <body>
@@ -616,6 +628,14 @@ body {
   <a class="app-tile" href="https://q0q0.mosaeq.com" data-app="q0q0.mosaeq.com">
     <div class="app-name">q0q0.mosaeQ.com</div>
     <div class="app-desc">Cosmetic safety</div>
+  </a>
+  <div class="app-divider"></div>
+  <a class="app-tile has-icon" href="https://msq.mosaeQ.com/ontology">
+    <svg class="app-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><line x1="8.2" y1="7" x2="10.5" y2="16"/><line x1="15.8" y1="7" x2="13.5" y2="16"/><line x1="8.5" y1="6" x2="15.5" y2="6"/></svg>
+    <div class="app-info">
+      <div class="app-name">Ontology</div>
+      <div class="app-desc">Quantum safety ontology specification</div>
+    </div>
   </a>
 </div>
 
