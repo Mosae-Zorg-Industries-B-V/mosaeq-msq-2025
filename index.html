@@ -1049,6 +1049,12 @@ async function initAuth() {
     } catch (e) { console.error('Auth callback error:', e); }
   }
   await updateUI();
+  if (localStorage.getItem('msq_pending_download')) {
+    localStorage.removeItem('msq_pending_download');
+    var el = document.getElementById('ontology');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(function() { triggerOntologyDownload(); }, 600);
+  }
 }
 
 async function updateUI() {
@@ -1088,9 +1094,13 @@ async function downloadOntology(e) {
   e.preventDefault();
   var isAuth = auth0Client && await auth0Client.isAuthenticated();
   if (!isAuth) {
+    localStorage.setItem('msq_pending_download', 'ontology');
     await auth0Client.loginWithRedirect();
     return;
   }
+  triggerOntologyDownload();
+}
+function triggerOntologyDownload() {
   var a = document.createElement('a');
   a.href = '/ontology.ttl';
   a.download = 'msq-ontology-v1.0.0.ttl';
