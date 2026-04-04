@@ -1,0 +1,38 @@
+@prefix msq:    <https://msq.mosaeq.com/ontology#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+
+# ──────────────────────────────────────────────────────────────
+# msq: SHACL Shapes for Quantum Safety Ontology
+# Version:   2.0.0
+# Publisher: Mosae Zorg Industries UG (haftungsbeschraenkt)
+# License:   Commercial — partnerships@mosaeq.com
+# ──────────────────────────────────────────────────────────────
+
+msq:RegulatoryStatusShape a sh:NodeShape ;
+    sh:targetClass msq:RegulatoryStatus ;
+    rdfs:label "RegulatoryStatus Shape"@en ;
+    rdfs:comment "Validates that every RegulatoryStatus instance has a statusType and regulatoryFramework."@en ;
+
+    sh:property [
+        sh:path msq:statusType ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ( "BANNED" "RESTRICTED" "PERMITTED" "PERMITTED_WITH_CONDITIONS" "SVHC" "NOT_ASSESSED" ) ;
+        sh:name "statusType"@en ;
+        sh:message "RegulatoryStatus must have exactly one statusType from: BANNED, RESTRICTED, PERMITTED, PERMITTED_WITH_CONDITIONS, SVHC, NOT_ASSESSED."@en ;
+    ] ;
+
+    sh:property [
+        sh:path msq:regulatoryFramework ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ( "REACH" "CLP" "CosIng_AnnexII" "CosIng_AnnexIII" "CosIng_AnnexIV" "CosIng_AnnexV" "CosIng_AnnexVI" "IFRA" "SCCS" "FDA_CFR" "TSCA" "EU_BPR" ) ;
+        sh:name "regulatoryFramework"@en ;
+        sh:message "RegulatoryStatus must have exactly one regulatoryFramework from: REACH, CLP, CosIng_AnnexII-VI, IFRA, SCCS, FDA_CFR, TSCA, EU_BPR."@en ;
+    ] .
