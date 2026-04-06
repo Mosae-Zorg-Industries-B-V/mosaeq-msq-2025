@@ -131,6 +131,31 @@ body {
   font-size: 0.82rem; cursor: pointer; white-space: nowrap;
 }
 
+/* ── ECO DEMO BANNER ── */
+.eco-banner {
+  position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+  background: #fef2f2; height: 40px; display: none; align-items: center;
+  justify-content: center; font-size: 13px; color: #991b1b;
+}
+.eco-banner a { color: #991b1b; font-weight: 600; text-decoration: underline; }
+.eco-banner-close {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: #991b1b; font-size: 18px; cursor: pointer;
+  padding: 4px 8px; line-height: 1;
+}
+body.eco-banner-visible .hero { margin-top: 104px; }
+
+/* ── WELCOME TOAST ── */
+.welcome-toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 300;
+  background: var(--navy); color: var(--white); padding: 14px 20px;
+  border-radius: 8px; font-size: 0.85rem; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  opacity: 0; transform: translateY(16px); transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+.welcome-toast.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.welcome-toast a { color: var(--chrome-light); font-weight: 600; text-decoration: underline; }
+
 /* ── HERO ── */
 .hero {
   margin-top: 64px; padding: 5rem 2rem 4rem; text-align: center;
@@ -696,6 +721,7 @@ body {
   <a class="ham-link" href="https://create.mosaeQ.com" target="_blank" rel="noopener noreferrer" onclick="closeHamburger()">&#127807; Eco <span class="ham-new-tag">NEW</span></a>
   <a class="ham-link" href="#podcasts" onclick="closeHamburger()">Podcasts</a>
   <a class="ham-link" href="#beta" onclick="closeHamburger()">Beta Access</a>
+  <a class="ham-link" href="https://mosaeq.com/pricing" onclick="closeHamburger()">Pricing</a>
   <div class="ham-divider"></div>
   <div class="ham-auth">
     <div id="auth-anonymous">
@@ -750,6 +776,17 @@ body {
 <div class="beta-banner" id="beta-banner">
   <span id="beta-text"></span>
   <span class="days" id="beta-days"></span>
+</div>
+
+<!-- ECO DEMO BANNER -->
+<div class="eco-banner" id="eco-banner">
+  Try the ecological safety demo &mdash; run any compound in 60 seconds &rarr;&nbsp;<a href="https://eco.mosaeq.com" target="_blank" rel="noopener noreferrer">eco.mosaeq.com</a>
+  <button class="eco-banner-close" onclick="dismissEcoBanner()" aria-label="Dismiss">&times;</button>
+</div>
+
+<!-- WELCOME TOAST -->
+<div class="welcome-toast" id="welcome-toast">
+  View all your apps and reports &rarr; <a href="https://mosaeq.com/welcome">mosaeq.com/welcome</a>
 </div>
 
 <!-- HERO -->
@@ -1166,6 +1203,7 @@ async function initAuth() {
     try {
       await auth0Client.handleRedirectCallback();
       window.history.replaceState({}, document.title, '/');
+      showWelcomeToast();
     } catch (e) { console.error('Auth callback error:', e); }
   }
   await updateUI();
@@ -1777,9 +1815,31 @@ document.addEventListener('keydown', function(e) {
   }
 })();
 
+// ── ECO DEMO BANNER ──
+function initEcoBanner() {
+  if (!sessionStorage.getItem('eco_banner_dismissed')) {
+    document.getElementById('eco-banner').style.display = 'flex';
+    document.body.classList.add('eco-banner-visible');
+  }
+}
+function dismissEcoBanner() {
+  document.getElementById('eco-banner').style.display = 'none';
+  document.body.classList.remove('eco-banner-visible');
+  sessionStorage.setItem('eco_banner_dismissed', '1');
+}
+
+// ── WELCOME TOAST ──
+function showWelcomeToast() {
+  var toast = document.getElementById('welcome-toast');
+  if (!toast) return;
+  toast.classList.add('visible');
+  setTimeout(function() { toast.classList.remove('visible'); }, 6000);
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   initAuth();
+  initEcoBanner();
   if (!localStorage.getItem('msq_cookies_accepted')) {
     document.getElementById('cookie-banner').style.display = 'flex';
   }
