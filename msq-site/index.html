@@ -15,7 +15,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>msq — Quantum Ontology for Translational Preclinical Safety Concordance</title>
 <meta name="description" content="msq.mosaeQ.com — A quantum ontology encoding molecular entities as quaternion coordinates on S³ for translational preclinical safety concordance.">
-<link rel="icon" type="image/png" href="/_mosaeQ-logo-red.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -46,74 +45,18 @@ body {
   background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 2rem; height: 64px;
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  display: flex; align-items: center; justify-content: space-between;
 }
 .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--navy); }
 .nav-brand .msq { font-family: 'DM Mono', monospace; font-size: 1.4rem; font-weight: 500; color: var(--red); letter-spacing: -0.5px; }
 .nav-brand .label { font-size: 0.75rem; color: var(--chrome); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-.nav-logo { height: 32px; width: auto; display: block; }
-.nav-center { justify-self: center; }
-.nav-right { justify-self: end; }
+.nav-links { display: flex; align-items: center; gap: 1.5rem; }
+.nav-links a { font-size: 0.82rem; color: var(--chrome); text-decoration: none; font-weight: 500; letter-spacing: 0.3px; transition: color 0.2s; }
+.nav-links a:hover { color: var(--navy); }
 .btn-signin { background: var(--red); color: var(--white) !important; padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 0.82rem; cursor: pointer; border: none; transition: background 0.2s; }
 .btn-signin:hover { background: var(--red-hover); }
 .btn-signout { background: transparent; color: var(--chrome) !important; padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; font-weight: 500; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
 .btn-signout:hover { border-color: var(--chrome); color: var(--navy) !important; }
-
-/* ── HAMBURGER ── */
-.hamburger-btn {
-  background: none; border: none; cursor: pointer; padding: 8px;
-  display: flex; flex-direction: column; gap: 4px; border-radius: 6px;
-  transition: background 0.2s;
-}
-.hamburger-btn:hover { background: rgba(13,27,42,0.08); }
-.hamburger-btn span {
-  display: block; width: 18px; height: 2px; background: var(--navy);
-  border-radius: 1px; transition: transform 0.2s, opacity 0.2s;
-}
-.hamburger-overlay {
-  position: fixed; inset: 0; z-index: 996; background: rgba(0,0,0,0.4);
-  opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
-}
-.hamburger-overlay.open { opacity: 1; visibility: visible; }
-.hamburger-panel {
-  position: fixed; top: 0; right: 0; bottom: 0; z-index: 997;
-  width: 280px; max-width: 85vw;
-  background: #fff; color: var(--navy);
-  padding: 1.5rem; overflow-y: auto;
-  transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-  font-family: 'Inter', -apple-system, sans-serif;
-  box-shadow: -4px 0 24px rgba(0,0,0,0.12);
-}
-.hamburger-panel.open { transform: translateX(0); }
-.hamburger-panel .panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-.hamburger-panel .panel-header h3 {
-  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
-  color: var(--chrome); font-weight: 600; margin: 0;
-}
-.hamburger-close {
-  background: none; border: none; color: var(--chrome);
-  font-size: 1.2rem; cursor: pointer; padding: 4px 8px; border-radius: 4px;
-  transition: color 0.2s, background 0.2s; line-height: 1;
-}
-.hamburger-close:hover { color: var(--navy); background: rgba(13,27,42,0.06); }
-.ham-link {
-  display: block; padding: 10px 12px; border-radius: 6px;
-  text-decoration: none; color: var(--navy);
-  font-size: 0.88rem; font-weight: 500;
-  transition: background 0.15s;
-  margin-bottom: 2px;
-}
-.ham-link:hover { background: rgba(13,27,42,0.05); }
-.ham-new-tag {
-  display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.5px; background: var(--success); color: var(--white);
-  padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle;
-}
-.ham-divider { height: 1px; background: var(--border); margin: 12px 0; }
-.ham-auth { padding: 4px 0; }
 
 /* ── COOKIE BANNER ── */
 .cookie-banner {
@@ -283,22 +226,14 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 .zone-card .zone-examples { font-size: 0.75rem; color: var(--chrome-light); margin-top: 6px; font-style: italic; }
 
 /* ── TRAP ZONE DYNAMIC ── */
-.zone-card.idle {
-  opacity: 0.5; border-style: dashed;
-  transition: all 0.3s ease;
-}
 .zone-card.active {
-  border-color: #991b1b !important; border-left-width: 4px; border-style: solid;
-  box-shadow: 0 0 16px rgba(153, 27, 27, 0.25); opacity: 1;
+  border-color: #991b1b !important; border-left-width: 4px;
+  box-shadow: 0 0 16px rgba(153, 27, 27, 0.25);
   transition: all 0.3s ease;
 }
 .zone-card.dimmed {
-  opacity: 0.5; border-style: solid;
+  opacity: 0.5;
   transition: opacity 0.3s ease;
-}
-.zone-card.unavailable {
-  opacity: 0.5; border-style: dashed;
-  transition: all 0.3s ease;
 }
 .zone-label {
   font-family: 'DM Mono', monospace; font-size: 0.75rem;
@@ -307,51 +242,6 @@ body.eco-banner-visible .hero { margin-top: 104px; }
   border-radius: 4px; display: none;
 }
 .zone-card.active .zone-label { display: block; }
-.zone-status {
-  font-size: 0.82rem; color: var(--chrome-light); margin-top: 8px;
-  font-style: italic; line-height: 1.5;
-}
-.zone-status a { color: var(--red); font-weight: 600; text-decoration: none; }
-.zone-status a:hover { text-decoration: underline; }
-.zone-learn-more {
-  font-size: 0.78rem; color: var(--red); cursor: pointer; margin-top: 8px;
-  font-weight: 600; user-select: none;
-}
-.zone-learn-more:hover { text-decoration: underline; }
-.zone-detail {
-  display: none; margin-top: 8px; padding: 10px 12px;
-  background: #F8F9FA; border-radius: 6px;
-  font-size: 0.8rem; color: var(--chrome); line-height: 1.65;
-}
-.zone-detail.open { display: block; }
-.zone-detail strong { color: var(--navy); }
-.zone-detail .zone-ref { font-size: 0.72rem; color: var(--chrome-light); margin-top: 6px; font-style: italic; }
-.quantum-upgrade {
-  margin-top: 1.5rem; padding: 1.5rem;
-  background: var(--navy); color: var(--white); border-radius: 10px;
-}
-.quantum-upgrade h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-.quantum-upgrade h3 .q-icon { margin-right: 6px; }
-.quantum-upgrade p { font-size: 0.85rem; color: var(--chrome-light); line-height: 1.7; margin-bottom: 0.75rem; }
-.quantum-upgrade p:last-of-type { margin-bottom: 1rem; }
-.quantum-upgrade .btn-quantum {
-  display: inline-block; background: var(--red); color: var(--white);
-  padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.88rem;
-  text-decoration: none; transition: background 0.2s;
-}
-.quantum-upgrade .btn-quantum:hover { background: var(--red-hover); }
-.pubchem-note {
-  margin-top: 0.5rem; font-size: 0.8rem; color: var(--chrome-light); line-height: 1.5;
-}
-.pubchem-note a { color: var(--red); font-weight: 600; text-decoration: none; }
-.pubchem-note a:hover { text-decoration: underline; }
-.cliff-guidance {
-  margin-top: 0.75rem; padding: 0.75rem 1rem;
-  background: #FEF2F2; border-left: 3px solid var(--red); border-radius: 6px;
-  font-size: 0.82rem; color: #991b1b; line-height: 1.6;
-}
-.cliff-guidance a { color: var(--red); font-weight: 700; text-decoration: none; }
-.cliff-guidance a:hover { text-decoration: underline; }
 .trap-risk-inline {
   margin-top: 0.75rem; padding: 0.75rem 1rem;
   background: #FEF2F2; border-left: 3px solid #991b1b; border-radius: 6px;
@@ -509,9 +399,9 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 }
 
 /* ── USER INFO ── */
-.user-info { display: none; }
+.user-info { display: none; align-items: center; gap: 10px; }
 .user-info .avatar { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); }
-.user-info .name { font-size: 0.85rem; font-weight: 600; color: var(--navy); }
+.user-info .name { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
 
 /* ── LOADING ── */
 .search-loading { display: none; text-align: center; padding: 2rem; color: var(--chrome); font-size: 0.9rem; }
@@ -536,96 +426,71 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 .opioid-panel .op-note { font-size: 0.8rem; color: #92400E; line-height: 1.6; margin-top: 0.75rem; padding-top: 0.5rem; border-top: 1px solid rgba(251,191,36,0.3); }
 .opioid-panel .op-error { font-size: 0.85rem; color: #92400E; }
 
-/* ── SOURCE LABEL ── */
+/* ── SOURCE BANNER ── */
+.source-banner {
+  margin-bottom: 0.75rem; padding: 10px 14px;
+  background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px;
+  font-size: 0.82rem; color: #1E40AF; display: flex; align-items: center; gap: 8px;
+}
+.source-banner a { color: #1E40AF; font-weight: 600; text-decoration: none; }
+.source-banner a:hover { text-decoration: underline; }
 .prop-source { font-size: 0.68rem; color: var(--chrome-light); font-weight: 400; font-family: 'DM Sans', sans-serif; margin-left: 2px; }
 
 /* ── ONTOLOGY SECTION ── */
 .ontology-section {
-  padding: 4rem 2rem; background: var(--white);
+  padding: 3rem 2rem; background: var(--navy);
+  border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-.ontology-inner { max-width: 960px; margin: 0 auto; }
+.ontology-inner { max-width: 800px; margin: 0 auto; text-align: center; }
 .ontology-section h2 {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; color: #0a192f;
+  font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--white);
 }
 .ontology-section .onto-sub {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 1rem; color: var(--chrome); margin-bottom: 1.5rem; font-style: italic;
+  font-size: 0.9rem; color: var(--chrome-light); margin-bottom: 2rem;
 }
-.ontology-section .onto-intro {
+.onto-meta {
+  display: grid; grid-template-columns: auto 1fr; gap: 6px 1.5rem;
+  text-align: left; margin-bottom: 1.5rem;
+  padding: 1.25rem; background: var(--navy-light); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+}
+.onto-meta .meta-label {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.92rem; color: var(--navy); line-height: 1.7; margin-bottom: 2.5rem;
-  max-width: 740px;
+  font-size: 0.82rem; color: var(--chrome-light); font-weight: 500;
 }
-/* coverage grid */
-.onto-coverage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 2.5rem; }
-.onto-card {
-  border: 1px solid var(--border); border-radius: 8px; padding: 20px 16px;
+.onto-meta .meta-value {
+  font-family: 'JetBrains Mono', 'DM Mono', monospace;
+  font-size: 0.82rem; color: var(--white); font-weight: 500;
 }
-.onto-card .card-title {
+.onto-vocab {
+  text-align: left; margin-bottom: 1.5rem;
+  padding: 1.25rem; background: var(--navy-light); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+}
+.onto-vocab h3 {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.88rem; font-weight: 600; color: #0a192f; margin-bottom: 4px;
+  font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 0.75rem;
 }
-.onto-card .card-desc {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.78rem; color: var(--chrome); line-height: 1.5;
+.onto-vocab .class-list {
+  font-family: 'JetBrains Mono', 'DM Mono', monospace;
+  font-size: 0.8rem; color: var(--chrome-light); line-height: 1.9;
 }
-/* architecture diagram */
-.onto-arch { margin-bottom: 2.5rem; }
-.onto-arch-flow {
-  display: flex; align-items: center; justify-content: center; gap: 0;
-  flex-wrap: wrap; margin-bottom: 12px;
-}
-.onto-arch-box {
-  background: #0a192f; color: var(--white); padding: 14px 24px; border-radius: 8px;
-  font-family: 'JetBrains Mono', 'DM Mono', monospace; font-size: 0.82rem; font-weight: 500;
-  text-align: center; white-space: nowrap;
-}
-.onto-arch-arrow {
-  font-size: 1.4rem; color: var(--chrome); padding: 0 12px;
-  font-family: 'Inter', sans-serif;
-}
-.onto-arch-label {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.82rem; color: var(--chrome); text-align: center; font-style: italic;
-}
-/* download area */
-.onto-download { margin-bottom: 2rem; }
-.onto-download h3 {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 1.1rem; font-weight: 600; color: #0a192f; margin-bottom: 1rem;
-}
-.onto-dl-buttons { display: flex; gap: 12px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.onto-buttons { display: flex; gap: 12px; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
 .btn-onto {
   display: inline-block; padding: 12px 28px; border-radius: 8px;
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.88rem; font-weight: 600; text-decoration: none; transition: all 0.2s;
-  cursor: pointer; border: 2px solid #991b1b;
+  font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;
 }
-.btn-onto-primary { background: #991b1b; color: var(--white); }
-.btn-onto-primary:hover { background: #7f1d1d; transform: translateY(-2px); }
-.btn-onto-outline { background: transparent; color: #991b1b; }
-.btn-onto-outline:hover { background: rgba(153,27,27,0.06); transform: translateY(-2px); }
-.btn-onto-disabled {
-  background: transparent; color: #991b1b; opacity: 0.7; cursor: pointer;
-}
-.btn-onto-disabled:hover { opacity: 1; }
-/* license links */
-.onto-licenses { display: flex; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-.onto-licenses a {
+.btn-onto-primary { background: var(--red); color: var(--white); }
+.btn-onto-primary:hover { background: var(--red-hover); transform: translateY(-2px); }
+.btn-onto-secondary { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.25); }
+.btn-onto-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+.onto-licensing {
   font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.82rem; color: #991b1b; text-decoration: none; font-weight: 500;
+  font-size: 0.82rem; color: var(--chrome-light); font-style: italic;
 }
-.onto-licenses a:hover { text-decoration: underline; }
-.onto-footer-text {
-  font-family: 'Inter', -apple-system, sans-serif;
-  font-size: 0.82rem; color: var(--chrome); line-height: 1.6; margin-bottom: 0.75rem;
-  max-width: 740px;
-}
-.onto-version {
-  font-family: 'JetBrains Mono', 'DM Mono', monospace;
-  font-size: 0.72rem; color: var(--chrome-light); letter-spacing: 0.3px;
-}
+.onto-licensing a { color: var(--chrome-light); text-decoration: underline; }
+.onto-licensing a:hover { color: var(--white); }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
@@ -638,11 +503,8 @@ body.eco-banner-visible .hero { margin-top: 104px; }
   .result-props { flex-direction: column; gap: 0.5rem; }
   .opioid-panel .op-grid { grid-template-columns: 1fr; }
   .screening-options { flex-direction: column; gap: 0.5rem; }
-  .onto-coverage { grid-template-columns: 1fr; }
-  .onto-dl-buttons { flex-direction: column; align-items: stretch; }
-  .onto-licenses { flex-direction: column; gap: 0.75rem; }
-  .onto-arch-flow { flex-direction: column; gap: 8px; }
-  .onto-arch-arrow { transform: rotate(90deg); padding: 0; }
+  .onto-meta { grid-template-columns: 1fr; }
+  .onto-buttons { flex-direction: column; align-items: stretch; }
 }
 
 /* ── APP LAUNCHER ── */
@@ -657,61 +519,45 @@ body.eco-banner-visible .hero { margin-top: 104px; }
   background: var(--navy);
 }
 .app-launcher-overlay {
-  position: fixed; inset: 0; z-index: 998; background: rgba(0,0,0,0.4);
+  position: fixed; inset: 0; z-index: 998; background: rgba(0,0,0,0.3);
   opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
 }
 .app-launcher-overlay.open { opacity: 1; visibility: visible; }
 .app-launcher-panel {
   position: fixed; top: 0; left: 0; bottom: 0; z-index: 999;
-  width: 320px; max-width: 85vw;
-  background: #0a192f; color: #fff;
-  padding: 1.5rem; overflow-y: auto;
+  width: 320px; max-width: 85vw; background: #0a192f;
+  color: #fff; padding: 1.5rem; overflow-y: auto;
   transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
   font-family: 'Inter', -apple-system, sans-serif;
-  box-shadow: 4px 0 24px rgba(0,0,0,0.5);
 }
 .app-launcher-panel.open { transform: translateX(0); }
-.app-launcher-panel .panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 1.5rem;
+.app-launcher-panel h3 {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+  color: rgba(255,255,255,0.45); margin-bottom: 1.25rem; font-weight: 600;
 }
-.app-launcher-panel .panel-header h3 {
-  font-size: 0.7rem; text-transform: none; letter-spacing: 2px;
-  color: rgba(255,255,255,0.45); font-weight: 600; margin: 0;
-}
-.app-launcher-close {
-  background: none; border: none; color: rgba(255,255,255,0.5);
-  font-size: 1.2rem; cursor: pointer; padding: 4px 8px; border-radius: 4px;
-  transition: color 0.2s, background 0.2s; line-height: 1;
-}
-.app-launcher-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
 .app-tile {
-  display: block; padding: 14px 12px; border-radius: 6px;
-  text-decoration: none; color: #fff;
-  border-left: 3px solid transparent;
-  transition: background 0.15s;
-  margin-bottom: 2px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border-radius: 8px; text-decoration: none; color: #fff;
+  border: 1px solid transparent; transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 4px; border-left: 3px solid transparent;
 }
-.app-tile:hover { background: rgba(255,255,255,0.06); }
-.app-tile.active { border-left-color: #991b1b; background: rgba(255,255,255,0.08); }
+.app-tile:hover { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.04); }
+.app-tile.active { border-left-color: #991b1b; background: rgba(255,255,255,0.06); }
+.app-tile .app-dot {
+  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.7rem; letter-spacing: 0.5px;
+}
+.app-tile .app-info { min-width: 0; }
 .app-tile .app-name {
-  font-size: 0.88rem; font-weight: 600; color: #fff;
-  margin-bottom: 2px;
+  font-size: 0.85rem; font-weight: 600; letter-spacing: -0.2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .app-tile .app-desc {
-  font-size: 0.75rem; color: rgba(255,255,255,0.5);
-  line-height: 1.3;
+  font-size: 0.72rem; color: rgba(255,255,255,0.5);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.app-tile.active .app-name { font-weight: 700; }
-.app-tile.eco { background: #052e16; }
-.app-tile .new-tag {
-  font-size: 10px; font-weight: 600; text-transform: uppercase;
-  color: #4ade80; margin-left: 6px;
-}
-.app-divider {
-  height: 1px; background: #334155;
-  margin: 8px 12px;
-}
+.app-tile .lock-icon { font-size: 0.72rem; margin-left: auto; opacity: 0.4; }
 </style>
 </head>
 <body>
@@ -719,74 +565,27 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 <!-- APP LAUNCHER PANEL -->
 <div class="app-launcher-overlay" id="app-launcher-overlay" onclick="closeAppLauncher()"></div>
 <div class="app-launcher-panel" id="app-launcher-panel">
-  <div class="panel-header">
-    <h3>APPs:</h3>
-    <button class="app-launcher-close" onclick="closeAppLauncher()" aria-label="Close">&times;</button>
-  </div>
+  <h3>mosaeQ Apps</h3>
   <a class="app-tile" href="https://mosaeq.com" data-app="mosaeq.com">
-    <div class="app-name">mosaeQ.com</div>
-    <div class="app-desc">Run quantum preclinical safety tests on any molecule and generate regulatory-ready reports</div>
+    <div class="app-dot" style="background:#991b1b;">mQ</div>
+    <div class="app-info"><div class="app-name">mosaeQ.com</div><div class="app-desc">Quantum preclinical safety</div></div>
   </a>
   <a class="app-tile" href="https://msq.mosaeq.com" data-app="msq.mosaeq.com">
-    <div class="app-name">msq.mosaeQ.com</div>
-    <div class="app-desc">Verify molecular concordance against human safety databases and regulatory submissions</div>
+    <div class="app-dot" style="background:#E53935;">msq</div>
+    <div class="app-info"><div class="app-name">msq.mosaeQ.com</div><div class="app-desc">Concordance auditor</div></div>
   </a>
   <a class="app-tile" href="https://create.mosaeq.com" data-app="create.mosaeq.com">
-    <div class="app-name">create.mosaeQ.com</div>
-    <div class="app-desc">Design and modify molecular structures with quantum-computed property feedback</div>
-  </a>
-  <a class="app-tile eco" href="https://eco.mosaeq.com" data-app="eco.mosaeq.com">
-    <div class="app-name">&#127807; eco.mosaeQ.com</div>
-    <div class="app-desc">Evaluate environmental impact, pathogen mutation risk, and find safer structural alternatives</div>
+    <div class="app-dot" style="background:#2563eb;">crt</div>
+    <div class="app-info"><div class="app-name">create.mosaeQ.com</div><div class="app-desc">Molecular design</div></div>
   </a>
   <a class="app-tile" href="https://outbreak.mosaeq.com" data-app="outbreak.mosaeq.com">
-    <div class="app-name">outbreak.mosaeQ.com</div>
-    <div class="app-desc">Monitor real-time outbreak classification with pandemic-risk assessment</div>
+    <div class="app-dot" style="background:#059669;">ob</div>
+    <div class="app-info"><div class="app-name">outbreak.mosaeQ.com</div><div class="app-desc">Pathogen surveillance</div></div>
   </a>
   <a class="app-tile" href="https://q0q0.mosaeq.com" data-app="q0q0.mosaeq.com">
-    <div class="app-name">q0q0.mosaeQ.com</div>
-    <div class="app-desc">Run quantum preclinical safety tests on cosmetic ingredients and check regulatory compliance</div>
+    <div class="app-dot" style="background:#7c3aed;">q0</div>
+    <div class="app-info"><div class="app-name">q0q0.mosaeQ.com</div><div class="app-desc">Cosmetic safety</div></div>
   </a>
-  <div class="app-divider"></div>
-  <a class="app-tile" href="https://msq.mosaeQ.com#ontology" data-app="ontology">
-    <div class="app-name">Ontology</div>
-    <div class="app-desc">Download safety classification rules, regulatory mappings, and integration schemas</div>
-  </a>
-</div>
-
-<!-- HAMBURGER MENU PANEL -->
-<div class="hamburger-overlay" id="hamburger-overlay" onclick="closeHamburger()"></div>
-<div class="hamburger-panel" id="hamburger-panel">
-  <div class="panel-header">
-    <h3>On this page</h3>
-    <button class="hamburger-close" onclick="closeHamburger()" aria-label="Close">&times;</button>
-  </div>
-  <a class="ham-link" href="#search" onclick="closeHamburger()">Concordance Search</a>
-  <a class="ham-link" href="#trapzones" onclick="closeHamburger()">Trap Zones</a>
-  <a class="ham-link" href="#cliff" onclick="closeHamburger()">Digital Cliff</a>
-  <a class="ham-link" href="#databases" onclick="closeHamburger()">Databases</a>
-  <a class="ham-link" href="#ontology" onclick="closeHamburger()">Ontology</a>
-  <a class="ham-link" href="https://create.mosaeQ.com" target="_blank" rel="noopener noreferrer" onclick="closeHamburger()">&#127807; Eco <span class="ham-new-tag">NEW</span></a>
-  <a class="ham-link" href="#podcasts" onclick="closeHamburger()">Podcasts</a>
-  <a class="ham-link" href="#beta" onclick="closeHamburger()">Beta Access</a>
-  <a class="ham-link" href="https://mosaeq.com/pricing" onclick="closeHamburger()">Pricing</a>
-  <div class="ham-divider"></div>
-  <div class="ham-auth">
-    <div id="auth-anonymous">
-      <button class="btn-signin" onclick="login()" style="width:100%;">Sign In</button>
-    </div>
-    <div class="user-info" id="auth-user">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <img class="avatar" id="user-avatar" src="" alt="">
-        <span class="name" id="user-name"></span>
-      </div>
-      <button class="btn-signout" onclick="logout()" style="width:100%;">Sign Out</button>
-    </div>
-  </div>
-  <div style="height:1px;background:#e2e8f0;margin:12px 0;"></div>
-  <a class="ham-link" href="https://mosaeq.com/terms" style="font-size:14px;color:#64748b;">Terms of Use</a>
-  <a class="ham-link" href="https://mosaeq.com/privacy" style="font-size:14px;color:#64748b;">Privacy Policy</a>
-  <a class="ham-link" href="https://mosaeq.com/impressum" style="font-size:14px;color:#64748b;">Impressum</a>
 </div>
 
 <!-- NAV -->
@@ -802,16 +601,21 @@ body.eco-banner-visible .hero { margin-top: 104px; }
       <span class="label">Quantum Ontology</span>
     </a>
   </div>
-  <a href="https://mosaeq.com" class="nav-center" aria-label="mosaeQ home">
-    <img src="/_mosaeQ-logo-red.png" alt="mosaeQ" class="nav-logo">
-  </a>
-  <div class="nav-right">
-    <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+  <div class="nav-links">
+    <a href="https://mosaeq.com">mosaeQ.com</a>
+    <a href="#ontology">Ontology</a>
+    <a href="https://create.mosaeq.com">create</a>
+    <a href="https://outbreak.mosaeq.com">outbreak</a>
+    <a href="https://mosaeq.com/pricing">Pricing</a>
+    <div id="auth-anonymous">
+      <button class="btn-signin" onclick="login()">Sign In</button>
+    </div>
+    <div class="user-info" id="auth-user">
+      <img class="avatar" id="user-avatar" src="" alt="">
+      <span class="name" id="user-name"></span>
+      <button class="btn-signout" onclick="logout()">Sign Out</button>
+    </div>
   </div>
-</nav>
-  </button>
 </nav>
 
 <!-- COOKIE BANNER -->
@@ -852,7 +656,7 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 </section>
 
 <!-- §1 SEARCH -->
-<section class="search-section" id="search">
+<section class="search-section">
   <h2>Concordance Search</h2>
   <p>Enter a compound name to query concordance data across all four public safety databases.</p>
   <div class="search-box">
@@ -882,65 +686,46 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 </section>
 
 <!-- §3 TRAP ZONE REFERENCE -->
-<section class="tissue-section" id="trapzones">
+<section class="tissue-section">
   <h2>Tissue Trap Zones on S³</h2>
   <p class="intro">LogP and TPSA are mapped to quaternion coordinates (θ, φ) on S³. On msq, these values are sourced from PubChem. For NEMP quantum-computed values from SMILES alone, use <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a>. Natural pharmacological zones emerge on the hypersphere, identifying where drugs accumulate before clinical exposure.</p>
   <div class="zone-grid">
-    <div class="zone-card idle" data-zone="brain">
+    <div class="zone-card" data-zone="brain">
       <div class="zone-name">Brain Trap</div>
       <div class="zone-params">High θ · Low φ</div>
       <div class="zone-desc">BBB-penetrating compounds. High lipophilicity + low polar surface area enables CNS entry. Sedation, extrapyramidal effects.</div>
       <div class="zone-examples">e.g., chlorpromazine, haloperidol</div>
       <div class="zone-label"></div>
-      <div class="zone-status">Search a compound above to classify</div>
-      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
-      <div class="zone-detail"><strong>Why it matters:</strong> Compounds in the Brain Trap zone cross the blood-brain barrier and accumulate in CNS tissue. This is the primary mechanism behind opioid overdose deaths (respiratory depression), sedation side effects, and neuropsychiatric adverse events. P-glycoprotein (P-gp) status determines whether accumulation is sustained or reversible.<br><br><strong>Properties used:</strong> LogP &gt; 3.0, TPSA &lt; 90<div class="zone-ref">Kelder et al. (1999) Pharm Res 16:1514–1519</div></div>
     </div>
-    <div class="zone-card idle" data-zone="lysosomal">
+    <div class="zone-card" data-zone="lysosomal">
       <div class="zone-name">Lysosomal Trap</div>
       <div class="zone-params">High θ · Basic pKa</div>
       <div class="zone-desc">Lysosomotropic accumulation. Ion trapping in acidic organelles drives liver, kidney, and lung concentration far above plasma levels.</div>
       <div class="zone-examples">e.g., amiodarone, imipramine</div>
       <div class="zone-label"></div>
-      <div class="zone-status">Search a compound above to classify</div>
-      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
-      <div class="zone-detail"><strong>Why it matters:</strong> Lipophilic amines (LogP &gt; 1, pKa &gt; 6.5) diffuse into lysosomes where the acidic pH (4–5) protonates them. The charged molecule cannot diffuse back out — it is trapped. This causes organ-level toxicity in lysosome-rich tissues: liver, kidney, lung, spleen. Phospholipidosis is the hallmark adverse event.<br><br><strong>Properties used:</strong> LogP &gt; 1.0, basic amine nitrogen<div class="zone-ref">Kazmi et al. (2013) Drug Metab Dispos 41:897–905</div></div>
     </div>
-    <div class="zone-card idle" data-zone="gut">
+    <div class="zone-card" data-zone="gut">
       <div class="zone-name">Gut Trap</div>
       <div class="zone-params">High θ · Mid φ</div>
       <div class="zone-desc">GI mucosa sequestration. Structure-driven over-exposure causing nausea and emesis &mdash; the functional blind spot histopathology misses entirely.</div>
       <div class="zone-examples">e.g., irinotecan, metformin</div>
       <div class="zone-label"></div>
-      <div class="zone-status">Search a compound above to classify</div>
-      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
-      <div class="zone-detail"><strong>Why it matters:</strong> Compounds with moderate polarity sequester in GI mucosa, causing local over-exposure that blood-level PK monitoring misses entirely. Histopathology in animal studies often fails to detect this because gut tissue processing destroys the evidence. This is the functional blind spot in preclinical safety.<br><br><strong>Properties used:</strong> LogP &gt; 3.0, TPSA 70–120</div>
     </div>
-    <div class="zone-card idle" data-zone="plasma">
+    <div class="zone-card" data-zone="plasma">
       <div class="zone-name">Plasma-Retained</div>
       <div class="zone-params">Low θ · High φ</div>
       <div class="zone-desc">Hydrophilic compounds that remain in circulation. Low tissue penetration, predictable PK, lowest tissue-trap risk.</div>
       <div class="zone-examples">e.g., methotrexate, fluconazole</div>
       <div class="zone-label"></div>
-      <div class="zone-status">Search a compound above to classify</div>
-      <div class="zone-learn-more" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('open')">ℹ Learn more</div>
-      <div class="zone-detail"><strong>Why it matters:</strong> Hydrophilic compounds with high polar surface area stay in circulation. They have predictable pharmacokinetics, low tissue accumulation, and the lowest tissue-trap risk. Adverse events for these compounds are typically dose-dependent toxicity rather than accumulation-driven.<br><br><strong>Properties used:</strong> LogP &lt; 2.0, TPSA &gt; 100</div>
     </div>
   </div>
   <div id="trap-risk-summary"></div>
-  <div class="quantum-upgrade">
-    <h3><span class="q-icon">⚛</span> NEMP Quantum Classification Available</h3>
-    <p>The trap zones above use PubChem properties &mdash; precomputed, public, approximate.</p>
-    <p>mosaeQ.com/lab computes trap zone classification from NEMP quantum properties &mdash; deterministic, from SMILES alone, with P-gp efflux prediction, brain/plasma ratio, FAERS concordance, and opioid safety panel.</p>
-    <p>For novel compounds not in PubChem, quantum classification is the <strong style="color:var(--white)">only</strong> option.</p>
-    <a href="https://mosaeq.com/lab" target="_blank" class="btn-quantum">Run Quantum Classification &rarr; mosaeQ.com</a>
-  </div>
 </section>
 
 <hr class="section-divider">
 
 <!-- §4 DIGITAL CLIFF (collapsible) -->
-<section class="cliff-section" id="cliff">
+<section class="cliff-section">
   <div class="cliff-toggle" aria-expanded="false" onclick="toggleCliff()">
     <h2>The Digital Cliff</h2>
     <span class="cliff-arrow">&#9660;</span>
@@ -980,7 +765,7 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 </section>
 
 <!-- §5 DATABASES -->
-<section class="databases" id="databases">
+<section class="databases">
   <div class="databases-inner">
     <h2>Integrated Public Safety Databases</h2>
     <div class="db-grid">
@@ -1009,7 +794,7 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 </section>
 
 <!-- §6 LISTEN -->
-<section class="podcast-section" id="podcasts">
+<section class="podcast-section">
   <h2>Listen</h2>
   <div class="podcast-card">
     <div class="episode">Podcast #2 · March 25, 2026</div>
@@ -1054,82 +839,27 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 <!-- §8 ONTOLOGY -->
 <section class="ontology-section" id="ontology">
   <div class="ontology-inner">
-    <h2>msq: Quantum Safety Ontology v2.0.0</h2>
-    <p class="onto-sub">A machine-readable rulebook for quantum-computed drug safety classification</p>
-    <p class="onto-intro">The msq: ontology defines how molecular safety data is structured, classified, and queried across the mosaeQ platform. It receives computed property values from the quantum engine and classifies compounds into safety zones using formal logic. It connects to international regulatory formats used by EMA, FDA, and ECHA.</p>
-
-    <div class="onto-coverage">
-      <!-- Row 1 -->
-      <div class="onto-card">
-        <div class="card-title">Molecular Positioning</div>
-        <div class="card-desc">Every compound gets a mathematically precise 4D safety coordinate</div>
-      </div>
-      <div class="onto-card">
-        <div class="card-title">Safety Zones</div>
-        <div class="card-desc">9 default zones + unlimited custom zones defined by threshold conditions</div>
-      </div>
-      <div class="onto-card">
-        <div class="card-title">Mechanism Naming</div>
-        <div class="card-desc">Zones named by physical mechanism, not tissue appearance</div>
-      </div>
-      <!-- Row 2 -->
-      <div class="onto-card">
-        <div class="card-title">Concordance</div>
-        <div class="card-desc">Validates predictions against FAERS, DailyMed, DrugMatrix, TG-GATEs</div>
-      </div>
-      <div class="onto-card">
-        <div class="card-title">Environmental Fate</div>
-        <div class="card-desc">Tracks pharmaceutical discharge across 7 environmental compartments</div>
-      </div>
-      <div class="onto-card">
-        <div class="card-title">Regulatory Status</div>
-        <div class="card-desc">EU CosIng, REACH, IFRA, SCCS ban/restriction flags</div>
-      </div>
-      <!-- Row 3 -->
-      <div class="onto-card">
-        <div class="card-title">Large Molecules</div>
-        <div class="card-desc">Extends to antibodies, spike proteins, gene therapy vectors</div>
-      </div>
-      <div class="onto-card">
-        <div class="card-title">Circadian Context</div>
-        <div class="card-desc">Time-of-day and lunar phase effects on drug metabolism</div>
-      </div>
-      <div class="onto-card">
-        <div class="card-title">Virus-Host Evolution</div>
-        <div class="card-desc">Cx43 targeting and pandemic potential classification</div>
+    <h2>Quantum Safety Ontology (msq: namespace)</h2>
+    <p class="onto-sub">Formal vocabulary for translational preclinical safety concordance on S&sup3;.</p>
+    <div class="onto-meta">
+      <span class="meta-label">Namespace</span>
+      <span class="meta-value">https://msq.mosaeq.com/ontology#</span>
+      <span class="meta-label">Prefix</span>
+      <span class="meta-value">msq:</span>
+      <span class="meta-label">Version</span>
+      <span class="meta-value">1.0.0</span>
+    </div>
+    <div class="onto-vocab">
+      <h3>Core Vocabulary</h3>
+      <div class="class-list">
+        Compound, S3Coordinate, TrapZone <span style="font-size:0.72rem;color:var(--chrome-light);">(9 subclasses)</span>, EffluxTransporter, SafetyProfile, OpioidPanel, Concordance, DigitalCliff, DataSource, EnvironmentalFate, AuxiliaryMetabolicGene, AntiDefenseGene, ViralLifecycle
       </div>
     </div>
-
-    <!-- Architecture diagram -->
-    <div class="onto-arch">
-      <div class="onto-arch-flow">
-        <div class="onto-arch-box">Quantum Engine</div>
-        <span class="onto-arch-arrow">&rarr;</span>
-        <div class="onto-arch-box">OWL Reasoner + Ontology</div>
-        <span class="onto-arch-arrow">&rarr;</span>
-        <div class="onto-arch-box">SPARQL Query</div>
-      </div>
-      <p class="onto-arch-label">Three-layer separation: the engine computes, the ontology classifies, SPARQL queries.</p>
+    <div class="onto-buttons">
+      <a href="/ontology.ttl" download="msq-ontology-v1.0.0.ttl" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
+      <a href="/ontology.ttl" target="_blank" class="btn-onto btn-onto-secondary">View Documentation</a>
     </div>
-
-    <!-- Download -->
-    <div class="onto-download">
-      <h3>Access the Ontology</h3>
-      <div class="onto-dl-buttons" id="onto-dl-anon">
-        <a href="#" onclick="downloadOntology(event)" class="btn-onto btn-onto-disabled">Sign in to download ontology specification</a>
-      </div>
-      <div class="onto-dl-buttons" id="onto-dl-auth" style="display:none;">
-        <a href="#" onclick="downloadOntology(event)" class="btn-onto btn-onto-primary">Download Ontology (.ttl)</a>
-        <a href="#" onclick="downloadShacl(event)" class="btn-onto btn-onto-outline">Download SHACL Shapes (.ttl)</a>
-      </div>
-      <div class="onto-licenses">
-        <a href="mailto:partnerships@mosaeq.com?subject=msq%20Ontology%20Enterprise%20License">Request Enterprise License</a>
-        <a href="mailto:partnerships@mosaeq.com?subject=msq%20Ontology%20Academic%20License">Request Academic License</a>
-        <a href="mailto:partnerships@mosaeq.com?subject=msq%20Ontology%20Government%20License">Request Government License</a>
-      </div>
-      <p class="onto-footer-text">The msq: quantum safety ontology is available for evaluation after sign-in. Commercial integration, government deployment, and academic research each require a license from Mosae Zorg Industries UG.</p>
-      <p class="onto-version">v2.0.0 | April 2026 | OWL 2 DL | 39 classes | 87 properties | 11 SHACL shapes | 18 namespace alignments (ChEBI, MedDRA, NCIT, CDISC/SEND, ENVO, GO, OBI, SNOMED CT)</p>
-    </div>
+    <p class="onto-licensing">Commercial licensing: <a href="mailto:partnerships@mosaeq.com">partnerships@mosaeq.com</a></p>
   </div>
 </section>
 
@@ -1143,7 +873,7 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 </section>
 
 <!-- §10 ACCESS + FOOTER -->
-<section class="beta-cta" id="beta">
+<section class="beta-cta">
   <h2>Exclusive Introductory Beta Access for Health Technology Professionals</h2>
   <p>Qualifying researchers, regulatory scientists, and pharmaceutical professionals in health technology may apply for complimentary two-month access to the msq quantum ontology. Academic, government, and clinical applicants are prioritised.</p>
   <a href="mailto:partnerships@mosaeq.com?subject=msq%20Beta%20Access%20Request&body=Name:%0AInstitution:%0ACompound(s)%20of%20interest:%0A" class="btn-beta">
@@ -1312,12 +1042,6 @@ async function initAuth() {
     } catch (e) { console.error('Auth callback error:', e); }
   }
   await updateUI();
-  if (localStorage.getItem('msq_pending_download')) {
-    localStorage.removeItem('msq_pending_download');
-    var el = document.getElementById('ontology');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    setTimeout(function() { triggerOntologyDownload(); }, 600);
-  }
 }
 
 async function updateUI() {
@@ -1325,7 +1049,7 @@ async function updateUI() {
   if (isAuth) {
     const user = await auth0Client.getUser();
     document.getElementById('auth-anonymous').style.display = 'none';
-    document.getElementById('auth-user').style.display = 'block';
+    document.getElementById('auth-user').style.display = 'flex';
     document.getElementById('user-name').textContent = user.name || user.email;
     document.getElementById('user-avatar').src = user.picture || '';
     const claims = await auth0Client.getIdTokenClaims();
@@ -1352,43 +1076,6 @@ async function updateUI() {
 
 async function login() { await auth0Client.loginWithRedirect(); }
 async function logout() { await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } }); }
-
-async function downloadOntology(e) {
-  e.preventDefault();
-  var isAuth = auth0Client && await auth0Client.isAuthenticated();
-  if (!isAuth) {
-    localStorage.setItem('msq_pending_download', 'ontology');
-    await auth0Client.loginWithRedirect();
-    return;
-  }
-  triggerOntologyDownload();
-}
-async function downloadShacl(e) {
-  e.preventDefault();
-  var isAuth = auth0Client && await auth0Client.isAuthenticated();
-  if (!isAuth) {
-    localStorage.setItem('msq_pending_download', 'shacl');
-    await auth0Client.loginWithRedirect();
-    return;
-  }
-  triggerShaclDownload();
-}
-function triggerOntologyDownload() {
-  var a = document.createElement('a');
-  a.href = '/ontology/msq-ontology-v2.0.0.ttl';
-  a.download = 'msq-ontology-v2.0.0.ttl';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-function triggerShaclDownload() {
-  var a = document.createElement('a');
-  a.href = '/ontology/msq-shacl-v2.0.0.ttl';
-  a.download = 'msq-shacl-v2.0.0.ttl';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
 
 // ── COMPOUND PROPERTIES (LogP = XLogP3, TPSA = Å², pKa = basic) ──
 // Source: PubChem CID property tables + DrugBank pKa values
@@ -1535,21 +1222,16 @@ function highlightZoneCards(classification, compoundName, coords) {
   cards.forEach(card => {
     const z = card.getAttribute('data-zone');
     const label = card.querySelector('.zone-label');
-    const status = card.querySelector('.zone-status');
-    const examples = card.querySelector('.zone-examples');
-    card.classList.remove('active', 'dimmed', 'idle', 'unavailable');
+    card.classList.remove('active', 'dimmed');
     if (label) label.style.display = 'none';
-    if (examples) examples.style.display = 'none';
     if (classification.zones.includes(z)) {
       card.classList.add('active');
       if (label) {
         label.textContent = compoundName + ' \u2192 ' + ZONE_NAMES[z] + ' (\u03b8=' + coords.theta + ', \u03c6=' + coords.phi + ')';
         label.style.display = 'block';
       }
-      if (status) status.textContent = ZONE_RISKS[z];
     } else {
       card.classList.add('dimmed');
-      if (status) status.textContent = compoundName + ': Not classified in this zone';
     }
   });
   if (riskEl) {
@@ -1564,32 +1246,11 @@ function highlightZoneCards(classification, compoundName, coords) {
   }
 }
 
-function showZoneCardsUnavailable(compoundName) {
-  const cards = document.querySelectorAll('.zone-card');
-  cards.forEach(card => {
-    card.classList.remove('active', 'dimmed', 'idle');
-    card.classList.add('unavailable');
-    const label = card.querySelector('.zone-label');
-    const status = card.querySelector('.zone-status');
-    const examples = card.querySelector('.zone-examples');
-    if (label) label.style.display = 'none';
-    if (examples) examples.style.display = 'none';
-    if (status) status.innerHTML = compoundName + ': Properties not available from PubChem. <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab</a> for NEMP quantum classification.';
-  });
-  const riskEl = document.getElementById('trap-risk-summary');
-  if (riskEl) { riskEl.classList.remove('visible'); riskEl.innerHTML = ''; }
-}
-
 function resetZoneCards() {
   document.querySelectorAll('.zone-card').forEach(card => {
-    card.classList.remove('active', 'dimmed', 'unavailable');
-    card.classList.add('idle');
+    card.classList.remove('active', 'dimmed');
     const label = card.querySelector('.zone-label');
-    const examples = card.querySelector('.zone-examples');
-    const status = card.querySelector('.zone-status');
     if (label) label.style.display = 'none';
-    if (examples) examples.style.display = 'block';
-    if (status) status.textContent = 'Search a compound above to classify';
   });
   const riskEl = document.getElementById('trap-risk-summary');
   if (riskEl) { riskEl.classList.remove('visible'); riskEl.innerHTML = ''; }
@@ -1689,7 +1350,6 @@ async function searchCompound() {
       <div class="trap-risk-inline">
         <strong>${displayName}: ${zoneLine}</strong> \u2014 ${ZONE_RISKS[riskZone]}
       </div>
-      <div class="pubchem-note">This classification uses PubChem LogP and TPSA. For NEMP quantum-computed values with P-gp efflux prediction and FAERS concordance: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>
     `;
 
     if (faersCount > 0 && faersReactions.length > 0) {
@@ -1704,7 +1364,6 @@ async function searchCompound() {
       }
     }
   } else {
-    showZoneCardsUnavailable(displayName);
     trapHTML = `
       <div class="result-row">
         <span class="result-label">Tissue Trap Zone</span>
@@ -1734,8 +1393,8 @@ async function searchCompound() {
 
   results.innerHTML = `
     <div class="result-card">
+      ${compoundProps ? '<div class="source-banner">\u2139\ufe0f Quick Lookup &mdash; properties from PubChem. For NEMP quantum computation from SMILES: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>' : ''}
       <h3>${displayName}</h3>
-      ${compoundProps ? '<p style="font-size:0.88rem;color:var(--chrome);margin-bottom:0.75rem;">Properties sourced from PubChem. Quantum-computed values from SMILES available on <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a></p>' : ''}
       ${compoundProps ? `<div class="result-props">
         <div class="prop"><span class="prop-label">LogP:</span> <span class="prop-value">${compoundProps.logP.toFixed(2)}</span> ${srcLabel}</div>
         <div class="prop"><span class="prop-label">TPSA:</span> <span class="prop-value">${compoundProps.tpsa.toFixed(1)} \u00c5\u00b2</span> ${srcLabel}</div>
@@ -1749,7 +1408,6 @@ async function searchCompound() {
             <span class="result-label">FDA FAERS</span>
             <span class="result-value ${faersCount > 0 ? 'found' : 'null'}">${faersCount > 0 ? faersCount.toLocaleString() + ' reports' : 'NOT_FOUND'}</span>
           </div>
-          ${faersCount === 0 ? '<div class="cliff-guidance">This compound is not in the FDA\'s adverse event database (Digital Cliff). Quantum concordance on mosaeQ.com/lab provides the only computational safety assessment available. <a href="https://mosaeq.com/lab" target="_blank">Run Quantum Concordance &rarr;</a></div>' : ''}
           <div class="result-row">
             <span class="result-label">NLM DailyMed</span>
             <span class="result-value ${dailymedCount > 0 ? 'found' : 'null'}">${dailymedCount > 0 ? 'Label found' : (dailymedCount === -1 ? 'Query via API' : 'NOT_FOUND')}</span>
@@ -1872,7 +1530,6 @@ function acceptCookies() {
 
 // ── APP LAUNCHER ──
 function toggleAppLauncher() {
-  closeHamburger();
   var p = document.getElementById('app-launcher-panel');
   var o = document.getElementById('app-launcher-overlay');
   var isOpen = p.classList.contains('open');
@@ -1883,38 +1540,14 @@ function closeAppLauncher() {
   document.getElementById('app-launcher-panel').classList.remove('open');
   document.getElementById('app-launcher-overlay').classList.remove('open');
 }
-
-// ── HAMBURGER MENU ──
-function toggleHamburger() {
-  closeAppLauncher();
-  var p = document.getElementById('hamburger-panel');
-  var o = document.getElementById('hamburger-overlay');
-  var isOpen = p.classList.contains('open');
-  p.classList.toggle('open', !isOpen);
-  o.classList.toggle('open', !isOpen);
-}
-function closeHamburger() {
-  document.getElementById('hamburger-panel').classList.remove('open');
-  document.getElementById('hamburger-overlay').classList.remove('open');
-}
-
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeAppLauncher(); closeHamburger(); }
+  if (e.key === 'Escape') closeAppLauncher();
 });
 (function highlightCurrentApp() {
   var host = location.hostname.toLowerCase();
-  var appMap = {
-    'mosaeq.com': 'mosaeq.com', 'www.mosaeq.com': 'mosaeq.com',
-    'msq.mosaeq.com': 'msq.mosaeq.com',
-    'create.mosaeq.com': 'create.mosaeq.com',
-    'eco.mosaeq.com': 'eco.mosaeq.com',
-    'outbreak.mosaeq.com': 'outbreak.mosaeq.com',
-    'q0q0.mosaeq.com': 'q0q0.mosaeq.com'
-  };
-  var current = appMap[host] || host;
   var tiles = document.querySelectorAll('.app-tile[data-app]');
   for (var i = 0; i < tiles.length; i++) {
-    if (tiles[i].getAttribute('data-app') === current) {
+    if (tiles[i].getAttribute('data-app') === host) {
       tiles[i].classList.add('active');
     }
   }
