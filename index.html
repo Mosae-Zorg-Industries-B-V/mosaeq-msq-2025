@@ -1492,6 +1492,33 @@ function getCompoundProperties(name) {
   return null;
 }
 
+async function fetchPubChemProperties(name) {
+  try {
+    const url = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/' + encodeURIComponent(name) + '/property/MolecularWeight,XLogP,TPSA,HBondDonorCount,HBondAcceptorCount,IsomericSMILES,MolecularFormula,IUPACName/JSON';
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const props = data && data.PropertyTable && data.PropertyTable.Properties && data.PropertyTable.Properties[0];
+    if (!props) return null;
+    return {
+      cid: props.CID || null,
+      logP: (props.XLogP !== undefined && props.XLogP !== null) ? props.XLogP : null,
+      tpsa: (props.TPSA !== undefined && props.TPSA !== null) ? props.TPSA : null,
+      mw: (props.MolecularWeight !== undefined) ? props.MolecularWeight : null,
+      hbd: (props.HBondDonorCount !== undefined) ? props.HBondDonorCount : null,
+      hba: (props.HBondAcceptorCount !== undefined) ? props.HBondAcceptorCount : null,
+      smiles: props.IsomericSMILES || null,
+      formula: props.MolecularFormula || null,
+      iupac: props.IUPACName || null,
+      pka: null,
+      source: 'pubchem'
+    };
+  } catch(e) {
+    console.log('PubChem API error:', e);
+    return null;
+  }
+}
+
 function classifyTrapZone(logP, tpsa, pka) {
   const zones = [];
   if (logP > 3.0 && tpsa < 70) zones.push('brain');
@@ -1507,6 +1534,17 @@ function classifyTrapZone(logP, tpsa, pka) {
   ];
   scores.sort((a, b) => a.dist - b.dist);
   return { primary: 'intermediate', zones: [scores[0].zone, scores[1].zone], intermediate: true };
+}
+
+function classifyTrapZoneFromPubChem(logP, tpsa, hba, smiles) {
+  const zones = [];
+  const details = {};
+  if (logP > 2.0 && tpsa < 90) { zones.push('brain'); details.brain = 'DETECTED'; }
+  if (hba !== null && hba >= 2 && logP > 2.0) { zones.push('lysosomal'); details.lysosomal = 'POSSIBLE'; }
+  if (tpsa > 60 && tpsa < 120 && logP > 1.0) { zones.push('gut'); details.gut = 'DETECTED'; }
+  if (logP < 1.0 && tpsa > 100) { zones.push('plasma'); details.plasma = 'DETECTED'; }
+  if (zones.length >= 1) return { primary: zones[0], zones: zones, intermediate: zones.length > 1, details: details };
+  return { primary: 'none', zones: [], intermediate: false, details: details };
 }
 
 function computeS3Coords(logP, tpsa) {
@@ -1529,7 +1567,7 @@ function checkFAERSConcordance(zone, reactions) {
   return { zone: zone, matched: [...new Set(matched)].slice(0, 5), count: matched.length };
 }
 
-function highlightZoneCards(classification, compoundName, coords) {
+function highlightZoneCards(classification, compoundName, coords, pubchemInfo) {
   const cards = document.querySelectorAll('.zone-card');
   const riskEl = document.getElementById('trap-risk-summary');
   cards.forEach(card => {
@@ -1543,7 +1581,12 @@ function highlightZoneCards(classification, compoundName, coords) {
     if (classification.zones.includes(z)) {
       card.classList.add('active');
       if (label) {
-        label.textContent = compoundName + ' \u2192 ' + ZONE_NAMES[z] + ' (\u03b8=' + coords.theta + ', \u03c6=' + coords.phi + ')';
+        if (pubchemInfo) {
+          const det = classification.details && classification.details[z] ? classification.details[z] : 'DETECTED';
+          label.textContent = compoundName + ': LogP ' + (pubchemInfo.logP !== null ? pubchemInfo.logP : '–') + ', TPSA ' + (pubchemInfo.tpsa !== null ? pubchemInfo.tpsa : '–') + (pubchemInfo.mw ? ', MW ' + pubchemInfo.mw : '') + ' \u2192 ' + ZONE_NAMES[z] + ' ' + det;
+        } else {
+          label.textContent = compoundName + ' \u2192 ' + ZONE_NAMES[z] + ' (\u03b8=' + coords.theta + ', \u03c6=' + coords.phi + ')';
+        }
         label.style.display = 'block';
       }
       if (status) status.textContent = ZONE_RISKS[z];
@@ -1553,14 +1596,18 @@ function highlightZoneCards(classification, compoundName, coords) {
     }
   });
   if (riskEl) {
-    if (classification.primary !== 'intermediate') {
+    if (classification.primary === 'none') {
+      riskEl.innerHTML = '<strong>' + compoundName + ':</strong> No trap zones flagged from PubChem properties. Run on <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;">mosaeQ.com/lab</a> for full NEMP quantum classification.';
+      riskEl.classList.add('visible');
+    } else if (classification.primary !== 'intermediate') {
       riskEl.innerHTML = '<strong>' + compoundName + ': ' + ZONE_NAMES[classification.primary] + ' Zone</strong> \u2014 ' + ZONE_RISKS[classification.primary];
+      riskEl.classList.add('visible');
     } else {
       const z1 = ZONE_NAMES[classification.zones[0]];
       const z2 = ZONE_NAMES[classification.zones[1]];
       riskEl.innerHTML = '<strong>' + compoundName + ': Intermediate Zone</strong> \u2014 Between ' + z1 + ' and ' + z2 + '. ' + ZONE_RISKS[classification.zones[0]];
+      riskEl.classList.add('visible');
     }
-    riskEl.classList.add('visible');
   }
 }
 
@@ -1609,6 +1656,7 @@ async function searchCompound() {
   let faersCount = 0, faersReactions = [];
   let dailymedCount = 0;
   let compoundProps = getCompoundProperties(name);
+  let pubchemData = null;
 
   const hergChecked = document.getElementById('chk-herg').checked;
   const cardiotoxChecked = document.getElementById('chk-cardiotox').checked;
@@ -1634,8 +1682,17 @@ async function searchCompound() {
         const dmRes = await fetch(`https://65.109.94.91:8000/api/v1/concordance/sync/dailymed/${encodeURIComponent(name)}`, { mode: 'cors' });
         if (dmRes.ok) { const d = await dmRes.json(); dailymedCount = (d?.warnings_found?.length || 0) + (d?.boxed_warnings_found?.length || 0); }
       } catch(e) { console.log('DailyMed proxy error:', e); dailymedCount = -1; }
+    })(),
+    (async () => {
+      if (!compoundProps) {
+        pubchemData = await fetchPubChemProperties(name);
+      }
     })()
   ]);
+
+  if (!compoundProps && pubchemData) {
+    compoundProps = { logP: pubchemData.logP, tpsa: pubchemData.tpsa, pka: null, source: 'pubchem', pubchem: pubchemData };
+  }
   loading.style.display = 'none';
   results.style.display = 'block';
 
@@ -1644,15 +1701,21 @@ async function searchCompound() {
   let opioidPanelHTML = '';
   let coords = null;
 
+  const isPubChem = compoundProps && compoundProps.source === 'pubchem';
+
   if (compoundProps && compoundProps.logP !== null && compoundProps.tpsa !== null) {
-    const classification = classifyTrapZone(compoundProps.logP, compoundProps.tpsa, compoundProps.pka);
+    const classification = isPubChem
+      ? classifyTrapZoneFromPubChem(compoundProps.logP, compoundProps.tpsa, compoundProps.pubchem.hba, compoundProps.pubchem.smiles)
+      : classifyTrapZone(compoundProps.logP, compoundProps.tpsa, compoundProps.pka);
     coords = computeS3Coords(compoundProps.logP, compoundProps.tpsa);
-    highlightZoneCards(classification, displayName, coords);
+    highlightZoneCards(classification, displayName, coords, isPubChem ? compoundProps.pubchem : null);
 
     const bbbPenetration = classification.zones.includes('brain');
 
     let zoneLine = '';
-    if (classification.primary !== 'intermediate') {
+    if (classification.primary === 'none') {
+      zoneLine = 'No trap zones flagged';
+    } else if (classification.primary !== 'intermediate') {
       zoneLine = ZONE_NAMES[classification.primary] + ' Zone';
       if (classification.intermediate) {
         zoneLine += ' (also: ' + classification.zones.slice(1).map(z => ZONE_NAMES[z]).join(', ') + ')';
@@ -1680,17 +1743,29 @@ async function searchCompound() {
       opioidPanelHTML = buildOpioidPanelHTML(opioidPanelData, displayName, bbbPenetration, hergChecked, cardiotoxChecked);
     }
 
-    const riskZone = classification.primary !== 'intermediate' ? classification.primary : classification.zones[0];
-    trapHTML = `
-      <div class="result-row">
-        <span class="result-label">Zone</span>
-        <span class="result-value" style="color:#991b1b;font-weight:700;">${zoneLine}</span>
-      </div>
-      <div class="trap-risk-inline">
-        <strong>${displayName}: ${zoneLine}</strong> \u2014 ${ZONE_RISKS[riskZone]}
-      </div>
-      <div class="pubchem-note">This classification uses PubChem LogP and TPSA. For NEMP quantum-computed values with P-gp efflux prediction and FAERS concordance: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>
-    `;
+    const riskZone = classification.primary === 'none' ? null : (classification.primary !== 'intermediate' ? classification.primary : classification.zones[0]);
+    if (classification.primary === 'none') {
+      trapHTML = `
+        <div class="result-row">
+          <span class="result-label">Zone</span>
+          <span class="result-value" style="color:var(--success);font-weight:700;">No trap zones flagged</span>
+        </div>
+        <div class="pubchem-note">No trap zones flagged from PubChem properties. Run on <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a> for full NEMP quantum classification.</div>
+        ${isPubChem && compoundProps.pubchem.cid ? '<div class="pubchem-note">Properties retrieved from <a href="https://pubchem.ncbi.nlm.nih.gov/compound/' + compoundProps.pubchem.cid + '" target="_blank">PubChem CID ' + compoundProps.pubchem.cid + '</a></div>' : ''}
+      `;
+    } else {
+      trapHTML = `
+        <div class="result-row">
+          <span class="result-label">Zone</span>
+          <span class="result-value" style="color:#991b1b;font-weight:700;">${zoneLine}</span>
+        </div>
+        <div class="trap-risk-inline">
+          <strong>${displayName}: ${zoneLine}</strong> \u2014 ${ZONE_RISKS[riskZone]}
+        </div>
+        <div class="pubchem-note">${isPubChem ? 'These classifications use published PubChem values.' : 'This classification uses PubChem LogP and TPSA.'} For NEMP quantum-computed values with P-gp efflux prediction and FAERS concordance: <a href="https://mosaeq.com/lab" target="_blank">Run on mosaeQ.com/lab &rarr;</a></div>
+        ${isPubChem && compoundProps.pubchem.cid ? '<div class="pubchem-note">Properties retrieved from <a href="https://pubchem.ncbi.nlm.nih.gov/compound/' + compoundProps.pubchem.cid + '" target="_blank">PubChem CID ' + compoundProps.pubchem.cid + '</a></div>' : ''}
+      `;
+    }
 
     if (faersCount > 0 && faersReactions.length > 0) {
       const concordance = checkFAERSConcordance(riskZone, faersReactions);
@@ -1703,15 +1778,31 @@ async function searchCompound() {
         `;
       }
     }
+  } else if (compoundProps && isPubChem && (compoundProps.logP === null || compoundProps.tpsa === null)) {
+    const pc = compoundProps.pubchem;
+    const missingProps = [];
+    if (compoundProps.logP === null) missingProps.push('LogP');
+    if (compoundProps.tpsa === null) missingProps.push('TPSA');
+    showZoneCardsUnavailable(displayName);
+    trapHTML = `
+      <div class="result-row">
+        <span class="result-label">Tissue Trap Zone</span>
+        <span class="result-value" style="color:var(--chrome-light)">Partial properties</span>
+      </div>
+      <div class="trap-unavailable">
+        ${missingProps.join(', ')} not available from PubChem for this compound. Run on <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a> for quantum-computed values.
+      </div>
+      ${pc && pc.cid ? '<div class="pubchem-note">Properties retrieved from <a href="https://pubchem.ncbi.nlm.nih.gov/compound/' + pc.cid + '" target="_blank">PubChem CID ' + pc.cid + '</a></div>' : ''}
+    `;
   } else {
     showZoneCardsUnavailable(displayName);
     trapHTML = `
       <div class="result-row">
         <span class="result-label">Tissue Trap Zone</span>
-        <span class="result-value" style="color:var(--chrome-light)">Properties not available</span>
+        <span class="result-value" style="color:var(--chrome-light)">${pubchemData === null && !compoundProps ? 'Compound not found' : 'Properties not available'}</span>
       </div>
       <div class="trap-unavailable">
-        Run this compound on <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a> to compute trap zone classification from SMILES structure.
+        ${pubchemData === null && !compoundProps ? 'Compound not found on PubChem. Try searching by SMILES on' : 'Run this compound on'} <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a> ${pubchemData === null && !compoundProps ? '' : 'to compute trap zone classification from SMILES structure.'}
       </div>
     `;
     // Still call opioid panel if checkboxes are selected
@@ -1731,17 +1822,22 @@ async function searchCompound() {
   }
 
   const srcLabel = '<span class="prop-source">(PubChem)</span>';
+  const pcInfo = isPubChem ? compoundProps.pubchem : null;
 
   results.innerHTML = `
     <div class="result-card">
       <h3>${displayName}</h3>
-      ${compoundProps ? '<p style="font-size:0.88rem;color:var(--chrome);margin-bottom:0.75rem;">Properties sourced from PubChem. Quantum-computed values from SMILES available on <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a></p>' : ''}
-      ${compoundProps ? `<div class="result-props">
-        <div class="prop"><span class="prop-label">LogP:</span> <span class="prop-value">${compoundProps.logP.toFixed(2)}</span> ${srcLabel}</div>
-        <div class="prop"><span class="prop-label">TPSA:</span> <span class="prop-value">${compoundProps.tpsa.toFixed(1)} \u00c5\u00b2</span> ${srcLabel}</div>
+      ${compoundProps ? '<p style="font-size:0.88rem;color:var(--chrome);margin-bottom:0.75rem;">Properties sourced from PubChem.' + (pcInfo && pcInfo.cid ? ' <a href="https://pubchem.ncbi.nlm.nih.gov/compound/' + pcInfo.cid + '" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">CID ' + pcInfo.cid + '</a>.' : '') + ' Quantum-computed values from SMILES available on <a href="https://mosaeq.com/lab" target="_blank" style="color:var(--red);font-weight:600;text-decoration:none;">mosaeQ.com/lab</a></p>' : ''}
+      ${compoundProps && compoundProps.logP !== null ? `<div class="result-props">
+        <div class="prop"><span class="prop-label">LogP:</span> <span class="prop-value">${compoundProps.logP.toFixed ? compoundProps.logP.toFixed(2) : compoundProps.logP}</span> ${srcLabel}</div>
+        ${compoundProps.tpsa !== null ? '<div class="prop"><span class="prop-label">TPSA:</span> <span class="prop-value">' + (compoundProps.tpsa.toFixed ? compoundProps.tpsa.toFixed(1) : compoundProps.tpsa) + ' \u00c5\u00b2</span> ' + srcLabel + '</div>' : ''}
+        ${pcInfo && pcInfo.mw ? '<div class="prop"><span class="prop-label">MW:</span> <span class="prop-value">' + pcInfo.mw + '</span> ' + srcLabel + '</div>' : ''}
         ${compoundProps.pka !== null ? '<div class="prop"><span class="prop-label">pKa:</span> <span class="prop-value">' + compoundProps.pka.toFixed(1) + '</span> ' + srcLabel + '</div>' : ''}
+        ${pcInfo && pcInfo.hbd !== null ? '<div class="prop"><span class="prop-label">HBD:</span> <span class="prop-value">' + pcInfo.hbd + '</span> ' + srcLabel + '</div>' : ''}
+        ${pcInfo && pcInfo.hba !== null ? '<div class="prop"><span class="prop-label">HBA:</span> <span class="prop-value">' + pcInfo.hba + '</span> ' + srcLabel + '</div>' : ''}
         <div class="prop"><span class="prop-label">S\u00b3:</span> <span class="prop-value">(\u03b8=${coords ? coords.theta : '-'}, \u03c6=${coords ? coords.phi : '-'})</span></div>
       </div>` : ''}
+      ${isPubChem ? '<div class="pubchem-note" style="margin-bottom:0.75rem;">These classifications use published PubChem values. For NEMP quantum-computed partitioning from SMILES alone, run on <a href="https://mosaeq.com/lab" target="_blank">mosaeQ.com/lab</a>.</div>' : ''}
       <div class="result-columns">
         <div>
           <div class="result-col-header">Database Results</div>
