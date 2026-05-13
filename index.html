@@ -43,33 +43,26 @@ body {
 /* ── NAV ── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem; height: 64px;
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  background: rgba(15,23,42,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0 1rem; height: 64px;
+  display: flex; align-items: center; justify-content: center;
 }
-.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--navy); }
-.nav-brand .msq { font-family: 'DM Mono', monospace; font-size: 1.4rem; font-weight: 500; color: var(--red); letter-spacing: -0.5px; }
-.nav-brand .label { font-size: 0.75rem; color: var(--chrome); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
-.nav-logo { height: 32px; width: auto; display: block; }
-.nav-center { justify-self: center; }
-.nav-right { justify-self: end; }
+.nav-logo { height: 40px; width: auto; display: block; object-fit: contain; }
+.btn-lab { display: inline-block; background: #DC2626; color: #fff !important; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.875rem; text-decoration: none; white-space: nowrap; transition: background 0.2s; }
+.btn-lab:hover { background: #b91c1c; }
 .btn-signin { background: var(--red); color: var(--white) !important; padding: 8px 20px; border-radius: 6px; font-weight: 600; font-size: 0.82rem; cursor: pointer; border: none; transition: background 0.2s; }
 .btn-signin:hover { background: var(--red-hover); }
-.btn-signout { background: transparent; color: var(--chrome) !important; padding: 8px 16px; border: 1px solid var(--border); border-radius: 6px; font-weight: 500; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
-.btn-signout:hover { border-color: var(--chrome); color: var(--navy) !important; }
+.btn-signout { background: transparent; color: rgba(255,255,255,0.7) !important; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; font-weight: 500; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+.btn-signout:hover { border-color: rgba(255,255,255,0.4); color: #fff !important; }
 
 /* ── HAMBURGER ── */
 .hamburger-btn {
   background: none; border: none; cursor: pointer; padding: 8px;
-  display: flex; flex-direction: column; gap: 4px; border-radius: 6px;
-  transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center; border-radius: 8px;
+  transition: background 0.2s; color: #fff;
 }
-.hamburger-btn:hover { background: rgba(13,27,42,0.08); }
-.hamburger-btn span {
-  display: block; width: 18px; height: 2px; background: var(--navy);
-  border-radius: 1px; transition: transform 0.2s, opacity 0.2s;
-}
+.hamburger-btn:hover { background: rgba(255,255,255,0.1); }
 .hamburger-overlay {
   position: fixed; inset: 0; z-index: 996; background: rgba(0,0,0,0.4);
   opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
@@ -78,11 +71,11 @@ body {
 .hamburger-panel {
   position: fixed; top: 0; right: 0; bottom: 0; z-index: 997;
   width: 280px; max-width: 85vw;
-  background: #fff; color: var(--navy);
+  background: #0a192f; color: #fff;
   padding: 1.5rem; overflow-y: auto;
   transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
   font-family: 'Inter', -apple-system, sans-serif;
-  box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+  box-shadow: -4px 0 24px rgba(0,0,0,0.4);
 }
 .hamburger-panel.open { transform: translateX(0); }
 .hamburger-panel .panel-header {
@@ -91,28 +84,28 @@ body {
 }
 .hamburger-panel .panel-header h3 {
   font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
-  color: var(--chrome); font-weight: 600; margin: 0;
+  color: rgba(255,255,255,0.45); font-weight: 600; margin: 0;
 }
 .hamburger-close {
-  background: none; border: none; color: var(--chrome);
+  background: none; border: none; color: rgba(255,255,255,0.5);
   font-size: 1.2rem; cursor: pointer; padding: 4px 8px; border-radius: 4px;
   transition: color 0.2s, background 0.2s; line-height: 1;
 }
-.hamburger-close:hover { color: var(--navy); background: rgba(13,27,42,0.06); }
+.hamburger-close:hover { color: #fff; background: rgba(255,255,255,0.1); }
 .ham-link {
   display: block; padding: 10px 12px; border-radius: 6px;
-  text-decoration: none; color: var(--navy);
+  text-decoration: none; color: #cbd5e1;
   font-size: 0.88rem; font-weight: 500;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
   margin-bottom: 2px;
 }
-.ham-link:hover { background: rgba(13,27,42,0.05); }
+.ham-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
 .ham-new-tag {
   display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.5px; background: var(--success); color: var(--white);
   padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: middle;
 }
-.ham-divider { height: 1px; background: var(--border); margin: 12px 0; }
+.ham-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 12px 0; }
 .ham-auth { padding: 4px 0; }
 
 /* ── COOKIE BANNER ── */
@@ -435,66 +428,74 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 }
 .beta-cta .btn-beta:hover { background: var(--red-hover); }
 
-/* ── CLINICAL LEDGER FOOTER ── */
+/* ── CLINICAL FOOTER ── */
 .cl-footer {
   position: relative; z-index: 10;
-  width: 100%; background: #F8FAFC;
-  border-top: 2px solid #000000;
-  padding: 3rem 1.5rem;
+  width: 100%; background: #0A1628;
+  border-top: none;
+  padding: 48px 32px;
   font-family: 'Inter', -apple-system, sans-serif;
-  color: #000000;
+  color: #FFFFFF;
 }
-.cl-footer * { color: #000000; }
-.cl-footer a { color: #000000; text-decoration: none; }
-.cl-footer a:hover { text-decoration: underline; }
+.cl-footer * { color: #FFFFFF; }
+.cl-footer a { color: #FFFFFF; text-decoration: none; transition: color 0.15s; }
+.cl-footer a:hover { color: #E53935; }
 .cl-grid {
   max-width: 1200px; margin: 0 auto;
   display: grid; grid-template-columns: 1fr;
-  gap: 2rem;
+  gap: 32px 40px;
 }
 @media (min-width: 768px) {
-  .cl-footer { padding: 3rem 3rem; }
   .cl-grid { grid-template-columns: repeat(4, 1fr); }
 }
-.cl-footer .cl-logo { height: 32px; width: auto; display: block; margin-bottom: 10px; }
-.cl-footer .cl-entity { font-size: 13px; font-weight: 700; line-height: 1.5; margin-bottom: 6px; }
-.cl-footer .cl-address { font-size: 12px; line-height: 1.6; margin-bottom: 10px; }
+.cl-footer .cl-logo { height: 40px; width: auto; display: block; object-fit: contain; margin-bottom: 16px; }
+.cl-footer .cl-entity { font-size: 13px; font-weight: 700; line-height: 1.6; }
+.cl-footer .cl-address { font-size: 12px; line-height: 1.7; margin-top: 6px; }
 .cl-footer .cl-compliance {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; line-height: 1.8;
+  font-size: 11px; line-height: 1.9; margin-top: 12px;
+  color: #90A4B8 !important;
 }
 .cl-footer .cl-db-header {
-  font-size: 10px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: #90A4B8 !important; margin-bottom: 12px;
 }
-.cl-footer .cl-db-list {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; line-height: 1.7;
-}
-.cl-footer .cl-contact { font-size: 12px; line-height: 1.8; margin-bottom: 12px; }
+.cl-footer .cl-db-list a { font-size: 13px; line-height: 1.9; display: block; }
+.cl-footer .cl-contact { font-size: 13px; line-height: 1.9; margin-bottom: 16px; }
 .cl-footer .cl-links { list-style: none; padding: 0; margin: 0 0 12px 0; }
-.cl-footer .cl-links li { margin-bottom: 6px; }
-.cl-footer .cl-links a { font-size: 12px; font-weight: 500; }
+.cl-footer .cl-links li { margin-bottom: 2px; }
+.cl-footer .cl-links a { font-size: 13px; line-height: 2; display: block; }
 .cl-footer .cl-framework {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px; font-style: italic; margin-top: 8px;
+  font-size: 11px; margin-top: 12px;
+  color: #90A4B8 !important; line-height: 1.6;
 }
 .cl-audit-bar {
-  max-width: 1200px; margin: 2rem auto 0;
-  border-top: 1px solid #000000;
-  padding-top: 12px; text-align: center;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; letter-spacing: 0.3px;
-  color: #000000;
+  max-width: 1200px; margin: 40px auto 0;
+  border-top: 1px solid #1F3047;
+  padding-top: 24px;
+  font-size: 11px; letter-spacing: 0.05em;
+  color: #90A4B8 !important;
 }
+.cl-partner-badges {
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  margin-top: 4px; margin-bottom: 12px;
+}
+.cl-badge-aws {
+  display: flex; align-items: center; gap: 8px;
+  background: #FFFFFF; padding: 4px 10px;
+}
+.cl-badge-aws span { font-size: 11px; font-weight: 600; color: #000000 !important; letter-spacing: 0.03em; }
+.cl-badge-jj {
+  display: flex; align-items: center; gap: 8px;
+}
+.cl-badge-jj-icon {
+  width: 28px; height: 28px; background: #CC0000;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.cl-badge-jj-icon span { font-size: 10px; font-weight: 700; color: #FFFFFF !important; }
+.cl-badge-jj-text { font-size: 11px; color: #90A4B8 !important; }
 .cl-trust-bar {
-  text-align: center;
-  padding: 8px 0;
-  border-top: 1px solid #E5E7EB;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: #6B7280;
+  font-size: 11px; color: #90A4B8 !important;
   margin-top: 12px;
 }
 
@@ -656,15 +657,11 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 
 /* ── APP LAUNCHER ── */
 .app-launcher-btn {
-  background: none; border: none; cursor: pointer; padding: 6px;
-  display: grid; grid-template-columns: repeat(3, 6px); gap: 3px;
-  margin-right: 8px; border-radius: 6px; transition: background 0.2s;
+  background: none; border: none; cursor: pointer; padding: 10px;
+  border-radius: 8px; transition: background 0.2s; line-height: 0;
+  color: rgba(255,255,255,0.7);
 }
-.app-launcher-btn:hover { background: rgba(13,27,42,0.08); }
-.app-launcher-btn span {
-  width: 6px; height: 6px; border-radius: 1.5px;
-  background: var(--navy);
-}
+.app-launcher-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .app-launcher-overlay {
   position: fixed; inset: 0; z-index: 998; background: rgba(0,0,0,0.4);
   opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s;
@@ -730,57 +727,103 @@ body.eco-banner-visible .hero { margin-top: 104px; }
 <!-- APP LAUNCHER PANEL -->
 <div class="app-launcher-overlay" id="app-launcher-overlay" onclick="closeAppLauncher()"></div>
 <div class="app-launcher-panel" id="app-launcher-panel">
-  <div class="panel-header">
-    <h3>APPs:</h3>
-    <button class="app-launcher-close" onclick="closeAppLauncher()" aria-label="Close">&times;</button>
+  <div class="panel-header" style="padding:16px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;margin-bottom:0;">
+    <h3 style="font-size:14px;font-weight:600;color:#fff;letter-spacing:0.08em;text-transform:uppercase;font-family:'Lexend',sans-serif;margin:0;">Apps:</h3>
+    <button class="app-launcher-close" onclick="closeAppLauncher()" aria-label="Close">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
   </div>
-  <a class="app-tile" href="https://mosaeq.com" data-app="mosaeq.com">
-    <div class="app-name">mosaeQ.com</div>
-    <div class="app-desc">Run quantum preclinical safety tests on any molecule and generate regulatory-ready reports</div>
-  </a>
-  <a class="app-tile" href="https://msq.mosaeq.com" data-app="msq.mosaeq.com">
-    <div class="app-name">msq.mosaeQ.com</div>
-    <div class="app-desc">Verify molecular concordance against human safety databases and regulatory submissions</div>
-  </a>
-  <a class="app-tile" href="https://create.mosaeq.com" data-app="create.mosaeq.com">
-    <div class="app-name">create.mosaeQ.com</div>
-    <div class="app-desc">Design and modify molecular structures with quantum-computed property feedback</div>
-  </a>
-  <a class="app-tile eco" href="https://eco.mosaeq.com" data-app="eco.mosaeq.com">
-    <div class="app-name">&#127807; eco.mosaeQ.com</div>
-    <div class="app-desc">Evaluate environmental impact, pathogen mutation risk, and find safer structural alternatives</div>
-  </a>
-  <a class="app-tile" href="https://outbreak.mosaeq.com" data-app="outbreak.mosaeq.com">
-    <div class="app-name">outbreak.mosaeQ.com</div>
-    <div class="app-desc">Monitor real-time outbreak classification with pandemic-risk assessment</div>
-  </a>
-  <a class="app-tile" href="https://q0q0.mosaeq.com" data-app="q0q0.mosaeq.com">
-    <div class="app-name">q0q0.mosaeQ.com</div>
-    <div class="app-desc">Run quantum preclinical safety tests on cosmetic ingredients and check regulatory compliance</div>
-  </a>
-  <div class="app-divider"></div>
-  <a class="app-tile" href="https://msq.mosaeQ.com#ontology" data-app="ontology">
-    <div class="app-name">Ontology</div>
-    <div class="app-desc">Download safety classification rules, regulatory mappings, and integration schemas</div>
-  </a>
+  <nav style="padding:4px 0;overflow-y:auto;">
+    <!-- MARKETING section -->
+    <div style="padding:8px 16px 4px;font-size:11px;font-weight:600;letter-spacing:0.08em;color:rgba(255,255,255,0.45);text-transform:uppercase;">MARKETING</div>
+    <a href="https://play.mosaeq.com" target="_blank" rel="noopener noreferrer" class="app-tile" style="border-left:3px solid transparent;padding:6px 16px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:400;">Game</span>
+    </a>
+    <a href="https://mosaeq.com/news#podcasts" target="_blank" rel="noopener noreferrer" class="app-tile" style="border-left:3px solid transparent;padding:6px 16px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:400;">Podcasts</span>
+    </a>
+    <a href="https://mosaeq.com/news" target="_blank" rel="noopener noreferrer" class="app-tile" style="border-left:3px solid transparent;padding:6px 16px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:400;">News</span>
+    </a>
+    <a href="https://www.youtube.com/channel/UC0HINA2SuDkovyA-pCOrFCg/live" target="_blank" rel="noopener noreferrer" class="app-tile" style="border-left:3px solid transparent;padding:6px 16px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.6);font-weight:400;">Livestream</span>
+    </a>
+    <div class="app-divider"></div>
+    <!-- INDUSTRY section -->
+    <div style="padding:8px 16px 4px;font-size:11px;font-weight:600;letter-spacing:0.08em;color:rgba(255,255,255,0.45);text-transform:uppercase;">INDUSTRY</div>
+    <a class="app-tile" href="https://lab.mosaeq.com" target="_blank" rel="noopener noreferrer" style="border-left:3px solid transparent;">
+      <div class="app-name">lab.mosaeQ.com</div>
+      <div class="app-desc">Preclinical lab workspace</div>
+    </a>
+    <a class="app-tile" href="https://mosaeq.com" target="_blank" rel="noopener noreferrer" style="border-left:3px solid transparent;">
+      <div class="app-name">mosaeQ.com</div>
+      <div class="app-desc">Run quantum preclinical safety tests on any molecule and generate regulatory-ready reports</div>
+    </a>
+    <a class="app-tile active" href="https://msq.mosaeq.com" style="border-left-color:#991b1b;">
+      <div class="app-name">msq.mosaeQ.com</div>
+      <div class="app-desc">Verify molecular concordance against human safety databases</div>
+      <span style="display:inline-block;margin-top:2px;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#991b1b;font-weight:600;">You are here</span>
+    </a>
+    <a class="app-tile" href="https://create.mosaeq.com" target="_blank" rel="noopener noreferrer" style="border-left:3px solid transparent;">
+      <div class="app-name">create.mosaeQ.com</div>
+      <div class="app-desc">Design and modify molecular structures with quantum-computed property feedback</div>
+    </a>
+    <a class="app-tile eco" href="https://eco.mosaeq.com" target="_blank" rel="noopener noreferrer" style="border-left:3px solid transparent;background:#052e16;">
+      <div class="app-name">&#127807; eco.mosaeQ.com</div>
+      <div class="app-desc" style="display:flex;align-items:center;gap:4px;">Evaluate environmental impact, pathogen mutation risk, and safer alternatives <span class="new-tag">NEW</span></div>
+    </a>
+    <a class="app-tile" href="https://outbreak.mosaeq.com" target="_blank" rel="noopener noreferrer" style="border-left:3px solid transparent;">
+      <div class="app-name">outbreak.mosaeQ.com</div>
+      <div class="app-desc">Monitor real-time outbreak classification with pandemic-risk assessment</div>
+    </a>
+    <a class="app-tile" href="https://q0q0.mosaeq.com" target="_blank" rel="noopener noreferrer" style="border-left:3px solid transparent;">
+      <div class="app-name">q0q0.mosaeQ.com</div>
+      <div class="app-desc">Run quantum preclinical safety tests on cosmetic ingredients</div>
+    </a>
+    <a class="app-tile" style="border-left:3px solid transparent;cursor:default;" onclick="return false;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span class="app-name" style="color:#94a3b8;">astro.mosaeQ.com</span>
+        <span style="font-size:10px;font-weight:600;text-transform:uppercase;color:#94a3b8;">Coming Soon</span>
+      </div>
+      <div class="app-desc">Astromolecule industrial registration and space-origin compound classification</div>
+    </a>
+    <a class="app-tile" style="border-left:3px solid transparent;cursor:default;" onclick="return false;">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span class="app-name" style="color:#94a3b8;">dosing.mosaeQ.com</span>
+        <span style="font-size:10px;font-weight:600;text-transform:uppercase;color:#94a3b8;">Coming Soon</span>
+      </div>
+      <div class="app-desc">Route-aware precision dosing with ADME trap zone inversion and NEMP search</div>
+    </a>
+    <div class="app-divider"></div>
+    <a class="app-tile" href="https://msq.mosaeq.com#ontology" style="border-left:3px solid transparent;">
+      <div class="app-name">Ontology</div>
+      <div class="app-desc">Download safety classification rules, regulatory mappings, and integration schemas</div>
+    </a>
+  </nav>
 </div>
 
 <!-- HAMBURGER MENU PANEL -->
 <div class="hamburger-overlay" id="hamburger-overlay" onclick="closeHamburger()"></div>
 <div class="hamburger-panel" id="hamburger-panel">
   <div class="panel-header">
-    <h3>On this page</h3>
+    <h3>Menu</h3>
     <button class="hamburger-close" onclick="closeHamburger()" aria-label="Close">&times;</button>
   </div>
+  <!-- Platform navigation -->
+  <a class="ham-link" href="https://mosaeq.com/pricing" onclick="closeHamburger()">Pricing</a>
+  <a class="ham-link" href="https://mosaeq.com/space" onclick="closeHamburger()">Lunar Satellite Real Estate</a>
+  <a class="ham-link" href="https://mosaeq.com/architecture" onclick="closeHamburger()">Quantum Architecture</a>
+  <a class="ham-link" href="https://mosaeq.com/news#podcasts" onclick="closeHamburger()">Podcasts</a>
+  <a class="ham-link" href="https://mosaeq.com/news" onclick="closeHamburger()">News</a>
+  <a class="ham-link" href="https://mosaeq.com/contact" onclick="closeHamburger()">Contact</a>
+  <div class="ham-divider"></div>
+  <!-- msq page navigation -->
   <a class="ham-link" href="#search" onclick="closeHamburger()">Concordance Search</a>
   <a class="ham-link" href="#trapzones" onclick="closeHamburger()">Trap Zones</a>
-  <a class="ham-link" href="#cliff" onclick="closeHamburger()">Digital Cliff</a>
   <a class="ham-link" href="#databases" onclick="closeHamburger()">Databases</a>
   <a class="ham-link" href="#ontology" onclick="closeHamburger()">Ontology</a>
-  <a class="ham-link" href="https://create.mosaeQ.com" target="_blank" rel="noopener noreferrer" onclick="closeHamburger()">&#127807; Eco <span class="ham-new-tag">NEW</span></a>
   <a class="ham-link" href="#podcasts" onclick="closeHamburger()">Podcasts</a>
   <a class="ham-link" href="#beta" onclick="closeHamburger()">Beta Access</a>
-  <a class="ham-link" href="https://mosaeq.com/pricing" onclick="closeHamburger()">Pricing</a>
   <div class="ham-divider"></div>
   <div class="ham-auth">
     <div id="auth-anonymous">
@@ -794,35 +837,43 @@ body.eco-banner-visible .hero { margin-top: 104px; }
       <button class="btn-signout" onclick="logout()" style="width:100%;">Sign Out</button>
     </div>
   </div>
-  <div style="height:1px;background:#e2e8f0;margin:12px 0;"></div>
-  <a class="ham-link" href="https://mosaeq.com/terms" style="font-size:14px;color:#64748b;">Terms of Use</a>
-  <a class="ham-link" href="https://mosaeq.com/privacy" style="font-size:14px;color:#64748b;">Privacy Policy</a>
-  <a class="ham-link" href="https://mosaeq.com/impressum" style="font-size:14px;color:#64748b;">Impressum</a>
+  <div class="ham-divider"></div>
+  <a class="ham-link" href="https://mosaeq.com/terms" onclick="closeHamburger()" style="font-size:14px;color:rgba(255,255,255,0.5);">Terms of Use</a>
+  <a class="ham-link" href="https://mosaeq.com/privacy" onclick="closeHamburger()" style="font-size:14px;color:rgba(255,255,255,0.5);">Privacy Policy</a>
+  <a class="ham-link" href="https://mosaeq.com/impressum" onclick="closeHamburger()" style="font-size:14px;color:rgba(255,255,255,0.5);">Impressum</a>
 </div>
 
 <!-- NAV -->
 <nav class="nav">
-  <div style="display:flex;align-items:center;">
+  <!-- AppLauncher: absolute top-left -->
+  <div style="position:absolute;top:0;left:0;height:100%;display:flex;align-items:center;padding-left:1rem;">
     <button class="app-launcher-btn" id="app-launcher-btn" onclick="toggleAppLauncher()" aria-label="Open app launcher">
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
-      <span></span><span></span><span></span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3"   y="3"   width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="9.5" y="3"   width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="16"  y="3"   width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="3"   y="9.5" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="9.5" y="9.5" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="16"  y="9.5" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="3"   y="16"  width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="9.5" y="16"  width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="16"  y="16"  width="5" height="5" rx="1" fill="currentColor"/>
+      </svg>
     </button>
-    <a href="/" class="nav-brand">
-      <span class="msq">msq</span>
-      <span class="label">Quantum Ontology</span>
-    </a>
   </div>
-  <a href="https://mosaeq.com" class="nav-center" aria-label="mosaeQ home">
-    <img src="/_mosaeQ-logo-red.png" alt="mosaeQ" class="nav-logo">
+  <!-- Center: Logo -->
+  <a href="https://mosaeq.com" aria-label="mosaeQ home" style="display:flex;align-items:center;opacity:1;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+    <img src="/mosaeQ-logo-red.png" alt="mosaeQ" class="nav-logo">
   </a>
-  <div class="nav-right">
+  <!-- Lab Workspace + Hamburger: absolute top-right -->
+  <div style="position:absolute;top:0;right:0;height:100%;display:flex;align-items:center;gap:12px;padding-right:1rem;">
+    <a href="https://lab.mosaeq.com" class="btn-lab" target="_blank" rel="noopener noreferrer">Lab Workspace</a>
     <button class="hamburger-btn" id="hamburger-btn" onclick="toggleHamburger()" aria-label="Open menu">
-      <span></span><span></span><span></span>
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
     </button>
   </div>
-</nav>
-  </button>
 </nav>
 
 <!-- COOKIE BANNER -->
@@ -1163,75 +1214,88 @@ body.eco-banner-visible .hero { margin-top: 104px; }
   <p class="beta-note">Individual and enterprise subscriptions available at <a href="https://mosaeq.com" target="_blank">mosaeQ.com</a> for immediate full-platform access.</p>
 </section>
 
-<!-- CLINICAL LEDGER FOOTER -->
+<!-- CLINICAL FOOTER -->
 <footer class="cl-footer">
   <div class="cl-grid">
-    <!-- Column 1: Corporate Identity -->
+    <!-- Column 1: Company -->
     <div>
-      <img src="/_mosaeQ-logo-red.png" alt="mosaeQ" class="cl-logo">
-      <div class="cl-entity">Mosae Zorg Industries UG<br>(haftungsbeschr&auml;nkt)</div>
-      <div class="cl-address">Edisonstra&szlig;e 63<br>12459 Berlin-Adlershof<br>Germany</div>
+      <img src="/mosaeQ-logo-red.png" alt="mosaeQ" class="cl-logo">
+      <div class="cl-entity">Mosae Zorg Industries UG<br><span style="font-weight:400;">(haftungsbeschr&auml;nkt)</span></div>
+      <div class="cl-address">Edisonstra&szlig;e 63, 12459 Berlin-Adlershof,<br>Germany</div>
       <div class="cl-compliance">
         NATO CAGE: CNLJ5<br>
         HRB: 279526 (Berlin)<br>
-        SYSTEM: PATENT-PROTECTED<br>QUANTUM SIMULATION
+        SYSTEM: PATENT-PROTECTED QUANTUM SIMULATION
       </div>
     </div>
-    <!-- Column 2: Knowledge Graph A -->
+    <!-- Column 2: Chemical / Bio -->
     <div>
-      <div class="cl-db-header">[DATA PROVENANCE: KNOWLEDGE GRAPH STACK]</div>
+      <div class="cl-db-header">Chemical / Bio</div>
       <div class="cl-db-list">
-        PubChem<br>
-        ChEMBL<br>
-        ChEBI<br>
-        UniProt<br>
-        KEGG<br>
-        ENVO<br>
-        IARC Monographs<br>
-        ZINC15
+        <a href="https://pubchem.ncbi.nlm.nih.gov" target="_blank" rel="noopener noreferrer">PubChem</a>
+        <a href="https://www.ebi.ac.uk/chembl" target="_blank" rel="noopener noreferrer">ChEMBL</a>
+        <a href="https://www.ebi.ac.uk/chebi" target="_blank" rel="noopener noreferrer">ChEBI</a>
+        <a href="https://www.uniprot.org" target="_blank" rel="noopener noreferrer">UniProt</a>
+        <a href="https://www.kegg.jp" target="_blank" rel="noopener noreferrer">KEGG</a>
+        <a href="http://www.environmentontology.org" target="_blank" rel="noopener noreferrer">ENVO</a>
+        <a href="https://monographs.iarc.who.int" target="_blank" rel="noopener noreferrer">IARC Monographs</a>
+        <a href="https://zinc20.docking.org" target="_blank" rel="noopener noreferrer">ZINC20</a>
       </div>
     </div>
-    <!-- Column 3: Knowledge Graph B -->
+    <!-- Column 3: Clinical / Regulatory -->
     <div>
-      <div class="cl-db-header">&nbsp;</div>
+      <div class="cl-db-header">Clinical / Regulatory</div>
       <div class="cl-db-list">
-        FAERS<br>
-        EudraVigilance<br>
-        DailyMed<br>
-        DrugMatrix<br>
-        TG-GATEs<br>
-        ClinVar<br>
-        Orphanet<br>
-        GWAS Catalog<br>
-        EARS-Net<br>
-        ECHA REACH<br>
-        EU CosIng<br>
-        IFRA<br>
-        SCCS
+        <a href="https://fis.fda.gov/sense/app/95239e07-2e78-4bcb-9cf3-70c91a7af78f" target="_blank" rel="noopener noreferrer">FAERS</a>
+        <a href="https://www.ema.europa.eu/en/human-regulatory/pharmacovigilance/eudravigilance" target="_blank" rel="noopener noreferrer">EudraVigilance</a>
+        <a href="https://dailymed.nlm.nih.gov" target="_blank" rel="noopener noreferrer">DailyMed</a>
+        <a href="https://ntp.niehs.nih.gov/whatwestudy/tox21/drugmatrix" target="_blank" rel="noopener noreferrer">DrugMatrix</a>
+        <a href="https://toxico.nibiohn.go.jp" target="_blank" rel="noopener noreferrer">TG-GATEs</a>
+        <a href="https://clinicaltrials.gov" target="_blank" rel="noopener noreferrer">ClinicalTrials</a>
+        <a href="https://unece.org/trans/danger/publi/ghs/ghs_welcome_e.html" target="_blank" rel="noopener noreferrer">GHS Catalog</a>
+        <a href="https://www.ecdc.europa.eu/en/antimicrobial-resistance/surveillance-and-disease-data/ears-net" target="_blank" rel="noopener noreferrer">EARS-Net</a>
+        <a href="https://echa.europa.eu/regulations/reach/understanding-reach" target="_blank" rel="noopener noreferrer">ECHA REACH</a>
+        <a href="https://ec.europa.eu/growth/tools-databases/cosing" target="_blank" rel="noopener noreferrer">EU CosIng</a>
+        <a href="https://ifrafragrance.org" target="_blank" rel="noopener noreferrer">IFRA</a>
+        <a href="https://health.ec.europa.eu/scientific-committees/scientific-committee-consumer-safety-sccs_en" target="_blank" rel="noopener noreferrer">SCCS</a>
       </div>
     </div>
-    <!-- Column 4: Global Access & Legal -->
+    <!-- Column 4: Contact -->
     <div>
+      <div class="cl-db-header">Contact</div>
       <div class="cl-contact">
         <a href="mailto:support@mosaeq.com">support@mosaeq.com</a><br>
-        <a href="tel:+498001830502">+49 800 183 05 02</a>
+        +49 800 183 05 02
       </div>
       <ul class="cl-links">
-        <li><a href="https://mosaeq.com/docs">Documentation</a></li>
-        <li><a href="#" onclick="showLegal('privacy');return false;">Privacy Policy</a></li>
-        <li><a href="#" onclick="showLegal('privacy');return false;">Terms of Use</a></li>
-        <li><a href="#" onclick="showLegal('impressum');return false;">Impressum</a></li>
-        <li><a href="mailto:support@mosaeq.com?subject=Report%20an%20Issue">Report an Issue</a></li>
+        <li><a href="https://mosaeq.com/docs" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+        <li><a href="https://mosaeq.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
+        <li><a href="https://mosaeq.com/terms" target="_blank" rel="noopener noreferrer">Terms of Use</a></li>
+        <li><a href="https://mosaeq.com/impressum" target="_blank" rel="noopener noreferrer">Impressum</a></li>
+        <li><a href="https://mosaeq.instatus.com" target="_blank" rel="noopener noreferrer">Report an Issue</a></li>
       </ul>
       <div class="cl-framework">Conforms to EMA ERA &amp; ICH M3(R2) Standards.</div>
     </div>
   </div>
   <!-- Audit Bar -->
   <div class="cl-audit-bar">
-    [SHA-256 AUDIT HASH VERIFIED] &nbsp;|&nbsp; &copy; 2026 Mosae Zorg Industries. All Rights Reserved.
-  </div>
-  <div class="cl-trust-bar">
-    EU Data Residency &middot; Frankfurt, Germany
+    <div style="margin-bottom:4px;">[SHA-256 AUDIT HASH VERIFIED]&nbsp;&nbsp;|&nbsp;&nbsp;&copy; 2025 2026 Mosae Zorg Industries. All Rights Reserved Internationally.</div>
+    <div style="font-size:11px;color:#999;margin-bottom:16px;">Version 1.0 (Beta)</div>
+    <!-- Partner badges -->
+    <div class="cl-partner-badges">
+      <div class="cl-badge-aws">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6.76 17.28c-.3.17-.5.07-.44-.22l.9-4.3-3.04-2.64c-.24-.21-.17-.45.15-.49l4.01-.35 1.56-3.71c.12-.29.32-.29.44 0l1.56 3.71 4.01.35c.32.04.39.28.15.49l-3.04 2.64.9 4.3c.06.29-.14.39-.44.22L12 15.1l-3.24 1.8-.24.13.14-.66-.9 1z" fill="#FF9900"/>
+          <path d="M3 17s2 1.5 5 1.5M21 17s-2 1.5-5 1.5" stroke="#FF9900" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>AWS Marketplace Partner</span>
+      </div>
+      <div class="cl-badge-jj">
+        <div class="cl-badge-jj-icon"><span>J&amp;J</span></div>
+        <span class="cl-badge-jj-text">External R&amp;D Network Member of Johnson &amp; Johnson</span>
+      </div>
+    </div>
+    <div class="cl-trust-bar">EU Data Residency &middot; Frankfurt, Germany</div>
   </div>
 </footer>
 
